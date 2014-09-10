@@ -5,7 +5,7 @@ pygments: true
 paginate: 8
 permalink: /:title
 
-title: blog
+title: juzipi
 url: http://juzipi.github.io/blog/
-feed: atom.xml
-author_info: <a href="http://juzipi.github.io/">juzipi</a>
+feed: /atom.xml
+author_info: <a href="http://juzipi.github.io/blog/">juzipi</a>
