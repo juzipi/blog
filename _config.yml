@@ -5,6 +5,7 @@ pygments: true
 paginate: 8
 permalink: /:title
 
+suburl:/blog
 title: juzipi
 url: http://juzipi.github.io/blog/
 feed: /atom.xml
