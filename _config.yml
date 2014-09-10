@@ -7,6 +7,6 @@ permalink: /:title
 
 suburl:/blog
 title: juzipi
-url: http://juzipi.github.io/blog/
+url: blog/
 feed: /atom.xml
 author_info: <a href="http://juzipi.github.io/blog/">juzipi</a>
