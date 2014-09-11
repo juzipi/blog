@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2014-09-10T16:35:52+08:00</updated>
+   <updated>2014-09-11T16:07:08+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -17,7 +17,7 @@
      <link href="http://beiyuu.com/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83"/>
      <updated>2014-09-05T00:00:00+08:00</updated>
      <id>http://beiyuu.com/学习思考</id>
-     <content type="html">&lt;h2&gt;模块化思考&lt;/h2&gt;
+     <content type="html">&lt;h1&gt;模块化思考&lt;/h1&gt;
 
 &lt;p&gt;最近看了一些模块化相关的库或者是文章，本文的目的也是给自己里一个头绪，到底怎样才能真正推行到团队里面的模块化，这个概念说了这么久，现在这两年开始真正推行起来。&lt;/p&gt;
 
@@ -44,6 +44,34 @@
 &lt;p&gt;那么后面调用这个CSS和HTML就组成一个模块，但是这个没有解决几个问题，如果里面有交互牵涉到js怎么模块化，这里只是CSS和HTML。&lt;/p&gt;
 
 &lt;p&gt;后面用到百度的fis，这个工具我自己的给它的定位就是管理并且发布静态资源。解决的是静态资源的问题，&lt;/p&gt;
+
+&lt;h3&gt;js加载模块化&lt;/h3&gt;
+
+&lt;p&gt;在js加载这一块目前国内说得比较多的是Requery.js和seajs这两个加载库，给我感觉作用差不多，只不过require和seajs神明模块的方式不同&lt;/p&gt;
+
+&lt;h3&gt;require&lt;/h3&gt;
+
+&lt;p&gt;申明方式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;define(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,function(&quot;modelA&quot;,&quot;modelB&quot;,&quot;modelC&quot;){
+
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;调用方式：&lt;/p&gt;
+
+&lt;h3&gt;seajs&lt;/h3&gt;
+
+&lt;p&gt;申明方式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;define(function(require, exports, module) {
+
+// 模块代码
+
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;调用方式：&lt;/p&gt;
 </content>
    </entry>
    

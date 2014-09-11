@@ -8,5 +8,3 @@ category: blog
 
 
 
-
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
