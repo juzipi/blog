@@ -4,13 +4,140 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2014-09-11T16:07:08+08:00</updated>
+   <updated>2014-10-16T09:54:01+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>Javascript模式学习</title>
+     <link href="http://beiyuu.com/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0"/>
+     <updated>2014-09-18T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/Javascript模式学习</id>
+     <content type="html">&lt;h1&gt;Javascript模式学习&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;变量&lt;/h2&gt;
+
+&lt;h3&gt;1、全局变量&lt;/h3&gt;
+
+&lt;p&gt;都知道不能随便取全局变量，在浏览器中存在一个默认的一个全局对象this，还有一个全局的属性window，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var n = 2；
+this.n; //2
+this.window.n; //2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果想要改变全局对象名称也可以随便在任何函数里面都可以&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var global=(function(){
+    return this;
+ }())
+ //重新命名全局对象的名称未global;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;2、函数内变量会前置&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;var n=&quot;blue&quot;;
+function varFront(){
+    consloe.log(n); //undefined
+    var n = &quot;red&quot;; 
+    console.log(n); //red
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里我认为的第一个会是&lt;code&gt;blue&lt;/code&gt;，但是却是&lt;code&gt;undefined&lt;/code&gt;，因为&lt;code&gt;javascript&lt;/code&gt;的引擎机制的原因，会先创建变量、函数、参数，这个阶段是一个预编译的阶段，会扫描整个上下文，再来代码运行阶段，运行里面的函数表达式。在这一段代码中因为后面创建的变量和前面的全局变量是同名的，根据刚才的原则先创建变量再运算。&lt;/p&gt;
+
+&lt;p&gt;实际就变成：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var n=&quot;blue&quot;;
+function varFront(){
+    var n; //提前到前面
+    console.log(n);
+    var n = &quot;red&quot;;
+    console.log(n); //rend
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;循环&lt;/h2&gt;
+
+&lt;h3&gt;1、for&lt;/h3&gt;
+
+&lt;p&gt;循环也是常用的一种语法方式，在开发中避免对于DOM操作时候多次寻找耗费资源&lt;/p&gt;
+
+&lt;p&gt;比如有一个ul下面的li集合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for（var i = 0; i&amp;lt;li.length;i++ ）{
+    //li[i];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里每一次的读取i都回去重新找一遍li，而操作DOM是非常耗资源的一个事情，应该改成：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var length=li.length;
+for (var i=0; i&amp;lt;length; i++){
+    //li[i]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保存为一个变量存起来，就读取一次减少资源消耗。
+再简化一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var i,li=[];
+for(i=li.length;i--){
+    //li[i]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里减少一个变量，并且是减量循环，减量循环比增量循环速度更快，解释是：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;因为和零比较要比和非零数字或数组长度比较要高效的多&lt;/code&gt;?这个没有很明白；
+再有就是while循环&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var li=[],i=li.length;
+while(i--){
+    //li[li];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;2、for-in&lt;/h3&gt;
+
+&lt;p&gt;这个用来循环对象里面的属性，这里需要了解对象属性有两种情况，一种是原生一种prototype原型立案链集成。通过方法hasOwnProperty()去过滤。
+实例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var man={hands:2,head:1,legs:2},i;
+if(Object.prototype.clone==&quot;undefined&quot;){
+    Object.prototype.clone=function(){};
+}
+for(i in man){
+    if(man.hasOwnProperty(i))}  
+    //通过hasOwnProperyt判断clone是不是原有的属性，还是通过prototype加进来的。这里如果运行到clone，通过的值是false；
+        console.log(i, &quot;:&quot;, man[i]);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;不扩充内置圆形&lt;/h3&gt;
+
+&lt;p&gt;可以扩充构造函数的prototype的原型，可以给object()，添加新的方法，但是这种方式尽量不要使用因为：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不好控制，和你一起开发的人员不知道你加了这么一个原型在里面，会不会重新覆盖，&lt;/li&gt;
+&lt;li&gt;一个有可能新的EC版本增加新的方法和现在的方法冲突，&lt;/li&gt;
+&lt;li&gt;就像上面那个object遍历如果不加hasOwnProperty()判断会遍历出来，这个和预想的结果不一样，而加了这个需要和你合作的每个开发人员说明。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;也有情况是可以加上的，就是未来EC版本会加上这个方法，你可以预先把这个实现了，并且和团队其他人员沟通过后，给出文档。&lt;/p&gt;
+
+&lt;h3&gt;switch&lt;/h3&gt;
+</content>
+   </entry>
    
    <entry>
      <title>模块化学习思考</title>
@@ -66,12 +193,19 @@
 
 &lt;pre&gt;&lt;code&gt;define(function(require, exports, module) {
 
-// 模块代码
+// 引用moduleA.js文件
+var module=require(./moduelA);
+
 
 });
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;调用方式：&lt;/p&gt;
+
+&lt;p&gt;但是这种模块加载会演变成一个问题，每一个模块都是一个js文件，一个项目可能会有几十个文件，这样导致浏览器请求增加太多，对性能有所影响，这时候就需要合并js文件。&lt;/p&gt;
+
+&lt;p&gt;模块化加载》合并文件》这样也会产生一个问题，根据页面的功能不同，怎样加载不同页面并且还不会重复加载。
+比如&lt;code&gt;a.html&lt;/code&gt;页面功能有&lt;code&gt;a.js&lt;/code&gt; &lt;code&gt;b.js&lt;/code&gt; &lt;code&gt;c.js&lt;/code&gt;,合并成一个文件.&lt;/p&gt;
 </content>
    </entry>
    
@@ -3501,35 +3635,6 @@ if ($document) {
 &lt;/div&gt;
 
 
-
-</content>
-   </entry>
-   
-   <entry>
-     <title>只有好的棋手才会走运</title>
-     <link href="http://beiyuu.com/build-facebook"/>
-     <updated>2013-01-21T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/build-facebook</id>
-     <content type="html">&lt;p&gt;能和Facebook这样的公司一起成长太幸福，对作者真是羡慕嫉妒恨。&lt;/p&gt;
-
-&lt;p&gt;Facebook快速并且顺利的成长，作者初期选择他，悬念并不大，不过在第一章谈到对公司的忠诚度倒是个不错的话题，树倒猢狲散、墙倒众人推，这就是现实，更何况赤裸裸的签订的打工合同，每个人都会做对自己最有利的选择，同样的，公司招聘也不是做慈善，所以忠诚在这里的定义是，在职期间尽心尽力做到自己该做的事情。&lt;/p&gt;
-
-&lt;p&gt;对于初创互联网公司来说，招聘是重中之重，任何苛刻都不为过，臭味相投的一流人才的内部推荐，是作者首推的方法。最早听到Facebook的“Fire Fast”原则有些惊讶，招聘成本如此之高，还有这样严厉的作为，足见对人的重视。&lt;/p&gt;
-
-&lt;p&gt;盛行工程师文化，并且对应聘者非常挑剔的公司，经理这个职位有时候会显得力量薄弱，所以书中讲团队管理章节的部分就比较没有新意，产品流程业界合格的公司大抵都如此罢。值得注意的一点就是Facebook的快，将迭代这个概念完好的贯彻执行，在Web时代，不完美不重要，错一点也不重要，慢了就很要命。当然，这需要高水平的“黑客”。&lt;/p&gt;
-
-&lt;p&gt;其实整本书趋于平淡，尤其身处行业内、并且经常捕风捉影关注此类信息，不过，我不在其中亲身感受，很多观感自然也是架空的，也无法完整体会Facebook的优秀之处。&lt;/p&gt;
-
-&lt;p&gt;最后一章，作者的投资理念很务实很合理，不过，窃以为这在互联网行业应该也是标配吧。&lt;/p&gt;
-
-&lt;p&gt;当然，祝作者报效祖国成功！&lt;/p&gt;
-
-&lt;p&gt;多废话一句：在我看来，豆瓣和Facebook有许多的相似之处，或许这只是我一厢情愿吧，哈哈。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;豆瓣链接：&lt;a href=&quot;http://book.douban.com/subject/20471120/&quot; title=&quot;打造Facebook&quot;&gt;《打造Facebook》&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;在线阅读：&lt;a href=&quot;http://read.douban.com/ebook/500486/?referral_code=myg7ot50&quot;&gt;《打造Facebook》&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 
 </content>
    </entry>
