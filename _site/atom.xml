@@ -4,13 +4,439 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2014-10-16T09:54:01+08:00</updated>
+   <updated>2015-06-17T15:55:19+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>原型理解</title>
+     <link href="http://beiyuu.com/%E5%8E%9F%E5%9E%8B%E7%90%86%E8%A7%A3"/>
+     <updated>2014-12-17T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/原型理解</id>
+     <content type="html">&lt;h1&gt;原型解析&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;什么是原型?&lt;/li&gt;
+&lt;li&gt;原型的作用是什么？&lt;/li&gt;
+&lt;li&gt;堆和栈的区别？&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;1.对象分类&lt;/h2&gt;
+
+&lt;p&gt;在js中有一个概念就是一切皆是对象，但是对象也有分不同的类型
+先抛出几个问题在这篇文章中去解答：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;普通对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var o = new Object();
+ var o1 = {};
+ var ff=function(){}; var o2=new ff();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;函数对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var f=function(){};
+ var f1=Function(&quot;sopit&quot;,&quot;alert(&#39;a&#39;)&quot;);
+ function f2(){}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;原型对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; //源码
+
+ function myFun(){
+     var name=&quot;juzi&quot;;
+ }
+
+ function myFunPro(){
+     this.name=&quot;juzi&quot;;
+     this.t=function(){
+         return &quot;tt&quot;;
+     }
+ }
+
+ myFunPro.prototype.title=function(){
+     return &quot;biaoti&quot;;
+ }
+
+ var m=new myFun();
+
+ myFun.prototype=m;
+
+ var u=i=m;
+
+ var mP=new myFunPro();
+
+ var o=new Object();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;blockquote&gt;&lt;p&gt;顺便说几个方法&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;tpyeof 可以知道数据类型，number,object,function,undefinded,boolean,string
+ 判断变量是否存在，使用typeof，例如：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;    if(a){alert(&quot;a&quot;);} //有抱错信息
+    if(typeof !=&quot;undefined&quot;){ alert(&quot;a&quot;); } //不会报错
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;instanceof 可以判断是否是实例，例如： a instanceof A；输出的事一个布尔值&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;blockquote&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;我想到这里可以说一下原型有什么作用了：
+1. 用来继承减少空间占用&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>Javascript模式学习 函数</title>
+     <link href="http://beiyuu.com/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0-%E5%87%BD%E6%95%B0"/>
+     <updated>2014-09-18T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/Javascript模式学习-函数</id>
+     <content type="html">&lt;h2&gt;第四章 函数&lt;/h2&gt;
+
+&lt;h3&gt;4.1 背景&lt;/h3&gt;
+
+&lt;p&gt;函数是js中使用率最高的一个对象，万物皆对象。函数也不例外，只是这个对象和别的对象来说有几个特别的特性，“执行”是其中一个。&lt;/p&gt;
+
+&lt;p&gt;另外两个特性包括：是一个一等对象，提供作用域的支持。&lt;/p&gt;
+
+&lt;p&gt;js本身有两种作用域，一种是全局的作用域，比如window，还有一个就是局部作用域，比如函数内用var声明的作用域，函数内用if或者for等内部声明的作用域还是属于函数内部的作用域，不属于if内部的作用域。&lt;/p&gt;
+
+&lt;p&gt;函数既然也是对象，那么就会一样会有对象的一些特性，比如有 &lt;strong&gt;属性&lt;/strong&gt; 和 &lt;strong&gt;方法&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h4&gt;函数的中的匿名函数和命名函数之间的区别：&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;%E5%87%BD%E6%95%B0%E5%90%8D%E7%A7%B0.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;匿名函数的name属性值是一个空字符串，命名函数的name值是有值的。这是他们唯一的区别。
+真正有三种术语方面的说法：带有命名的函数表达式、无名字的函数表达式、函数声明&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var add = function add(){}; //带有命名的函数表达式,末尾必须要有分号
+
+var add = function (){};  //无名字的函数表达式
+
+function add(){}; //函数声明，末尾可以不用分号
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;“函数直接量”这个概念一般用来表示函数表达式或者匿名函数表达式，尽量不要用，有歧义。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3&gt;4.2 函数提前&lt;/h3&gt;
+
+&lt;p&gt;前面有过叫做变量提前的说法，也就是在运行环境中，变量始终会方便开始，即使是后面定义的也是如此。函数也有提前这一说法，因为函数也是一种对象，赋值给了变量。&lt;/p&gt;
+
+&lt;p&gt;“函数声明”定义的函数不仅能够让函数&lt;strong&gt;定义&lt;/strong&gt;提前，还能够让声明提前。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(){console.log(&quot;foo&quot;)}
+function bar(){console.log(&quot;bar&quot;)}
+
+function next(){
+
+    //next 内部的foo和bar会覆盖全局的foo和bar
+
+    console.log(typeof foo);  //function 因为foo是一个函数声明
+    console.log(typeof bar);  //undefined  bar是一个无名的函数表达式
+
+    foo();  // new foo
+    bar();  //typeError: bar is not a function 
+
+    function foo(){
+        console.log(&quot;new foo&quot;)
+    }
+    var bar = function(){
+        console.log(&quot;new bar&quot;)          
+    };
+    console.log(typeof bar);  //function 
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;4.3 回调模式&lt;/h3&gt;
+
+&lt;p&gt;该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。
+    function f(callback){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    callback();//执行了
+}       
+
+function cb(){
+    console.log(&quot;回调&quot;);
+}   
+
+f(cb);// 回调
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;遍历节点并做一定动作，一般逻辑，把节点抛出来，并用方法隐藏，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//findNodes 方法找到节点并返回出来，
+ var findNodes = function(){
+    var nodeParent = document.getElementById(&quot;J_ul&quot;);
+    var nodes = nodeParent.getElementsByTagName(&quot;li&quot;);
+    return nodes;
+ }
+
+ //隐藏节点
+var hide = function(node){
+    var i=0, max = node.length; //遍历节点
+    for(; i &amp;lt; max; i++){
+     node[i].style.display = &quot;none&quot;;
+    }
+}
+
+//显示节点
+var show = function(node){
+    var i=0, max = node.length; //遍历节点
+    for(; i &amp;lt; max; i++){
+        node[i].style.display = &quot;block&quot;;
+    }
+}
+
+//执行
+hide(findNodes());
+show(findNodes());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里做一次操作就会遍历节点一遍，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var findNodes = function(callback){
+ var nodeParent = document.getElementById(&quot;J_ul&quot;);
+ var nodes = nodeParent.getElementsByTagName(&quot;li&quot;);
+ var length = nodes.length;
+
+ //判断参数callback是不是函数
+ if(typeof callback !== &quot;function&quot;){
+  callback = false;
+ }
+
+ while(length){
+  length--;
+  if(callback){
+    callback(nodes[length]);// 这是回调函数可以操作部分
+  }
+ }
+
+ return nodes; //还是可以返回节点
+ }
+ var hide = function(node){
+  node.style.display = &quot;none&quot;;
+  }
+  var show = function(node){
+  node.style.display = &quot;block&quot;;
+  }
+
+  findNodes(hide);
+  findNodes(show);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt; 这里hide方法和show方法已经不需要再去遍历一回节点，相当于操作和需要操作的数据分离，其实有点像数据和控制器分离，这样做到findNodes方法更加&lt;code&gt;通用&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3&gt;4.4 返回函数&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;函数是一个特殊变量，当有()的时候就是表示执行。执行完成之后就看有没有return，有的话就是这个函数返回出来的东西。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;函数里面还可以返回函数，但是这首先是函数执行之后的返回，也就是必须()，如果只是变量之间转换，例如：var a=fn;这样a是没有得到fn的返回值。这个只是a引用了fn。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var fn=function(){
+    console.log(1);
+    retunr function(){
+     console.log(2);
+    }
+}
+var a=fn;
+var b=fn();
+console.log(typeof a); // function,这个时候a只是fn的引用。
+console.log(typeof b); // function，这个时候b是fn()执行完成之后的返回出来的function
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt; 如果fn执行完成之后没有返回值，即使赋值到变量上，变量也是undefind;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var fn = function(){
+        console.log(1)      
+    }   
+    var a = fn;
+    var b = fn();
+    console.log(typeof a); // function,这个时候a只是fn的引用。
+    console.log(typeof b); // undefined，因为fn()执行完成之后没有返回值，所以b得到对结果就是undefined;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数内部有一些私有的数据，在函数外部是访问不到，但是函数内部的函数是可以访问到，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var fn = function(){
+    var count = 0; //该变量在fn外部访问不到，因为做用域的原因。
+    return function(){
+        count += 1; //这里可以访问到count，在函数内部。
+    }
+}
+var a =fn();//这里执行过一次fn(),也就是初始化了一下count。
+a(); //当第一次执行a()时，count已经初始化一次，因为a函数是fn里面的，所以能够访问到count变量。这个时候执行返回出来的函数。这里执行了也就是＋1。
+a(); //2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;这里有一个疑惑为什么第二次执行的时候不是1，而是2？&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;这里需要解释保存count为1的在哪里，这里就相当于开始的count=0,这是最开始的，也是执行一次就改变一次。这里可以理解count是相对返回的函数来说是一个全局变量。
+例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var count = 0;
+var add = function(){
+    count += 1;
+}
+add();//这里每执行一次就改变全局变量count一次，只是前面那个例子是包含在一个函数内部。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;4.5 自定义函数&lt;/h3&gt;
+
+&lt;p&gt;覆盖自己的函数定义，可以初始化操作一次。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var selfFn = function(){
+        console.log(&quot;first&quot;);
+        selfFn = funcition(){
+            console.log(&quot;two&quot;);
+        }
+    }
+    selfFn(); // first
+    selfFn(); //two
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里是第一次执行的时候正常流程，并且把函数重新赋值到函数的名称，当第二次执行的时候，这个时候实际上，函数执行的内容已经覆盖开始到执行内容。函数被重定义。
+函数是一个执行体，变量只是这个函数执行的引用。如果这个函数赋值给另外一个变量会怎样？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var otherFn = selfFn;
+    otherFn();
+    otherFn();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;4.6 自执行函数&lt;/h3&gt;
+
+&lt;p&gt;一般这种函数是有一些只是执行一次，后面再也不执行了，并且可以保证在它里面的变量不会污染整个全局变量&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    (function(){
+        var who = &quot;juzipi&quot;;
+        console.log(who);
+    })() //这里括号完成表示执行
+
+    //另外一种方式
+    (function(){
+    //do something
+    }())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也可以给自执行函数加上参数，如果参数是window这样如果在浏览器的环境可以访问到全局的内容。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var who = &#39;juzipi&#39;;
+    (function(w){
+        console.log(w.who); //juzipi
+    })(window)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;为了通用型最好是不要用window作为参数，因为这个职能在浏览器的环境下执行&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h4&gt;立即执行函数返回值&lt;/h4&gt;
+
+&lt;p&gt;立即执行的函数也是可以返回值的，和他们函数一样。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var val = (function(){
+        return 2+2;
+    })()
+
+    //可以省略括号
+
+    var val = function(){
+        return 2+2;
+    }()
+
+    //属性定义
+    var obj ={
+        m : (function(){
+            var who = &quot;me&quot;;
+            var what = &quot;call&quot;;
+            return who +&quot;&quot;+what;
+        })(),
+        getM : function(){
+            return this.m;
+        }
+    }
+
+    obj.m;  //me call
+    obj.getM();  //me call
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在这里m这个属性值实际上是一个字符串，而getM是一个方法，所以要执行后得到结果。&lt;/p&gt;
+
+&lt;h2&gt;立即初始化对象&lt;/h2&gt;
+
+&lt;p&gt;建立一个对象，并且运行对象方法，对象字面量方式建立对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    ({
+        max : 2,
+        min :1,
+        add :function(){
+            return max + min;
+        },
+        init : function(){
+            return console.log(this.add());
+        }
+    }).init()
+    //两种方式调用
+    ({}).init();
+    ({}.init());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实就是建立对象直接执行方法，如果初始化工作比较复杂，建议用这种方式，这种方式，结构比较清楚，是一次性初始化。
+但是这种方式在js压缩工作工具里面不是很友好。&lt;/p&gt;
+
+&lt;h2&gt;条件初始化&lt;/h2&gt;
+
+&lt;p&gt;当知道某种条件在整个程序生命周期不会发生改变，这样就是对这个条件进行一次初始化操作就好，使用最多的就是浏览器特性检测。一般来说浏览器对于某种特性的支持都是固定的，不会存在变化的可能。比如对于事件的添加删除。
+原来我们经常会这样写：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var U = {
+        addFn : function(el,type,fn){
+            if(typeof window.addEventListener == &quot;function&quot;){
+                el.addEventListener(type,fn,false);
+            }else if(typeof document.attachEvent == &quot;function&quot;){
+                el.attchEvnet(&quot;on&quot;+type, fn);
+            }else{
+                el[&quot;on&quot;+type] = fn;
+            }
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是这样效率不高，因为每次执行U.addFn()的时候都会去查一遍浏览器的特性，因为这个特性是固定的，所以不需要每一次都去查询一遍，只需要查询一次就可以。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var U = {
+        addFn : null
+        }
+
+    if(typeof window.addEventListener == &quot;function&quot;){
+        U.addFn = functon(el,type,fn){
+            el.addEventListener(type,fn,false);
+        }
+    }esle if(typeof doucment.attachEvent == &quot;function&quot;){
+        U.addFn = function(el,type,fn){
+            el.attchEvent(&quot;on&quot;+type,fn)
+        }
+    }else{
+        U.addFn = function(el,type,fn){
+            el[&quot;on&quot;+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
+        }
+    }   
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+   </entry>
    
    <entry>
      <title>Javascript模式学习</title>
@@ -115,14 +541,14 @@ if(Object.prototype.clone==&quot;undefined&quot;){
     Object.prototype.clone=function(){};
 }
 for(i in man){
-    if(man.hasOwnProperty(i))}  
+    if(man.hasOwnProperty(i)){ 
     //通过hasOwnProperyt判断clone是不是原有的属性，还是通过prototype加进来的。这里如果运行到clone，通过的值是false；
         console.log(i, &quot;:&quot;, man[i]);
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;不扩充内置圆形&lt;/h3&gt;
+&lt;h3&gt;不扩充内置原型&lt;/h3&gt;
 
 &lt;p&gt;可以扩充构造函数的prototype的原型，可以给object()，添加新的方法，但是这种方式尽量不要使用因为：&lt;/p&gt;
 
@@ -136,6 +562,136 @@ for(i in man){
 &lt;p&gt;也有情况是可以加上的，就是未来EC版本会加上这个方法，你可以预先把这个实现了，并且和团队其他人员沟通过后，给出文档。&lt;/p&gt;
 
 &lt;h3&gt;switch&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;var i=0,t=&#39;&#39;;
+switch (i){
+case 1:
+    t=&#39;不显示&#39;;
+    break;
+case 0:
+    t=&#39;显示&#39;;
+    break;
+defalut:
+    t=&#39;默认显示&#39;        
+}
+//显示
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;代码格式规范&lt;/h2&gt;
+
+&lt;p&gt;团队之间代码格式规范是一个团队合作的基础&lt;/p&gt;
+
+&lt;h1&gt;3、直接量和构造函数&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;这一章原来一直都有接触，但是并没有真正理解里面的运行逻辑，通过这一章的了解需要了解里面的运行逻辑是什么。并且对于直接量和构造函数之间的区别有所收获。&lt;/p&gt;
+
+&lt;h2&gt;3.1 对象创建的三种形式&lt;/h2&gt;
+
+&lt;h4&gt;一种是直接量例如：&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;    //这里创建了一个空对象
+    var o={}；
+    //也可以给这个对象直接加上方法和属性。
+    var o={
+        name:&quot;juzi&quot;,
+        age:12,
+        title:function(){
+            return &quot;工程师&quot;；
+        }  //这里说明一下‘,&#39;该符号，可以在现代浏览器中加上，但是在IE中会报错
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;第二种就是根据内置的Object对象创建一个实例&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;var o=new Object();
+//创建一个数字对象
+var n=new Object(2);
+console.log(n.constructor === Number); // true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;第三种是自定义构造函数&lt;/h4&gt;
+
+&lt;p&gt;要好理解这种方式，就是把p当做Object来对待，相当于实例了一个p对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var p=function(){
+    this.age=12;
+    this.name=&#39;juzi&#39;;
+    this.title=function(){
+        return &quot;工程师&quot;；
+    }
+}
+
+var p_01=new p();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实际创建的过程：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建一个空的对象｛｝；并且把它引用赋给this，继承函数原型&lt;/li&gt;
+&lt;li&gt;添加属性和方法给this&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;返回this指向的新对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  var p = function(){
+      //this={}
+      this.age = 12;
+      this.name = &quot;juzi&quot;;
+      this.title = function(){
+          return &quot;工程师&quot;
+      }
+      //return this;
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;构造函数返回值&lt;/h4&gt;
+
+&lt;p&gt;当用new调用一个构造函数的时候，其实调用的是这个构造函数里面的返回的对象，可以自定义返回的对象，如果没有定义的话，默认返回的事this这个对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var p ＝ function(){
+        this.name=&quot;juzi&quot;;
+        var that = {};
+        that.name = &quot;juzipi&quot;;
+        return that;
+    }
+    var me = new p();
+    me.name;  // juzipi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;如果返回的不是对象，是字符串，数字，布尔值，程序不会抱错，这个值会被忽略，最终还是返回this所指的对象。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h4&gt;如果没有使用new&lt;/h4&gt;
+
+&lt;p&gt;没有使用new的时候，函数内部的this实际上面指的是全局对象，如果是在浏览器里面指的就是window对象，这个并不是我们想要的效果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var p = function(){
+        this.name = &quot;juzi&quot;;
+    }
+    var me = new p(); // suc
+    var me = p();
+    console.log(typeof me);  //undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;所以这就需要我们在用函数命名的时候，有一个约定，不然自己搞混了，函数开始字母用小写（myFunction），构造函数就用大写（MyFunction）。&lt;/p&gt;
+
+&lt;h4&gt;使用that&lt;/h4&gt;
+
+&lt;p&gt;为了避免忘记new等一些错误写法，可以全部返还that这个对象，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var p = function(){
+        var that = {}
+        that.name = &quot;juzi&quot;;
+        return that;
+    }
+    var me = p();
+    me.name; //juzi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个时候就不会发生错误，能够得到里面的值，但是这个有一个问题，不能继承方法的原型。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;这里的that可以是任何的字&lt;/p&gt;&lt;/blockquote&gt;
 </content>
    </entry>
    
@@ -2071,1571 +2627,6 @@ grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 
 &lt;p&gt;好吧，去下载插件吧：
 &lt;a href=&quot;https://chrome.google.com/webstore/detail/tabby/pifnjkdglcfkfpdjdolfacpfdlgpdkhp&quot; title=&quot;Tabby&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/images/other/Tabby-440.png&quot; alt=&quot;Tabby&quot; width=&quot;300&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>编写可读代码的艺术</title>
-     <link href="http://beiyuu.com/readable-code"/>
-     <updated>2013-03-21T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/readable-code</id>
-     <content type="html">&lt;p&gt;这是《The Art of Readable Code》的读书笔记，再加一点自己的认识。强烈推荐此书：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;英文版：&lt;a href=&quot;http://book.douban.com/subject/5442971/&quot; title=&quot;The Art Of Readable Code&quot;&gt;《The Art of Readable Code》&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;中文版：&lt;a href=&quot;http://book.douban.com/subject/10797189/&quot; title=&quot;编写可读代码的艺术&quot;&gt;编写可读代码的艺术&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;代码为什么要易于理解&lt;/h2&gt;
-
-&lt;blockquote&gt;&lt;p&gt;&quot;Code should be written to minimize the time it would take for someone else to understand it.&quot;&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;日常工作的事实是：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;写代码前的思考和看代码的时间远大于真正写的时间&lt;/li&gt;
-&lt;li&gt;读代码是很平常的事情，不论是别人的，还是自己的，半年前写的可认为是别人的代码&lt;/li&gt;
-&lt;li&gt;代码可读性高，很快就可以理解程序的逻辑，进入工作状态&lt;/li&gt;
-&lt;li&gt;行数少的代码不一定就容易理解&lt;/li&gt;
-&lt;li&gt;代码的可读性与程序的效率、架构、易于测试一点也不冲突&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;整本书都围绕“如何让代码的可读性更高”这个目标来写。这也是好代码的重要标准之一。&lt;/p&gt;
-
-&lt;h2&gt;如何命名&lt;/h2&gt;
-
-&lt;h3&gt;变量名中应包含更多信息&lt;/h3&gt;
-
-&lt;h4&gt;使用含义明确的词，比如用&lt;code&gt;download&lt;/code&gt;而不是&lt;code&gt;get&lt;/code&gt;，参考以下替换方案：&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt; send -&amp;gt; deliver, dispatch, announce, distribute, route
- find -&amp;gt; search, extract, locate, recover
-start -&amp;gt; lanuch, create, begin, open
- make -&amp;gt; create,set up, build, generate, compose, add, new
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;避免通用的词&lt;/h4&gt;
-
-&lt;p&gt;像&lt;code&gt;tmp&lt;/code&gt;和&lt;code&gt;retval&lt;/code&gt;这样词，除了说明是临时变量和返回值之外，没有任何意义。但是给他加一些有意义的词，就会很明确：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tmp_file = tempfile.NamedTemporaryFile() 
-...
-SaveData(tmp_file, ...)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;不使用retval而使用变量真正代表的意义：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sum_squares += v[i]; // Where&#39;s the &quot;square&quot; that we&#39;re summing? Bug!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;嵌套的for循环中,&lt;code&gt;i&lt;/code&gt;、&lt;code&gt;j&lt;/code&gt;也有同样让人困惑的时候：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for (int i = 0; i &amp;lt; clubs.size(); i++)
-    for (int j = 0; j &amp;lt; clubs[i].members.size(); j++)
-        for (int k = 0; k &amp;lt; users.size(); k++) if (clubs[i].members[k] == users[j])
-            cout &amp;lt;&amp;lt; &quot;user[&quot; &amp;lt;&amp;lt; j &amp;lt;&amp;lt; &quot;] is in club[&quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;]&quot; &amp;lt;&amp;lt; endl;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;换一种写法就会清晰很多：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt; if (clubs[ci].members[mi] == users[ui])  # OK. First letters match.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所以，当使用一些通用的词，要有充分的理由才可以。&lt;/p&gt;
-
-&lt;h4&gt;使用具体的名字&lt;/h4&gt;
-
-&lt;p&gt;&lt;code&gt;CanListenOnPort&lt;/code&gt;就比&lt;code&gt;ServerCanStart&lt;/code&gt;好，can start比较含糊，而listen on port确切的说明了这个方法将要做什么。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--run_locally&lt;/code&gt;就不如&lt;code&gt;--extra_logging&lt;/code&gt;来的明确。&lt;/p&gt;
-
-&lt;h4&gt;增加重要的细节，比如变量的单位&lt;code&gt;_ms&lt;/code&gt;，对原始字符串加&lt;code&gt;_raw&lt;/code&gt;&lt;/h4&gt;
-
-&lt;p&gt;如果一个变量很重要，那么在名字上多加一些额外的字就会更加易读，比如将&lt;code&gt;string id; // Example: &quot;af84ef845cd8&quot;&lt;/code&gt;换成&lt;code&gt;string hex_id;&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;             Start(int delay)  --&amp;gt;  delay → delay_secs
-        CreateCache(int size)  --&amp;gt;  size → size_mb
-ThrottleDownload(float limit)  --&amp;gt;  limit → max_kbps
-          Rotate(float angle)  --&amp;gt;  angle → degrees_cw
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;更多例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;password  -&amp;gt;  plaintext_password
- comment  -&amp;gt;  unescaped_comment
-    html  -&amp;gt;  html_utf8
-    data  -&amp;gt;  data_urlenc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;对于作用域大的变量使用较长的名字&lt;/h4&gt;
-
-&lt;p&gt;在比较小的作用域内，可以使用较短的变量名，在较大的作用域内使用的变量，最好用长一点的名字，编辑器的自动补全都可以很好的减少键盘输入。对于一些缩写前缀，尽量选择众所周知的(如str)，一个判断标准是，当新成员加入时，是否可以无需他人帮助而明白前缀代表什么。&lt;/p&gt;
-
-&lt;h4&gt;合理使用&lt;code&gt;_&lt;/code&gt;、&lt;code&gt;-&lt;/code&gt;等符号，比如对私有变量加&lt;code&gt;_&lt;/code&gt;前缀。&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;var x = new DatePicker(); // DatePicker() 是类的&quot;构造&quot;函数，大写开始
-var y = pageHeight(); // pageHeight() 是一个普通函数
-
-var $all_images = $(&quot;img&quot;); // $all_images 是jQuery对象
-var height = 250; // height不是
-
-//id和class的写法分开
-&amp;lt;div id=&quot;middle_column&quot; class=&quot;main-content&quot;&amp;gt; ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;命名不能有歧义&lt;/h3&gt;
-
-&lt;p&gt;命名的时候可以先想一下，我要用的这个词是否有别的含义。举个例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;results = Database.all_objects.filter(&quot;year &amp;lt;= 2011&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;现在的结果到底是包含2011年之前的呢还是不包含呢？&lt;/p&gt;
-
-&lt;h4&gt;使用&lt;code&gt;min&lt;/code&gt;、&lt;code&gt;max&lt;/code&gt;代替&lt;code&gt;limit&lt;/code&gt;&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;CART_TOO_BIG_LIMIT = 10
-    if shopping_cart.num_items() &amp;gt;= CART_TOO_BIG_LIMIT:
-        Error(&quot;Too many items in cart.&quot;)
-
-MAX_ITEMS_IN_CART = 10
-    if shopping_cart.num_items() &amp;gt; MAX_ITEMS_IN_CART:
-     Error(&quot;Too many items in cart.&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;对比上例中&lt;code&gt;CART_TOO_BIG_LIMIT&lt;/code&gt;和&lt;code&gt;MAX_ITEMS_IN_CART&lt;/code&gt;，想想哪个更好呢？&lt;/p&gt;
-
-&lt;h4&gt;使用&lt;code&gt;first&lt;/code&gt;和&lt;code&gt;last&lt;/code&gt;来表示闭区间&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;print integer_range(start=2, stop=4)
-# Does this print [2,3] or [2,3,4] (or something else)?
-
-set.PrintKeys(first=&quot;Bart&quot;, last=&quot;Maggie&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;first&lt;/code&gt;和&lt;code&gt;last&lt;/code&gt;含义明确，适宜表示闭区间。&lt;/p&gt;
-
-&lt;h4&gt;使用&lt;code&gt;beigin&lt;/code&gt;和&lt;code&gt;end&lt;/code&gt;表示前闭后开([2,9))区间&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;PrintEventsInRange(&quot;OCT 16 12:00am&quot;, &quot;OCT 17 12:00am&quot;)
-
-PrintEventsInRange(&quot;OCT 16 12:00am&quot;, &quot;OCT 16 11:59:59.9999pm&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上面一种写法就比下面的舒服多了。&lt;/p&gt;
-
-&lt;h4&gt;Boolean型变量命名&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;bool read_password = true;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这是一个很危险的命名，到底是需要读取密码呢，还是密码已经被读取呢，不知道，所以这个变量可以使用&lt;code&gt;user_is_authenticated&lt;/code&gt;代替。通常，给Boolean型变量添加&lt;code&gt;is&lt;/code&gt;、&lt;code&gt;has&lt;/code&gt;、&lt;code&gt;can&lt;/code&gt;、&lt;code&gt;should&lt;/code&gt;可以让含义更清晰，比如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;             SpaceLeft()  --&amp;gt;  hasSpaceLeft()
-bool disable_ssl = false  --&amp;gt;  bool use_ssl = true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;符合预期&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;public class StatisticsCollector {
-    public void addSample(double x) { ... }
-    public double getMean() {
-        // Iterate through all samples and return total / num_samples
-    }
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在这个例子中，&lt;code&gt;getMean&lt;/code&gt;方法遍历了所有的样本，返回总额，所以并不是普通意义上轻量的&lt;code&gt;get&lt;/code&gt;方法，所以应该取名&lt;code&gt;computeMean&lt;/code&gt;比较合适。&lt;/p&gt;
-
-&lt;h2&gt;漂亮的格式&lt;/h2&gt;
-
-&lt;p&gt;写出来漂亮的格式，充满美感，读起来自然也会舒服很多，对比下面两个例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class StatsKeeper {
-   public:
-   // A class for keeping track of a series of doubles
-      void Add(double d);  // and methods for quick statistics about them
-     private:   int count;        /* how many so    far
-   */ public:
-           double Average();
-   private:   double minimum;
-   list&amp;lt;double&amp;gt;
-     past_items
-         ;double maximum;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;什么是充满美感的呢：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// A class for keeping track of a series of doubles
-// and methods for quick statistics about them.
-class StatsKeeper {
-  public:
-    void Add(double d);
-    double Average();
-  private:
-    list&amp;lt;double&amp;gt; past_items;
-    int count;  // how many so far
-    double minimum;
-    double maximum;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;考虑断行的连续性和简洁&lt;/h3&gt;
-
-&lt;p&gt;这段代码需要断行，来满足不超过一行80个字符的要求，参数也需要注释说明：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public class PerformanceTester {
-    public static final TcpConnectionSimulator wifi = new TcpConnectionSimulator(
-        500, /* Kbps */
-        80, /* millisecs latency */
-        200, /* jitter */
-        1 /* packet loss % */);
-
-    public static final TcpConnectionSimulator t3_fiber = new TcpConnectionSimulator(
-        45000, /* Kbps */
-        10, /* millisecs latency */
-        0, /* jitter */
-        0 /* packet loss % */);
-
-    public static final TcpConnectionSimulator cell = new TcpConnectionSimulator(
-        100, /* Kbps */
-        400, /* millisecs latency */
-        250, /* jitter */
-        5 /* packet loss % */);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;考虑到代码的连贯性，先优化成这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public class PerformanceTester {
-    public static final TcpConnectionSimulator wifi =
-        new TcpConnectionSimulator(
-            500, /* Kbps */
-            80, /* millisecs latency */ 200, /* jitter */
-            1 /* packet loss % */);
-
-    public static final TcpConnectionSimulator t3_fiber =
-        new TcpConnectionSimulator(
-            45000, /* Kbps */
-            10,    /* millisecs latency */
-            0,     /* jitter */
-            0      /* packet loss % */);
-
-    public static final TcpConnectionSimulator cell =
-        new TcpConnectionSimulator(
-            100,   /* Kbps */
-            400,   /* millisecs latency */
-            250,   /* jitter */
-            5      /* packet loss % */);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;连贯性好一点，但还是太罗嗦，额外占用很多空间：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public class PerformanceTester {
-    // TcpConnectionSimulator(throughput, latency, jitter, packet_loss)
-    //                            [Kbps]   [ms]    [ms]    [percent]
-    public static final TcpConnectionSimulator wifi =
-        new TcpConnectionSimulator(500,    80,     200,     1);
-
-    public static final TcpConnectionSimulator t3_fiber =
-        new TcpConnectionSimulator(45000,  10,     0,       0);
-
-    public static final TcpConnectionSimulator cell =
-        new TcpConnectionSimulator(100,    400,    250,     5);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;用函数封装&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;// Turn a partial_name like &quot;Doug Adams&quot; into &quot;Mr. Douglas Adams&quot;.
-// If not possible, &#39;error&#39; is filled with an explanation.
-string ExpandFullName(DatabaseConnection dc, string partial_name, string* error);
-
-DatabaseConnection database_connection;
-string error;
-assert(ExpandFullName(database_connection, &quot;Doug Adams&quot;, &amp;amp;error)
-        == &quot;Mr. Douglas Adams&quot;);
-assert(error == &quot;&quot;);
-assert(ExpandFullName(database_connection, &quot; Jake Brown &quot;, &amp;amp;error)
-        == &quot;Mr. Jacob Brown III&quot;);
-assert(error == &quot;&quot;);
-assert(ExpandFullName(database_connection, &quot;No Such Guy&quot;, &amp;amp;error) == &quot;&quot;);
-assert(error == &quot;no match found&quot;);
-assert(ExpandFullName(database_connection, &quot;John&quot;, &amp;amp;error) == &quot;&quot;);
-assert(error == &quot;more than one result&quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上面这段代码看起来很脏乱，很多重复性的东西，可以用函数封装：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CheckFullName(&quot;Doug Adams&quot;, &quot;Mr. Douglas Adams&quot;, &quot;&quot;);
-CheckFullName(&quot; Jake Brown &quot;, &quot;Mr. Jake Brown III&quot;, &quot;&quot;);
-CheckFullName(&quot;No Such Guy&quot;, &quot;&quot;, &quot;no match found&quot;);
-CheckFullName(&quot;John&quot;, &quot;&quot;, &quot;more than one result&quot;);
-
-void CheckFullName(string partial_name,
-                   string expected_full_name,
-                   string expected_error) {
-    // database_connection is now a class member
-    string error;
-    string full_name = ExpandFullName(database_connection, partial_name, &amp;amp;error);
-    assert(error == expected_error);
-    assert(full_name == expected_full_name);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;列对齐&lt;/h3&gt;
-
-&lt;p&gt;列对齐可以让代码段看起来更舒适：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CheckFullName(&quot;Doug Adams&quot;   , &quot;Mr. Douglas Adams&quot; , &quot;&quot;);
-CheckFullName(&quot; Jake  Brown &quot;, &quot;Mr. Jake Brown III&quot;, &quot;&quot;);
-CheckFullName(&quot;No Such Guy&quot;  , &quot;&quot;                  , &quot;no match found&quot;);
-CheckFullName(&quot;John&quot;         , &quot;&quot;                  , &quot;more than one result&quot;);
-
-commands[] = {
-    ...
-    { &quot;timeout&quot;      , NULL              , cmd_spec_timeout},
-    { &quot;timestamping&quot; , &amp;amp;opt.timestamping , cmd_boolean},
-    { &quot;tries&quot;        , &amp;amp;opt.ntry         , cmd_number_inf},
-    { &quot;useproxy&quot;     , &amp;amp;opt.use_proxy    , cmd_boolean},
-    { &quot;useragent&quot;    , NULL              , cmd_spec_useragent},
-    ...
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;代码用块区分&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;class FrontendServer {
-    public:
-        FrontendServer();
-        void ViewProfile(HttpRequest* request);
-        void OpenDatabase(string location, string user);
-        void SaveProfile(HttpRequest* request);
-        string ExtractQueryParam(HttpRequest* request, string param);
-        void ReplyOK(HttpRequest* request, string html);
-        void FindFriends(HttpRequest* request);
-        void ReplyNotFound(HttpRequest* request, string error);
-        void CloseDatabase(string location);
-        ~FrontendServer();
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上面这一段虽然能看，不过还有优化空间：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class FrontendServer {
-    public:
-        FrontendServer();
-        ~FrontendServer();
-        // Handlers
-        void ViewProfile(HttpRequest* request);
-        void SaveProfile(HttpRequest* request);
-        void FindFriends(HttpRequest* request);
-
-        // Request/Reply Utilities
-        string ExtractQueryParam(HttpRequest* request, string param);
-        void ReplyOK(HttpRequest* request, string html);
-        void ReplyNotFound(HttpRequest* request, string error);
-
-        // Database Helpers
-        void OpenDatabase(string location, string user);
-        void CloseDatabase(string location);
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再来看一段代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Import the user&#39;s email contacts, and match them to users in our system.
-# Then display a list of those users that he/she isn&#39;t already friends with.
-def suggest_new_friends(user, email_password):
-    friends = user.friends()
-    friend_emails = set(f.email for f in friends)
-    contacts = import_contacts(user.email, email_password)
-    contact_emails = set(c.email for c in contacts)
-    non_friend_emails = contact_emails - friend_emails
-    suggested_friends = User.objects.select(email__in=non_friend_emails)
-    display[&#39;user&#39;] = user
-    display[&#39;friends&#39;] = friends
-    display[&#39;suggested_friends&#39;] = suggested_friends
-    return render(&quot;suggested_friends.html&quot;, display)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;全都混在一起，视觉压力相当大，按功能化块：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def suggest_new_friends(user, email_password):
-    # Get the user&#39;s friends&#39; email addresses.
-    friends = user.friends()
-    friend_emails = set(f.email for f in friends)
-
-    # Import all email addresses from this user&#39;s email account.
-    contacts = import_contacts(user.email, email_password)
-    contact_emails = set(c.email for c in contacts)
-
-    # Find matching users that they aren&#39;t already friends with.
-    non_friend_emails = contact_emails - friend_emails
-    suggested_friends = User.objects.select(email__in=non_friend_emails)
-
-    # Display these lists on the page. display[&#39;user&#39;] = user
-    display[&#39;friends&#39;] = friends
-    display[&#39;suggested_friends&#39;] = suggested_friends
-
-    return render(&quot;suggested_friends.html&quot;, display)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;让代码看起来更舒服，需要在写的过程中多注意，培养一些好的习惯，尤其当团队合作的时候，代码风格比如大括号的位置并没有对错，但是不遵循团队规范那就是错的。&lt;/p&gt;
-
-&lt;h2&gt;如何写注释&lt;/h2&gt;
-
-&lt;p&gt;当你写代码的时候，你会思考很多，但是最终呈现给读者的就只剩代码本身了，额外的信息丢失了，所以注释的目的就是让读者了解更多的信息。&lt;/p&gt;
-
-&lt;h3&gt;应该注释什么&lt;/h3&gt;
-
-&lt;h4&gt;不应该注释什么&lt;/h4&gt;
-
-&lt;p&gt;这样的注释毫无价值：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// The class definition for Account
-class Account {
-    public:
-        // Constructor
-        Account();
-        // Set the profit member to a new value
-        void SetProfit(double profit);
-        // Return the profit from this Account
-        double GetProfit();
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;不要像下面这样为了注释而注释：&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// Find a Node with the given &#39;name&#39; or return NULL.
-// If depth &amp;lt;= 0, only &#39;subtree&#39; is inspected.
-// If depth == N, only &#39;subtree&#39; and N levels below are inspected.
-Node* FindNodeInSubtree(Node* subtree, string name, int depth);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;不要给烂取名注释&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// Enforce limits on the Reply as stated in the Request,
-// such as the number of items returned, or total byte size, etc. 
-void CleanReply(Request request, Reply reply);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注释的大部分都在解释clean是什么意思，那不如换个正确的名字：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Make sure &#39;reply&#39; meets the count/byte/etc. limits from the &#39;request&#39; 
-void EnforceLimitsFromRequest(Request request, Reply reply);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;记录你的想法&lt;/h4&gt;
-
-&lt;p&gt;我们讨论了不该注释什么，那么应该注释什么呢？注释应该记录你思考代码怎么写的结果，比如像下面这些：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Surprisingly, a binary tree was 40% faster than a hash table for this data.
-// The cost of computing a hash was more than the left/right comparisons.
-
-// This heuristic might miss a few words. That&#39;s OK; solving this 100% is hard.
-
-// This class is getting messy. Maybe we should create a &#39;ResourceNode&#39; subclass to
-// help organize things.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;也可以用来记录流程和常量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// TODO: use a faster algorithm
-// TODO(dustin): handle other image formats besides JPEG
-
-NUM_THREADS = 8 # as long as it&#39;s &amp;gt;= 2 * num_processors, that&#39;s good enough.
-
-// Impose a reasonable limit - no human can read that much anyway.
-const int MAX_RSS_SUBSCRIPTIONS = 1000;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可用的词有：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;TODO  : Stuff I haven&#39;t gotten around to yet
-FIXME : Known-broken code here
-HACK  : Adimittedly inelegant solution to a problem
-XXX   : Danger! Major problem here
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;站在读者的角度去思考&lt;/h4&gt;
-
-&lt;p&gt;当别人读你的代码时，让他们产生疑问的部分，就是你应该注释的地方。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;struct Recorder {
-    vector&amp;lt;float&amp;gt; data;
-    ...
-    void Clear() {
-        vector&amp;lt;float&amp;gt;().swap(data); // Huh? Why not just data.clear()? 
-    }
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;很多C++的程序员啊看到这里，可能会想为什么不用&lt;code&gt;data.clear()&lt;/code&gt;来代替&lt;code&gt;vector.swap&lt;/code&gt;，所以那个地方应该加上注释：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Force vector to relinquish its memory (look up &quot;STL swap trick&quot;)
-vector&amp;lt;float&amp;gt;().swap(data);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;说明可能陷阱&lt;/h4&gt;
-
-&lt;p&gt;你在写代码的过程中，可能用到一些hack，或者有其他需要读代码的人知道的陷阱，这时候就应该注释：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;void SendEmail(string to, string subject, string body);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;而实际上这个发送邮件的函数是调用别的服务，有超时设置，所以需要注释：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Calls an external service to deliver email.  (Times out after 1 minute.)
-void SendEmail(string to, string subject, string body);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;全景的注释&lt;/h4&gt;
-
-&lt;p&gt;有时候为了更清楚说明，需要给整个文件加注释，让读者有个总体的概念：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// This file contains helper functions that provide a more convenient interface to our
-// file system. It handles file permissions and other nitty-gritty details.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;总结性的注释&lt;/h4&gt;
-
-&lt;p&gt;即使是在函数内部，也可以有类似文件注释那样的说明注释：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Find all the items that customers purchased for themselves.
-for customer_id in all_customers:
-    for sale in all_sales[customer_id].sales:
-        if sale.recipient == customer_id:
-            ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或者按照函数的步进，写一些注释：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def GenerateUserReport():
-    # Acquire a lock for this user
-    ...
-    # Read user&#39;s info from the database
-    ...
-    # Write info to a file
-    ...
-    # Release the lock for this user
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;很多人不愿意写注释，确实，要写好注释也不是一件简单的事情，也可以在文件专门的地方，留个写注释的区域，可以写下你任何想说的东西。&lt;/p&gt;
-
-&lt;h3&gt;注释应简明准确&lt;/h3&gt;
-
-&lt;p&gt;前一个小节讨论了注释应该写什么，这一节来讨论应该怎么写，因为注释很重要，所以要写的精确，注释也占据屏幕空间，所以要简洁。&lt;/p&gt;
-
-&lt;h4&gt;精简注释&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// The int is the CategoryType.
-// The first float in the inner pair is the &#39;score&#39;,
-// the second is the &#39;weight&#39;.
-typedef hash_map&amp;lt;int, pair&amp;lt;float, float&amp;gt; &amp;gt; ScoreMap;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样写太罗嗦了，尽量精简压缩成这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// CategoryType -&amp;gt; (score, weight)
-typedef hash_map&amp;lt;int, pair&amp;lt;float, float&amp;gt; &amp;gt; ScoreMap;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;避免有歧义的代词&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// Insert the data into the cache, but check if it&#39;s too big first.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的&lt;code&gt;it&#39;s&lt;/code&gt;有歧义，不知道所指的是&lt;code&gt;data&lt;/code&gt;还是&lt;code&gt;cache&lt;/code&gt;，改成如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Insert the data into the cache, but check if the data is too big first.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;还有更好的解决办法，这里的&lt;code&gt;it&lt;/code&gt;就有明确所指：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// If the data is small enough, insert it into the cache.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;语句要精简准确&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Depending on whether we&#39;ve already crawled this URL before, give it a different priority.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这句话理解起来太费劲，改成如下就好理解很多：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Give higher priority to URLs we&#39;ve never crawled before.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;精确描述函数的目的&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// Return the number of lines in this file.
-int CountLines(string filename) { ... }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样的一个函数，用起来可能会一头雾水，因为他可以有很多歧义：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&quot;&quot; 一个空文件，是0行还是1行？&lt;/li&gt;
-&lt;li&gt;&quot;hello&quot; 只有一行，那么返回值是0还是1？&lt;/li&gt;
-&lt;li&gt;&quot;hello\n&quot; 这种情况返回1还是2？&lt;/li&gt;
-&lt;li&gt;&quot;hello\n world&quot; 返回1还是2？&lt;/li&gt;
-&lt;li&gt;&quot;hello\n\r cruel\n world\r&quot; 返回2、3、4哪一个呢？&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;所以注释应该这样写：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Count how many newline bytes (&#39;\n&#39;) are in the file.
-int CountLines(string filename) { ... }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;用实例说明边界情况&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// Rearrange &#39;v&#39; so that elements &amp;lt; pivot come before those &amp;gt;= pivot;
-// Then return the largest &#39;i&#39; for which v[i] &amp;lt; pivot (or -1 if none are &amp;lt; pivot)
-int Partition(vector&amp;lt;int&amp;gt;* v, int pivot);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个描述很精确，但是如果再加入一个例子，就更好了：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// ...
-// Example: Partition([8 5 9 8 2], 8) might result in [5 2 | 8 9 8] and return 1
-int Partition(vector&amp;lt;int&amp;gt;* v, int pivot);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;说明你的代码的真正目的&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;void DisplayProducts(list&amp;lt;Product&amp;gt; products) {
-    products.sort(CompareProductByPrice);
-    // Iterate through the list in reverse order
-    for (list&amp;lt;Product&amp;gt;::reverse_iterator it = products.rbegin(); it != products.rend();
-            ++it)
-        DisplayPrice(it-&amp;gt;price);
-    ... 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的注释说明了倒序排列，单还不够准确，应该改成这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Display each price, from highest to lowest
-for (list&amp;lt;Product&amp;gt;::reverse_iterator it = products.rbegin(); ... )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;函数调用时的注释&lt;/h4&gt;
-
-&lt;p&gt;看见这样的一个函数调用，肯定会一头雾水：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Connect(10, false);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果加上这样的注释，读起来就清楚多了：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def Connect(timeout, use_encryption):  ...
-
-# Call the function using named parameters
-Connect(timeout = 10, use_encryption = False)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;使用信息含量丰富的词&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;// This class contains a number of members that store the same information as in the
-// database, but are stored here for speed. When this class is read from later, those
-// members are checked first to see if they exist, and if so are returned; otherwise the
-// database is read from and that data stored in those fields for next time.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上面这一大段注释，解释的很清楚，如果换一个词来代替，也不会有什么疑惑：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// This class acts as a caching layer to the database.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;简化循环和逻辑&lt;/h2&gt;
-
-&lt;h3&gt;流程控制要简单&lt;/h3&gt;
-
-&lt;p&gt;让条件语句、循环以及其他控制流程的代码尽可能自然，让读者在阅读过程中不需要停顿思考或者在回头查找，是这一节的目的。&lt;/p&gt;
-
-&lt;h4&gt;条件语句中参数的位置&lt;/h4&gt;
-
-&lt;p&gt;对比下面两种条件的写法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (length &amp;gt;= 10)
-while (bytes_received &amp;lt; bytes_expected)
-
-if (10 &amp;lt;= length)
-while (bytes_expected &amp;gt; bytes_received)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;到底是应该按照大于小于的顺序来呢，还是有其他的准则？是的，应该按照参数的意义来&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;运算符左边：通常是需要被检查的变量，也就是会经常变化的&lt;/li&gt;
-&lt;li&gt;运算符右边：通常是被比对的样本，一定程度上的常量&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;这就解释了为什么&lt;code&gt;bytes_received &amp;lt; bytes_expected&lt;/code&gt;比反过来更好理解。&lt;/p&gt;
-
-&lt;h4&gt;if/else的顺序&lt;/h4&gt;
-
-&lt;p&gt;通常，&lt;code&gt;if/else&lt;/code&gt;的顺序你可以自由选择，下面这两种都可以：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (a == b) {
-    // Case One ...
-} else {
-    // Case Two ...
-}
-
-if (a != b) {
-    // Case Two ...
-} else {
-    // Case One ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或许对此你也没有仔细斟酌过，但在有些时候，一种顺序确实好过另一种：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;正向的逻辑在前，比如&lt;code&gt;if(debug)&lt;/code&gt;就比&lt;code&gt;if(!debug)&lt;/code&gt;好&lt;/li&gt;
-&lt;li&gt;简单逻辑的在前，这样&lt;code&gt;if&lt;/code&gt;和&lt;code&gt;else&lt;/code&gt;就可以在一个屏幕显示&lt;/li&gt;
-&lt;li&gt;有趣、清晰的逻辑在前&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;举个例子来看：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (!url.HasQueryParameter(&quot;expand_all&quot;)) {
-    response.Render(items);
-    ...
-} else {
-    for (int i = 0; i &amp;lt; items.size(); i++) {
-        items[i].Expand();
-    }
-    ... 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;看到&lt;code&gt;if&lt;/code&gt;你首先想到的是&lt;code&gt;expand_all&lt;/code&gt;，就好像告诉你“不要想大象”，你会忍不住去想它，所以产生了一点点迷惑，最好写成：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (url.HasQueryParameter(&quot;expand_all&quot;)) {
-    for (int i = 0; i &amp;lt; items.size(); i++) {
-        items[i].Expand();
-    }
-    ... 
-} else {
-    response.Render(items);
-    ... 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;三目运算符(?:)&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;time_str += (hour &amp;gt;= 12) ? &quot;pm&quot; : &quot;am&quot;;
-
-Avoiding the ternary operator, you might write:
-    if (hour &amp;gt;= 12) {
-        time_str += &quot;pm&quot;;
-    } else {
-        time_str += &quot;am&quot;;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用三目运算符可以减少代码行数，上例就是一个很好的例证，但是我们的真正目的是减少读代码的时间，所以下面的情况并不适合用三目运算符：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;return exponent &amp;gt;= 0 ? mantissa * (1 &amp;lt;&amp;lt; exponent) : mantissa / (1 &amp;lt;&amp;lt; -exponent);
-
-if (exponent &amp;gt;= 0) {
-    return mantissa * (1 &amp;lt;&amp;lt; exponent);
-} else {
-    return mantissa / (1 &amp;lt;&amp;lt; -exponent);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所以只在简单表达式的地方用。&lt;/p&gt;
-
-&lt;h4&gt;避免使用do/while表达式&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;do {
-    continue;
-} while (false);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这段代码会执行几遍呢，需要时间思考一下，&lt;code&gt;do/while&lt;/code&gt;完全可以用别的方法代替，所以应避免使用。&lt;/p&gt;
-
-&lt;h4&gt;尽早return&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;public boolean Contains(String str, String substr) {
-    if (str == null || substr == null) return false;
-    if (substr.equals(&quot;&quot;)) return true;
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;函数里面尽早的return，可以让逻辑更加清晰。&lt;/p&gt;
-
-&lt;h4&gt;减少嵌套&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;if (user_result == SUCCESS) {
-    if (permission_result != SUCCESS) {
-        reply.WriteErrors(&quot;error reading permissions&quot;);
-        reply.Done();
-        return;
-    }
-    reply.WriteErrors(&quot;&quot;);
-} else {
-    reply.WriteErrors(user_result);
-}
-reply.Done();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样一段代码，有一层的嵌套，但是看起来也会稍有迷惑，想想自己的代码，有没有类似的情况呢？可以换个思路去考虑这段代码，并且用尽早return的原则修改，看起来就舒服很多：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (user_result != SUCCESS) {
-    reply.WriteErrors(user_result);
-    reply.Done();
-    return;
-}
-if (permission_result != SUCCESS) {
-    reply.WriteErrors(permission_result);
-    reply.Done();
-    return;
-}
-reply.WriteErrors(&quot;&quot;);
-reply.Done();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;同样的，对于有嵌套的循环，可以采用同样的办法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for (int i = 0; i &amp;lt; results.size(); i++) {
-    if (results[i] != NULL) {
-        non_null_count++;
-        if (results[i]-&amp;gt;name != &quot;&quot;) {
-            cout &amp;lt;&amp;lt; &quot;Considering candidate...&quot; &amp;lt;&amp;lt; endl;
-            ...
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;换一种写法，尽早return，在循环中就用continue：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for (int i = 0; i &amp;lt; results.size(); i++) {
-    if (results[i] == NULL) continue;
-    non_null_count++;
-
-    if (results[i]-&amp;gt;name == &quot;&quot;) continue;
-    cout &amp;lt;&amp;lt; &quot;Considering candidate...&quot; &amp;lt;&amp;lt; endl;
-    ... 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;拆分复杂表达式&lt;/h3&gt;
-
-&lt;p&gt;很显然的，越复杂的表达式，读起来越费劲，所以应该把那些复杂而庞大的表达式，拆分成一个个易于理解的小式子。&lt;/p&gt;
-
-&lt;h4&gt;用变量&lt;/h4&gt;
-
-&lt;p&gt;将复杂表达式拆分最简单的办法，就是增加一个变量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if line.split(&#39;:&#39;)[0].strip() == &quot;root&quot;:
-
-//用变量替换
-username = line.split(&#39;:&#39;)[0].strip() 
-if username == &quot;root&quot;:
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或者这个例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (request.user.id == document.owner_id) {
-    // user can edit this document...
-}
-...
-if (request.user.id != document.owner_id) {
-// document is read-only...
-}
-
-//用变量替换
-final boolean user_owns_document = (request.user.id == document.owner_id);
-if (user_owns_document) {
-    // user can edit this document...
-}
-...
-if (!user_owns_document) {
-    // document is read-only...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;逻辑替换&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1) not (a or b or c)   &lt;--&gt; (not a) and (not b) and (not c)&lt;/li&gt;
-&lt;li&gt;2) not (a and b and c) &lt;--&gt; (not a) or (not b) or (not c)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;所以，就可以这样写：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (!(file_exists &amp;amp;&amp;amp; !is_protected)) Error(&quot;Sorry, could not read file.&quot;);
-
-//替换
-if (!file_exists || is_protected) Error(&quot;Sorry, could not read file.&quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;不要滥用逻辑表达式&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;assert((!(bucket = FindBucket(key))) || !bucket-&amp;gt;IsOccupied());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样的代码完全可以用下面这个替换，虽然有两行，但是更易懂：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bucket = FindBucket(key);
-if (bucket != NULL) assert(!bucket-&amp;gt;IsOccupied());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;像下面这样的表达式，最好也不要写，因为在有些语言中，x会被赋予第一个为&lt;code&gt;true&lt;/code&gt;的变量的值：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x = a || b || c
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;拆解大表达式&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;var update_highlight = function (message_num) {
-    if ($(&quot;#vote_value&quot; + message_num).html() === &quot;Up&quot;) {
-        $(&quot;#thumbs_up&quot; + message_num).addClass(&quot;highlighted&quot;);
-        $(&quot;#thumbs_down&quot; + message_num).removeClass(&quot;highlighted&quot;);
-    } else if ($(&quot;#vote_value&quot; + message_num).html() === &quot;Down&quot;) {
-        $(&quot;#thumbs_up&quot; + message_num).removeClass(&quot;highlighted&quot;);
-        $(&quot;#thumbs_down&quot; + message_num).addClass(&quot;highlighted&quot;);
-    } else {
-        $(&quot;#thumbs_up&quot; + message_num).removeClass(&quot;highighted&quot;);
-        $(&quot;#thumbs_down&quot; + message_num).removeClass(&quot;highlighted&quot;);
-    }
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里面有很多重复的语句，我们可以用变量还替换简化：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var update_highlight = function (message_num) {
-    var thumbs_up = $(&quot;#thumbs_up&quot; + message_num);
-    var thumbs_down = $(&quot;#thumbs_down&quot; + message_num);
-    var vote_value = $(&quot;#vote_value&quot; + message_num).html();
-    var hi = &quot;highlighted&quot;;
-
-    if (vote_value === &quot;Up&quot;) {
-        thumbs_up.addClass(hi);
-        thumbs_down.removeClass(hi);
-    } else if (vote_value === &quot;Down&quot;) {
-        thumbs_up.removeClass(hi);
-        thumbs_down.addClass(hi);
-    } else {
-        thumbs_up.removeClass(hi);
-        thumbs_down.removeClass(hi);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;变量与可读性&lt;/h3&gt;
-
-&lt;h4&gt;消除变量&lt;/h4&gt;
-
-&lt;p&gt;前一节，讲到利用变量来拆解大表达式，这一节来讨论如何消除多余的变量。&lt;/p&gt;
-
-&lt;h4&gt;没用的临时变量&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;now = datetime.datetime.now()
-root_message.last_view_time = now
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的&lt;code&gt;now&lt;/code&gt;可以去掉，因为：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;并非用来拆分复杂的表达式&lt;/li&gt;
-&lt;li&gt;也没有增加可读性，因为`datetime.datetime.now()`本就清晰&lt;/li&gt;
-&lt;li&gt;只用了一次&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;所以完全可以写作：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;root_message.last_view_time = datetime.datetime.now()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;消除条件控制变量&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;boolean done = false;
-while (/* condition */ &amp;amp;&amp;amp; !done) {
-    ...
-    if (...) {
-        done = true;
-        continue; 
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的&lt;code&gt;done&lt;/code&gt;可以用别的方式更好的完成：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;while (/* condition */) {
-    ...
-    if (...) {
-        break;
-    } 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个例子非常容易修改，如果是比较复杂的嵌套，&lt;code&gt;break&lt;/code&gt;可能并不够用，这时候就可以把代码封装到函数中。&lt;/p&gt;
-
-&lt;h4&gt;减少变量的作用域&lt;/h4&gt;
-
-&lt;p&gt;我们都听过要避免使用全局变量这样的忠告，是的，当变量的作用域越大，就越难追踪，所以要保持变量小的作用域。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class LargeClass {
-    string str_;
-    void Method1() {
-        str_ = ...;
-        Method2();
-    }
-    void Method2() {
-        // Uses str_
-    }
-    // Lots of other methods that don&#39;t use str_ 
-    ... ;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的&lt;code&gt;str_&lt;/code&gt;的作用域有些大，完全可以换一种方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class LargeClass {
-    void Method1() {
-        string str = ...;
-        Method2(str); 
-    }
-    void Method2(string str) {
-        // Uses str
-    }
-    // Now other methods can&#39;t see str.
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;将&lt;code&gt;str&lt;/code&gt;通过变量函数参数传递，减小了作用域，也更易读。同样的道理也可以用在定义类的时候，将大类拆分成一个个小类。&lt;/p&gt;
-
-&lt;h4&gt;不要使用嵌套的作用域&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# No use of example_value up to this point.
-if request:
-    for value in request.values:
-    if value &amp;gt; 0:
-        example_value = value 
-        break
-
-for logger in debug.loggers:
-    logger.log(&quot;Example:&quot;, example_value)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个例子在运行时候会报&lt;code&gt;example_value is undefined&lt;/code&gt;的错，修改起来不算难：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;example_value = None
-if request:
-    for value in request.values:
-        if value &amp;gt; 0: example_value = value 
-        break
-
-if example_value:
-    for logger in debug.loggers:
-    logger.log(&quot;Example:&quot;, example_value)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是参考前面的&lt;strong&gt;消除中间变量&lt;/strong&gt;准则，还有更好的办法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def LogExample(value):
-    for logger in debug.loggers:
-        logger.log(&quot;Example:&quot;, value)
-
-    if request:
-        for value in request.values:
-            if value &amp;gt; 0:
-                LogExample(value)  # deal with &#39;value&#39; immediately
-                break
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;用到了再声明&lt;/h4&gt;
-
-&lt;p&gt;在C语言中，要求将所有的变量事先声明，这样当用到变量较多时候，读者处理这些信息就会有难度，所以一开始没用到的变量，就暂缓声明：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def ViewFilteredReplies(original_id):
-    filtered_replies = []
-    root_message = Messages.objects.get(original_id) 
-    all_replies = Messages.objects.select(root_id=original_id)
-    root_message.view_count += 1
-    root_message.last_view_time = datetime.datetime.now()
-    root_message.save()
-
-    for reply in all_replies:
-        if reply.spam_votes &amp;lt;= MAX_SPAM_VOTES:
-            filtered_replies.append(reply)
-
-    return filtered_replies
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;读者一次处理变量太多，可以暂缓声明：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def ViewFilteredReplies(original_id):
-    root_message = Messages.objects.get(original_id)
-    root_message.view_count += 1
-    root_message.last_view_time = datetime.datetime.now()
-    root_message.save()
-
-    all_replies = Messages.objects.select(root_id=original_id) 
-    filtered_replies = []
-    for reply in all_replies:
-        if reply.spam_votes &amp;lt;= MAX_SPAM_VOTES:
-            filtered_replies.append(reply)
-
-    return filtered_replies
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;变量最好只写一次&lt;/h4&gt;
-
-&lt;p&gt;前面讨论了过多的变量会让读者迷惑，同一个变量，不停的被赋值也会让读者头晕，如果变量变化的次数少一些，代码可读性就更强。&lt;/p&gt;
-
-&lt;h4&gt;一个例子&lt;/h4&gt;
-
-&lt;p&gt;假设有一个页面，如下，需要给第一个空的&lt;code&gt;input&lt;/code&gt;赋值：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; id=&quot;input1&quot; value=&quot;Dustin&quot;&amp;gt;
-&amp;lt;input type=&quot;text&quot; id=&quot;input2&quot; value=&quot;Trevor&quot;&amp;gt;
-&amp;lt;input type=&quot;text&quot; id=&quot;input3&quot; value=&quot;&quot;&amp;gt;
-&amp;lt;input type=&quot;text&quot; id=&quot;input4&quot; value=&quot;Melissa&quot;&amp;gt;
-...
-var setFirstEmptyInput = function (new_value) {
-    var found = false;
-    var i = 1;
-    var elem = document.getElementById(&#39;input&#39; + i);
-    while (elem !== null) {
-        if (elem.value === &#39;&#39;) {
-            found = true;
-            break; 
-        }
-        i++;
-        elem = document.getElementById(&#39;input&#39; + i);
-    }
-    if (found) elem.value = new_value;
-    return elem;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这段代码能工作，有三个变量，我们逐一去看如何优化，&lt;code&gt;found&lt;/code&gt;作为中间变量，完全可以消除：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var setFirstEmptyInput = function (new_value) {
-    var i = 1;
-    var elem = document.getElementById(&#39;input&#39; + i);
-    while (elem !== null) {
-        if (elem.value === &#39;&#39;) {
-            elem.value = new_value;
-            return elem;
-        }
-        i++;
-        elem = document.getElementById(&#39;input&#39; + i);
-    }
-    return null;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再来看&lt;code&gt;elem&lt;/code&gt;变量，只用来做循环，调用了很多次，所以很难跟踪他的值，&lt;code&gt;i&lt;/code&gt;也可以用&lt;code&gt;for&lt;/code&gt;来修改：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var setFirstEmptyInput = function (new_value) {
-    for (var i = 1; true; i++) {
-        var elem = document.getElementById(&#39;input&#39; + i);
-        if (elem === null)
-            return null;  // Search Failed. No empty input found.
-        if (elem.value === &#39;&#39;) {
-            elem.value = new_value;
-            return elem;
-        }
-    }
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;重新组织你的代码&lt;/h2&gt;
-
-&lt;h3&gt;分离不相关的子问题&lt;/h3&gt;
-
-&lt;p&gt;工程师就是将大问题分解为一个个小问题，然后逐个解决，这样也易于保证程序的健壮性、可读性。如何分解子问题，下面给出一些准则：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;看看这个方法或代码，问问你自己“这段代码的最终目标是什么？”&lt;/li&gt;
-&lt;li&gt;对于每一行代码，要问“它与目标直接相关，或者是不相关的子问题？”&lt;/li&gt;
-&lt;li&gt;如果有足够多行的代码是处理与目标不直接相关的问题，那么抽离成子函数&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;来看一个例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ajax_post({
-    url: &#39;http://example.com/submit&#39;,
-    data: data,
-    on_success: function (response_data) {
-        var str = &quot;{\n&quot;;
-        for (var key in response_data) {
-            str += &quot;  &quot; + key + &quot; = &quot; + response_data[key] + &quot;\n&quot;;
-        }
-        alert(str + &quot;}&quot;);
-        // Continue handling &#39;response_data&#39; ...
-    }
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这段代码的目标是发送一个&lt;code&gt;ajax&lt;/code&gt;请求，所以其中字符串处理的部分就可以抽离出来：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var format_pretty = function (obj) {
-    var str = &quot;{\n&quot;;
-    for (var key in obj) {
-        str += &quot;  &quot; + key + &quot; = &quot; + obj[key] + &quot;\n&quot;;
-    }
-    return str + &quot;}&quot;;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;意外收获&lt;/h4&gt;
-
-&lt;p&gt;有很多理由将&lt;code&gt;format_pretty&lt;/code&gt;抽离出来，这些独立的函数可以很容易的添加feature，增强可靠性，处理边界情况，等等。所以这里，可以将&lt;code&gt;format_pretty&lt;/code&gt;增强，就会得到一个更强大的函数：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var format_pretty = function (obj, indent) {
-    // Handle null, undefined, strings, and non-objects.
-    if (obj === null) return &quot;null&quot;;
-    if (obj === undefined) return &quot;undefined&quot;;
-    if (typeof obj === &quot;string&quot;) return &#39;&quot;&#39; + obj + &#39;&quot;&#39;;
-    if (typeof obj !== &quot;object&quot;) return String(obj);
-    if (indent === undefined) indent = &quot;&quot;;
-
-    // Handle (non-null) objects.
-
-    var str = &quot;{\n&quot;;
-    for (var key in obj) {
-        str += indent + &quot;  &quot; + key + &quot; = &quot;;
-        str += format_pretty(obj[key], indent + &quot; &quot;) + &quot;\n&quot;; }
-    return str + indent + &quot;}&quot;;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个函数输出：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-    key1 = 1
-    key2 = true
-    key3 = undefined
-    key4 = null
-    key5 = {
-        key5a = {
-            key5a1 = &quot;hello world&quot;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;多做这样的事情，就是积累代码的过程，这样的代码可以复用，也可以形成自己的代码库，或者分享给别人。&lt;/p&gt;
-
-&lt;h4&gt;业务相关的函数&lt;/h4&gt;
-
-&lt;p&gt;那些与目标不相关函数，抽离出来可以复用，与业务相关的也可以抽出来，保持代码的易读性，例如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;business = Business()
-business.name = request.POST[&quot;name&quot;]
-
-url_path_name = business.name.lower()
-url_path_name = re.sub(r&quot;[&#39;\.]&quot;, &quot;&quot;, url_path_name) 
-url_path_name = re.sub(r&quot;[^a-z0-9]+&quot;, &quot;-&quot;, url_path_name) 
-url_path_name = url_path_name.strip(&quot;-&quot;)
-business.url = &quot;/biz/&quot; + url_path_name
-
-business.date_created = datetime.datetime.utcnow() 
-business.save_to_database()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;抽离出来，就好看很多：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CHARS_TO_REMOVE = re.compile(r&quot;[&#39;\.&#39;]+&quot;)
-CHARS_TO_DASH = re.compile(r&quot;[^a-z0-9]+&quot;)
-
-def make_url_friendly(text):
-    text = text.lower()
-    text = CHARS_TO_REMOVE.sub(&#39;&#39;, text) 
-    text = CHARS_TO_DASH.sub(&#39;-&#39;, text) 
-    return text.strip(&quot;-&quot;)
-
-business = Business()
-business.name = request.POST[&quot;name&quot;]
-business.url = &quot;/biz/&quot; + make_url_friendly(business.name) 
-business.date_created = datetime.datetime.utcnow() 
-business.save_to_database()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;简化现有接口&lt;/h4&gt;
-
-&lt;p&gt;我们来看一个读写cookie的函数：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var max_results;
-var cookies = document.cookie.split(&#39;;&#39;);
-for (var i = 0; i &amp;lt; cookies.length; i++) {
-    var c = cookies[i];
-    c = c.replace(/^[ ]+/, &#39;&#39;);  // remove leading spaces
-    if (c.indexOf(&quot;max_results=&quot;) === 0)
-        max_results = Number(c.substring(12, c.length));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这段代码实在太丑了，理想的接口应该是这样的：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set_cookie(name, value, days_to_expire);
-delete_cookie(name);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;对于并不理想的接口，你永远可以用自己的函数做封装，让接口更好用。&lt;/p&gt;
-
-&lt;h4&gt;按自己需要写接口&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;ser_info = { &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: &quot;...&quot; }
-user_str = json.dumps(user_info)
-cipher = Cipher(&quot;aes_128_cbc&quot;, key=PRIVATE_KEY, init_vector=INIT_VECTOR, op=ENCODE)
-encrypted_bytes = cipher.update(user_str)
-encrypted_bytes += cipher.final() # flush out the current 128 bit block
-url = &quot;http://example.com/?user_info=&quot; + base64.urlsafe_b64encode(encrypted_bytes)
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;虽然终极目的是拼接用户信息的字符，但是代码大部分做的事情是解析python的object，所以：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def url_safe_encrypt(obj):
-    obj_str = json.dumps(obj)
-    cipher = Cipher(&quot;aes_128_cbc&quot;, key=PRIVATE_KEY, init_vector=INIT_VECTOR, op=ENCODE) encrypted_bytes = cipher.update(obj_str)
-    encrypted_bytes += cipher.final() # flush out the current 128 bit block
-    return base64.urlsafe_b64encode(encrypted_bytes)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样在其他地方也可以调用：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;user_info = { &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: &quot;...&quot; }
-url = &quot;http://example.com/?user_info=&quot; + url_safe_encrypt(user_info)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;分离子函数是好习惯，但是也要适度，过度的分离成多个小函数，也会让查找变得困难。&lt;/p&gt;
-
-&lt;h3&gt;单任务&lt;/h3&gt;
-
-&lt;p&gt;代码应该是一次只完成一个任务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var place = location_info[&quot;LocalityName&quot;];  // e.g. &quot;Santa Monica&quot;
-if (!place) {
-    place = location_info[&quot;SubAdministrativeAreaName&quot;];  // e.g. &quot;Los Angeles&quot;
-}
-if (!place) {
-    place = location_info[&quot;AdministrativeAreaName&quot;];  // e.g. &quot;California&quot;
-}
-if (!place) {
-    place = &quot;Middle-of-Nowhere&quot;;
-}
-if (location_info[&quot;CountryName&quot;]) {
-    place += &quot;, &quot; + location_info[&quot;CountryName&quot;];  // e.g. &quot;USA&quot;
-} else {
-    place += &quot;, Planet Earth&quot;;
-}
-
-return place;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这是一个用来拼地名的函数，有很多的条件判断，读起来非常吃力，有没有办法拆解任务呢？&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var town    = location_info[&quot;LocalityName&quot;];               // e.g. &quot;Santa Monica&quot;
-var city    = location_info[&quot;SubAdministrativeAreaName&quot;];  // e.g. &quot;Los Angeles&quot;
-var state   = location_info[&quot;AdministrativeAreaName&quot;];     // e.g. &quot;CA&quot;
-var country = location_info[&quot;CountryName&quot;];                // e.g. &quot;USA&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;先拆解第一个任务，将各变量分别保存，这样在后面使用中不需要去记忆那些繁长的key值了，第二个任务，解决地址拼接的后半部分：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Start with the default, and keep overwriting with the most specific value. var second_half = &quot;Planet Earth&quot;;
-if (country) {
-    second_half = country; 
-}
-if (state &amp;amp;&amp;amp; country === &quot;USA&quot;) {
-    second_half = state; 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再来解决前半部分：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var first_half = &quot;Middle-of-Nowhere&quot;;
-if (state &amp;amp;&amp;amp; country !== &quot;USA&quot;) {
-    first_half = state; 
-}
-if (city) {
-    first_half = city;
-}
-if (town) {
-    first_half = town; 
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;大功告成：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;return first_half + &quot;, &quot; + second_half;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果注意到有&lt;code&gt;USA&lt;/code&gt;这个变量的判断的话，也可以这样写：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var first_half, second_half;
-if (country === &quot;USA&quot;) {
-    first_half = town || city || &quot;Middle-of-Nowhere&quot;;
-    second_half = state || &quot;USA&quot;;
-} else {
-    first_half = town || city || state || &quot;Middle-of-Nowhere&quot;;
-    second_half = country || &quot;Planet Earth&quot;;
-}
-return first_half + &quot;, &quot; + second_half;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;把想法转换成代码&lt;/h3&gt;
-
-&lt;p&gt;要把一个复杂的东西解释给别人，一些细节很容易就让人产生迷惑，所以想象把你的代码用平实的语言解释给别人听，别人是否能懂，有一些准则可以帮助你让代码更清晰：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;用最平实的语言描述代码的目的，就像给读者讲述一样&lt;/li&gt;
-&lt;li&gt;注意描述中关键的字词&lt;/li&gt;
-&lt;li&gt;让你的代码符合你的描述&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;下面这段代码用来校验用户的权限：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$is_admin = is_admin_request();
-if ($document) {
-    if (!$is_admin &amp;amp;&amp;amp; ($document[&#39;username&#39;] != $_SESSION[&#39;username&#39;])) {
-        return not_authorized();
-    }
-} else {
-    if (!$is_admin) {
-        return not_authorized();
-    } 
-}
-// continue rendering the page ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这一段代码不长，里面的逻辑嵌套倒是复杂，参考前面章节所述，嵌套太多非常影响阅读理解，将这个逻辑用语言描述就是：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;有两种情况有权限：
-1、你是管理员(admin)
-2、你拥有这个文档
-否则就没有权限
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;根据描述来写代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (is_admin_request()) {
-    // authorized
-} elseif ($document &amp;amp;&amp;amp; ($document[&#39;username&#39;] == $_SESSION[&#39;username&#39;])) {
-    // authorized
-} else {
-    return not_authorized();
-}
-// continue rendering the page ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;写更少的代码&lt;/h3&gt;
-
-&lt;p&gt;最易懂的代码就是没有代码！&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;去掉那些没意义的feature，也不要过度设计&lt;/li&gt;
-&lt;li&gt;重新考虑需求，解决最简单的问题，也能完成整体的目标&lt;/li&gt;
-&lt;li&gt;熟悉你常用的库，周期性研究他的API&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;最后&lt;/h2&gt;
-
-&lt;p&gt;还有一些与测试相关的章节，留给你自己去研读吧，再次推荐此书：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;英文版：&lt;a href=&quot;http://book.douban.com/subject/5442971/&quot; title=&quot;The Art Of Readable Code&quot;&gt;《The Art of Readable Code》&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;中文版：&lt;a href=&quot;http://book.douban.com/subject/10797189/&quot; title=&quot;编写可读代码的艺术&quot;&gt;编写可读代码的艺术&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
-   </entry>
-   
-   <entry>
-     <title>40届全美音乐奖和55届格莱美颁奖演出观感</title>
-     <link href="http://beiyuu.com/40-ama-55-grammy"/>
-     <updated>2013-02-19T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/40-ama-55-grammy</id>
-     <content type="html">&lt;h2&gt;40届全美音乐奖(Ameican Musican Awards)&lt;/h2&gt;
-
-&lt;p&gt;1、少了英伦小清新的全美音乐奖，总体来说还是俗气了些；&lt;/p&gt;
-
-&lt;p&gt;2、Justin Bieber的gay气太重了，歌我还是喜欢呀，准备练习一首，哈哈；&lt;/p&gt;
-
-&lt;p&gt;3、Pink真是用生命在唱歌，并且是杂技团出身，脑补前年格莱美颁奖；&lt;/p&gt;
-
-&lt;p&gt;4、我依然没有抓住Taylor Swift的点，女艺人里面喜欢的有很多，Katy Perry，Carrie Underwood、Nelly Furtado、Rihanna甚至Kelly Clarkson、Lady Gaga、Adele，但是依然不懂Taylor Swift凭什么呢？&lt;/p&gt;
-
-&lt;p&gt;5、Carrie Underwood这样才是唱乡村的啊，斯威夫特姐姐，也终于想起来吴怡霈为什么看起来亲切眼熟了；&lt;/p&gt;
-
-&lt;p&gt;6、第一次加入了电子乐，恩，电子乐牛逼，史旺达也牛逼；&lt;/p&gt;
-
-&lt;p&gt;7、Nicki Minaj真是太有才太可爱啦；&lt;/p&gt;
-
-&lt;p&gt;8、鸟叔果然是最棒的，Hi爆全场，期待格莱美上的演出；&lt;/p&gt;
-
-&lt;p&gt;9、Galaxy Note II强势插入的广告，脑补两年前格莱美的iPad广告；&lt;/p&gt;
-
-&lt;div style=&quot;text-align:center;margin-bottom:50px;&quot;&gt;
-&lt;embed src=&quot;http://player.youku.com/player.php/sid/XNDc3MTQzMjg0/v.swf&quot; quality=&quot;high&quot; width=&quot;480&quot; height=&quot;400&quot; align=&quot;middle&quot; allowScriptAccess=&quot;sameDomain&quot; allowFullscreen=&quot;true&quot; type=&quot;application/x-shockwave-flash&quot;&gt;&lt;/embed&gt;
-&lt;/div&gt;
-
-
-&lt;h2&gt;55届格莱美(Grammy)颁奖&lt;/h2&gt;
-
-&lt;p&gt;1、今年的格莱美，老将大都歇菜了，对新人感情积累不够，没法High起来，平淡的Happy一下吧；&lt;/p&gt;
-
-&lt;p&gt;2、制作、演出水平还是一如既往的高，不用多说；&lt;/p&gt;
-
-&lt;p&gt;3、Taylor Swift第一个出场，突然解了我一个疑惑，原来美国恐怖故事里那个神经质的年轻修女，长的是像她啊！&lt;/p&gt;
-
-&lt;p&gt;4、Fun. 今年收获颇丰，歌很好听，耕耘这么多年，总算出头了，演出中下雨这舞台设计也还蛮意外的；&lt;/p&gt;
-
-&lt;p&gt;5、查了资料原来Justin Timberlake从超级男孩就开始了，贾老板人气如此之高，大约还是演电影的因素，他的歌除了4年前和T.I.的合唱听起来比较动听，今年我是没感受到，胡子倒是刮得真干净真嫩；&lt;/p&gt;
-
-&lt;p&gt;6、像Maroon 5的这些新歌，我觉得自己时常难以跟上时代的步伐，接受这些都是从我们这城乡结合部的发廊、呼啸而过的摩托、人群中刺耳的手机铃声来的，好奇他们如何发现的？&lt;/p&gt;
-
-&lt;p&gt;7、Rihanna今年一甩骚情女的姿态，玩起了动情，stay这首确实挺打动人，一时间想起来很多；&lt;/p&gt;
-
-&lt;p&gt;8、整场演出最High的部分就是Bruno Mars和Sting了，去年听了很多Reggae，看的最棒的现场也是Reggae，有很美好的回忆也烙上了Reggae，这让人感到快乐的音乐，任何时候都无法拒绝，真心感谢Bob Marley，感谢Marley家族带给世界这样美好的东西；&lt;/p&gt;
-
-&lt;p&gt;9、Jack White以前没听过，Rock的范很足，要吐槽的是他手里那把烂Fender，质感比大G差太多，无怪乎演出结束要砸掉；&lt;/p&gt;
-
-&lt;p&gt;10、Carrie Underwood这次就高端大气上档次了，没有Oklahoma的丁点气息了，当然，一如既往的喜欢这个姑娘，比Taylor好太多了；&lt;/p&gt;
-
-&lt;p&gt;11、今年的“群口相声”改成LL Cool J了，没啥想说的；&lt;/p&gt;
-
-&lt;p&gt;12、数数颁奖嘉宾，老爸老妈的Barney很搞；大爆炸的Penny倒是常来，可是姐姐你能不能有点专业精神，一层一层的下巴，减减肥好吗？2B Girls的Max，致辞毫无亮点，透露出胸大无脑的本性；Johnny Depp，嗯，吊；最碉堡还是Prince，看得出欧美音乐圈相当尊重前辈，我还有张他的打口碟，只是当时的水平无力欣赏，那些影响音乐人的音乐大师，总要一定积累去体会；&lt;/p&gt;
-
-&lt;p&gt;13、一直疑惑的一点是，为什么唱歌好的男艺人大多都是小个子，从Bon Jovi到Alex Rose，从Bruno Mars到Fun.，数不胜数，为什么？&lt;/p&gt;
-
-&lt;p&gt;14、每每看到艺人拿奖，他们也没煽什么情，我却总是替他们激动到不行，实在比国内的节目高级多了，哎；&lt;/p&gt;
-
-&lt;p&gt;15、说起来格莱美这两年都比较low，你说没有Coldplay没有Usher没有Katy Perry没有Lady Gaga没有Justin Bieber没有Black Eyed Peas没有Eminem，连鸟叔都没有，你还让我怎么看，期待明年会更好吧！&lt;/p&gt;
-
-&lt;div style=&quot;text-align:center&quot;&gt;
-&lt;embed src=&quot;http://player.youku.com/player.php/sid/XNTEzNzI1Njcy/v.swf&quot; quality=&quot;high&quot; width=&quot;480&quot; height=&quot;400&quot; align=&quot;middle&quot; allowScriptAccess=&quot;sameDomain&quot; allowFullscreen=&quot;true&quot; type=&quot;application/x-shockwave-flash&quot;&gt;&lt;/embed&gt;
-&lt;/div&gt;
-
-
-
 </content>
    </entry>
    
