@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-06-25T17:30:20+08:00</updated>
+   <updated>2015-06-25T22:22:04+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -164,7 +164,7 @@ category: blog
 
 &lt;h4&gt;函数的中的匿名函数和命名函数之间的区别：&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&quot;%E5%87%BD%E6%95%B0%E5%90%8D%E7%A7%B0.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;fnName.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;匿名函数的name属性值是一个空字符串，命名函数的name值是有值的。这是他们唯一的区别。
 真正有三种术语方面的说法：带有命名的函数表达式、无名字的函数表达式、函数声明&lt;/p&gt;
@@ -210,10 +210,10 @@ function next(){
 
 &lt;h3&gt;4.3 回调模式&lt;/h3&gt;
 
-&lt;p&gt;该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。
-    function f(callback){&lt;/p&gt;
+&lt;p&gt;该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    callback();//执行了
+&lt;pre&gt;&lt;code&gt;function f(callback){
+    callback();//执行了
 }       
 
 function cb(){
@@ -462,21 +462,19 @@ add();//这里每执行一次就改变全局变量count一次，只是前面那�
 
 &lt;p&gt;但是这样效率不高，因为每次执行U.addFn()的时候都会去查一遍浏览器的特性，因为这个特性是固定的，所以不需要每一次都去查询一遍，只需要查询一次就可以。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    var U = {
-        addFn : null
-        }
+&lt;pre&gt;&lt;code&gt;var U = {
+    addFn : null
+    }
 
-    if(typeof window.addEventListener == &quot;function&quot;){
-        U.addFn = functon(el,type,fn){
-            el.addEventListener(type,fn,false);
-        }
+if(typeof window.addEventListener == &quot;function&quot;){
+    U.addFn = functon(el,type,fn){
+        el.addEventListener(type,fn,false);
     }esle if(typeof doucment.attachEvent == &quot;function&quot;){
-        U.addFn = function(el,type,fn){
-            el.attchEvent(&quot;on&quot;+type,fn)
-        }
+    U.addFn = function(el,type,fn){
+        el.attchEvent(&quot;on&quot;+type,fn)
     }else{
-        U.addFn = function(el,type,fn){
-            el[&quot;on&quot;+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
+    U.addFn = function(el,type,fn){
+        el[&quot;on&quot;+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
         }
     }   
 &lt;/code&gt;&lt;/pre&gt;

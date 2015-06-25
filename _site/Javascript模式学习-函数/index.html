@@ -44,7 +44,7 @@
 
 <h4>函数的中的匿名函数和命名函数之间的区别：</h4>
 
-<p><img src="%E5%87%BD%E6%95%B0%E5%90%8D%E7%A7%B0.png" alt="image" /></p>
+<p><img src="fnName.png" alt="image" /></p>
 
 <p>匿名函数的name属性值是一个空字符串，命名函数的name值是有值的。这是他们唯一的区别。
 真正有三种术语方面的说法：带有命名的函数表达式、无名字的函数表达式、函数声明</p>
@@ -90,10 +90,10 @@ function next(){
 
 <h3>4.3 回调模式</h3>
 
-<p>该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。
-    function f(callback){</p>
+<p>该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。</p>
 
-<pre><code>    callback();//执行了
+<pre><code>function f(callback){
+    callback();//执行了
 }       
 
 function cb(){
@@ -342,21 +342,19 @@ add();//这里每执行一次就改变全局变量count一次，只是前面那�
 
 <p>但是这样效率不高，因为每次执行U.addFn()的时候都会去查一遍浏览器的特性，因为这个特性是固定的，所以不需要每一次都去查询一遍，只需要查询一次就可以。</p>
 
-<pre><code>    var U = {
-        addFn : null
-        }
+<pre><code>var U = {
+    addFn : null
+    }
 
-    if(typeof window.addEventListener == "function"){
-        U.addFn = functon(el,type,fn){
-            el.addEventListener(type,fn,false);
-        }
+if(typeof window.addEventListener == "function"){
+    U.addFn = functon(el,type,fn){
+        el.addEventListener(type,fn,false);
     }esle if(typeof doucment.attachEvent == "function"){
-        U.addFn = function(el,type,fn){
-            el.attchEvent("on"+type,fn)
-        }
+    U.addFn = function(el,type,fn){
+        el.attchEvent("on"+type,fn)
     }else{
-        U.addFn = function(el,type,fn){
-            el["on"+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
+    U.addFn = function(el,type,fn){
+        el["on"+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
         }
     }   
 </code></pre>

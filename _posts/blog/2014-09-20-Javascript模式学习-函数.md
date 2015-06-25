@@ -19,7 +19,7 @@ js本身有两种作用域，一种是全局的作用域，比如window，还有
 ####函数的中的匿名函数和命名函数之间的区别：
 
 
-![image](函数名称.png)
+![image](fnName.png)
 
 匿名函数的name属性值是一个空字符串，命名函数的name值是有值的。这是他们唯一的区别。
 真正有三种术语方面的说法：带有命名的函数表达式、无名字的函数表达式、函数声明
@@ -64,8 +64,8 @@ js本身有两种作用域，一种是全局的作用域，比如window，还有
 ### 4.3 回调模式
 
 该模式应该是函数经常用到的一个方式，因为函数是对象，也就是说函数可以作为参数传递给另外一个函数，当给函数传入一个函数参数，并且在函数内调用了函数参数，并执行，称传入参数的函数叫回调函数，也成回调。
+
 	function f(callback){
-		
 		callback();//执行了
 	}		
 	
@@ -296,21 +296,19 @@ js本身有两种作用域，一种是全局的作用域，比如window，还有
 		}
 但是这样效率不高，因为每次执行U.addFn()的时候都会去查一遍浏览器的特性，因为这个特性是固定的，所以不需要每一次都去查询一遍，只需要查询一次就可以。
 
-		var U = {
-			addFn : null
-			}
+	var U = {
+		addFn : null
+		}
 			
-		if(typeof window.addEventListener == "function"){
-			U.addFn = functon(el,type,fn){
-				el.addEventListener(type,fn,false);
-			}
+	if(typeof window.addEventListener == "function"){
+		U.addFn = functon(el,type,fn){
+			el.addEventListener(type,fn,false);
 		}esle if(typeof doucment.attachEvent == "function"){
-			U.addFn = function(el,type,fn){
-				el.attchEvent("on"+type,fn)
-			}
+		U.addFn = function(el,type,fn){
+			el.attchEvent("on"+type,fn)
 		}else{
-			U.addFn = function(el,type,fn){
-				el["on"+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
+		U.addFn = function(el,type,fn){
+			el["on"+type] = fn; //这里说明一下，为什么用中括号形式，而是“.”形式，因为后面那种形式不能使用字符串相加的运算
 			}
 		}	
 		
