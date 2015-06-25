@@ -1,3 +1,9 @@
+---
+layout: post
+title: 学习笔记－设计模式－基础
+description: 设计模式 －基础 
+category: blog
+---
 #Javascript模式学习
 ---
 ##变量
