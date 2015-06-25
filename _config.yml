@@ -6,6 +6,6 @@ paginate: 8
 permalink: /:title
 
 title: juzipi
-# url: /
+url: blog/
 feed: /atom.xml
 author_info: <a href="http://juzipi.github.io/blog/">juzipi</a>
