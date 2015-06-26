@@ -52,9 +52,11 @@ pre code{background-color:transparent;border:none;padding:0;word-wrap:normal;}
 pre ol{margin-left:25px;list-style-type:decimal;}
 
 /************layout style*****************/
-#content {width:1060px;margin:90px auto 60px;min-height:400px;height:auto !important;height:400px; }
+#content {width:1060px;margin:10px auto 60px;min-height:400px;height:auto !important;height:400px; }
 
-
+.head{background: #0E686B; height: 50px;}
+.head a{display: block; height: 50px; width: 1060px; margin: 0 auto;}
+.logo{width:40px; padding-top: 5px; margin-left: 10px; }
 /****************entry style**************/
 .sidenav { width:240px; background:#fff; float:right; padding:20px; margin-bottom:50px; box-shadow:0 1px 4px #ccc; }
 .sidenav h2 { font-size:18px; color:#333; margin-bottom:15px; }
@@ -84,13 +86,13 @@ pre ol{margin-left:25px;list-style-type:decimal;}
     background-position:50% 50%;
 }
 .blog .aside{
-    background-image:url(https://d233eq3e3p3cv0.cloudfront.net/max/1000/0*cF2i1ZosSP_UTJig.jpeg);
+    background: #999;
 }
 .opinion .aside{
-    background-image:url(https://dnqgz544uhbo8.cloudfront.net/_/fp/img/bestof/june-2013.CaUUbO2jIECgCmldhmxCCA.jpg);
+    background: #ddd;
 }
 .project .aside{
-    background-image:url('https://d233eq3e3p3cv0.cloudfront.net/max/1000/0*kTUZamBulGQZg1MW.jpeg')
+    background: #ccc;
 }
 .index-content .section { margin-left:30%; padding-top:80px; padding-right:15%; ;}
 

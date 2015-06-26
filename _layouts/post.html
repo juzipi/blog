@@ -12,8 +12,13 @@ layout: default
         body { background:#fff; }
     }
 </style>
-
+<div class="head">
+    <a href="../">
+        <img src="../images/logo_24.png" alt="logo" class="logo" />
+    </a>
+</div>
 <div id="content">
+    
     <div class="entry">
         <h1 class="entry-title"><a href="{{ site.url }}{{ page.url }}" title="{{ page.title }}">{{ page.title }}</a></h1>
         <p class="entry-date">{{ page.date|date:"%Y-%m-%d" }}</p>
@@ -25,21 +30,23 @@ layout: default
 
 
     <div class="sidenav">
-        <h2>Blog</h2>
+        <h2>语言</h2>
         <ul class="artical-list">
         {% for post in site.categories.blog%}
-            <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
+            <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+            
+            </li>
         {% endfor %}
         </ul>
 
-        <h2>Opinion</h2>
+        <h2>工具</h2>
         <ul class="artical-list">
-        {% for post in site.categories.opinion%}
+        {% for post in site.categories.tool%}
             <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
         {% endfor %}
         </ul>
 
-        <h2>Project</h2>
+        <h2>项目沉淀</h2>
         <ul class="artical-list">
         {% for post in site.categories.project%}
             <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
