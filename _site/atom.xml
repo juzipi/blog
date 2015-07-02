@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-07-02T15:01:49+08:00</updated>
+   <updated>2015-07-02T15:03:13+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -39,9 +39,9 @@ cd my-site
 
 &lt;p&gt;建立&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;jekyll bulid
+&lt;pre&gt;&lt;code&gt;jekyll build
 
-jekyll bulid -watch //持续跟踪
+jekyll build -watch //持续跟踪
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;文章要求&lt;/p&gt;
