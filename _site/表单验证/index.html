@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>表单验证－策略模式 | juzipi</title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/blog/css/default.css" type="text/css" />
+    <link rel="icon" href="/blog/logo.png" type="image/png">
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/blog/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="/blog/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+<div class="head">
+    <a href="../">
+        <img src="../images/logo_24.png" alt="logo" class="logo" />
+    </a>
+</div>
+<div id="content">
+    
+    <div class="entry">
+        <h1 class="entry-title"><a href="/blog/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81" title="表单验证－策略模式">表单验证－策略模式</a></h1>
+        <p class="entry-date">2011-08-11</p>
+        <h1>基本HTML</h1>
+
+<pre><code>&lt;form id="lifeForm"&gt;
+&lt;div class="life-choose"&gt;
+    年龄：
+    &lt;select class="select-life" name="lifeYear"&gt;
+        &lt;option&gt;&lt;/option&gt;       
+        &lt;option&gt;1&lt;/option&gt;      
+        &lt;option&gt;2&lt;/option&gt;      
+    &lt;/select&gt;岁
+    &lt;select class="select-life" name="lifeMonth"&gt;
+        &lt;option&gt;&lt;/option&gt;       
+        &lt;option&gt;1&lt;/option&gt;
+        &lt;option&gt;2&lt;/option&gt;
+    &lt;/select&gt;
+    个月
+
+&lt;/div&gt;
+&lt;div class=""&gt;
+    &lt;input type="text" name="lifeNum" value="" size="10" class="input-normal" /&gt;
+&lt;/div&gt;
+&lt;div class="t-c mt-normal"&gt;
+    &lt;input class="btn-style01 dis" value="转换" name="" type="botton" /&gt;
+&lt;/div&gt;
+&lt;/form&gt;
+</code></pre>
+
+<h1>验证代码</h1>
+
+<pre><code>// 通用方法
+var vFn = {
+    isNoEmpty : function  (value,errorMsg) {
+        if(value===""){
+            return errorMsg;
+        }
+    },
+    miniLength : function(value,length,errorMsg){
+        if(value.length&lt;length){
+            return errorMsg;
+        }
+    }
+}
+</code></pre>
+
+<p>＃验证方法</p>
+
+<pre><code>    var Validator = function(){
+    this.cache = [];
+ }
+
+// 
+ Validator.prototype.add = function(dom,rule,errorMsg){
+    var ary=rule.split(":");//分割可能在rule中配置的第二种情况 minLength:4;
+    this.cache.push(function(){ // 把函数加入缓存列表
+        var strategy=ary.shift(); //取Ary第一个值，一般这是要执行验证方法
+        console.log("取出第一个值："+strategy)
+        ary.unshift(dom.value); // 把dom的值传入ary，这里有两种情况如果 验证是带“：”那么这个就是在第二个参数，否则就是第一个参数，对应相应验证方法里面的 value参数
+        console.log("加入dom值后："+ary)
+        ary.push(errorMsg); //把报错信息传入ary，对应验证方法里面errorMsg参数
+        console.log("再加入报错信息："+ary)
+        return strategies[strategy].apply(dom,ary); //执行相应的验证方法，并且把this指向该dom，然后参数使用ary数组里面参数
+    });
+ };
+
+ Validator.prototype.start = function(){
+    for(var i=0,validatorFunc; validatorFunc = this.cache[i++];){
+        var d = validatorFunc();
+        if(msg){
+            return msg;
+        }
+    }
+ };
+</code></pre>
+
+<h2>运用方法</h2>
+
+<pre><code>var lifeForm = document.getElementById("lifeForm");
+var validatorFunc = function(){
+    var validator =  new Validator();
+    validator.add(lifeForm.lifeMonth,"isNoEmpty","月份不能为空");
+    validator.add(lifeForm.lifeYear,"isNoEmpty","年份不能为空");
+    var errorMsg = validator.start();
+    return errorMsg;
+}
+
+    $(".select-life").change(function() {
+        var errorMsg = validatorFunc();
+        if (errorMsg) {
+            console.log(errorMsg);
+            $(".btn-style01").addClass('dis');
+            return false;
+        };
+        $(".btn-style01").removeClass('dis');
+    });
+</code></pre>
+
+
+       
+    </div>
+
+
+
+    <div class="sidenav">
+        <h2>语言</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0-%E5%87%BD%E6%95%B0">学习笔记－设计模式 －函数</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0">学习笔记－设计模式－基础</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83">模块化学习思考</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81">表单验证－策略模式</a>
+            
+            </li>
+        
+        </ul>
+
+        <h2>工具</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/jekyll%E4%BD%BF%E7%94%A8">jekyll基本使用方式</a></li>
+        
+        </ul>
+
+        <h2>项目沉淀</h2>
+        <ul class="artical-list">
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/blog/js/post.js" type="text/javascript"></script>
+
+
+    
+</body>
+</html>

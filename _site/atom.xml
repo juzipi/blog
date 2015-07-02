@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-06-26T15:42:09+08:00</updated>
+   <updated>2015-07-02T15:01:49+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -805,6 +805,109 @@ var module=require(./moduelA);
 
 &lt;p&gt;模块化加载》合并文件》这样也会产生一个问题，根据页面的功能不同，怎样加载不同页面并且还不会重复加载。
 比如&lt;code&gt;a.html&lt;/code&gt;页面功能有&lt;code&gt;a.js&lt;/code&gt; &lt;code&gt;b.js&lt;/code&gt; &lt;code&gt;c.js&lt;/code&gt;,合并成一个文件.&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>表单验证－策略模式</title>
+     <link href="http://beiyuu.com/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81"/>
+     <updated>2011-08-11T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/表单验证</id>
+     <content type="html">&lt;h1&gt;基本HTML&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;form id=&quot;lifeForm&quot;&amp;gt;
+&amp;lt;div class=&quot;life-choose&quot;&amp;gt;
+    年龄：
+    &amp;lt;select class=&quot;select-life&quot; name=&quot;lifeYear&quot;&amp;gt;
+        &amp;lt;option&amp;gt;&amp;lt;/option&amp;gt;       
+        &amp;lt;option&amp;gt;1&amp;lt;/option&amp;gt;      
+        &amp;lt;option&amp;gt;2&amp;lt;/option&amp;gt;      
+    &amp;lt;/select&amp;gt;岁
+    &amp;lt;select class=&quot;select-life&quot; name=&quot;lifeMonth&quot;&amp;gt;
+        &amp;lt;option&amp;gt;&amp;lt;/option&amp;gt;       
+        &amp;lt;option&amp;gt;1&amp;lt;/option&amp;gt;
+        &amp;lt;option&amp;gt;2&amp;lt;/option&amp;gt;
+    &amp;lt;/select&amp;gt;
+    个月
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&quot;&quot;&amp;gt;
+    &amp;lt;input type=&quot;text&quot; name=&quot;lifeNum&quot; value=&quot;&quot; size=&quot;10&quot; class=&quot;input-normal&quot; /&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&quot;t-c mt-normal&quot;&amp;gt;
+    &amp;lt;input class=&quot;btn-style01 dis&quot; value=&quot;转换&quot; name=&quot;&quot; type=&quot;botton&quot; /&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;验证代码&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;// 通用方法
+var vFn = {
+    isNoEmpty : function  (value,errorMsg) {
+        if(value===&quot;&quot;){
+            return errorMsg;
+        }
+    },
+    miniLength : function(value,length,errorMsg){
+        if(value.length&amp;lt;length){
+            return errorMsg;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;＃验证方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var Validator = function(){
+    this.cache = [];
+ }
+
+// 
+ Validator.prototype.add = function(dom,rule,errorMsg){
+    var ary=rule.split(&quot;:&quot;);//分割可能在rule中配置的第二种情况 minLength:4;
+    this.cache.push(function(){ // 把函数加入缓存列表
+        var strategy=ary.shift(); //取Ary第一个值，一般这是要执行验证方法
+        console.log(&quot;取出第一个值：&quot;+strategy)
+        ary.unshift(dom.value); // 把dom的值传入ary，这里有两种情况如果 验证是带“：”那么这个就是在第二个参数，否则就是第一个参数，对应相应验证方法里面的 value参数
+        console.log(&quot;加入dom值后：&quot;+ary)
+        ary.push(errorMsg); //把报错信息传入ary，对应验证方法里面errorMsg参数
+        console.log(&quot;再加入报错信息：&quot;+ary)
+        return strategies[strategy].apply(dom,ary); //执行相应的验证方法，并且把this指向该dom，然后参数使用ary数组里面参数
+    });
+ };
+
+ Validator.prototype.start = function(){
+    for(var i=0,validatorFunc; validatorFunc = this.cache[i++];){
+        var d = validatorFunc();
+        if(msg){
+            return msg;
+        }
+    }
+ };
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;运用方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;var lifeForm = document.getElementById(&quot;lifeForm&quot;);
+var validatorFunc = function(){
+    var validator =  new Validator();
+    validator.add(lifeForm.lifeMonth,&quot;isNoEmpty&quot;,&quot;月份不能为空&quot;);
+    validator.add(lifeForm.lifeYear,&quot;isNoEmpty&quot;,&quot;年份不能为空&quot;);
+    var errorMsg = validator.start();
+    return errorMsg;
+}
+
+    $(&quot;.select-life&quot;).change(function() {
+        var errorMsg = validatorFunc();
+        if (errorMsg) {
+            console.log(errorMsg);
+            $(&quot;.btn-style01&quot;).addClass(&#39;dis&#39;);
+            return false;
+        };
+        $(&quot;.btn-style01&quot;).removeClass(&#39;dis&#39;);
+    });
+&lt;/code&gt;&lt;/pre&gt;
 </content>
    </entry>
    
