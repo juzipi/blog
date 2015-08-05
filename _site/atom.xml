@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-07-02T15:03:13+08:00</updated>
+   <updated>2015-08-05T14:18:18+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -142,6 +142,285 @@ category: blog
 
 &lt;p&gt;我想到这里可以说一下原型有什么作用了：
 1. 用来继承减少空间占用&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>AngularJS应用</title>
+     <link href="http://beiyuu.com/AngularJS%E5%AE%9E%E6%88%98"/>
+     <updated>2014-09-23T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/AngularJS实战</id>
+     <content type="html">&lt;h2&gt;一、MVC 框架&lt;/h2&gt;
+
+&lt;p&gt;所有实例基本框架：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;body ng-app=&quot;MyModule&quot;&amp;gt;
+    // content...
+&amp;lt;/body&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;二、基本概念&lt;/h2&gt;
+
+&lt;h3&gt;2.2 指令&lt;/h3&gt;
+
+&lt;p&gt;说明概念：附加在HTML元素上面自定义标记，可以是：标签、属性、class类，通过AngularJS的HTML编辑器（$compile），在指定元素上面附加指定的行为，可以操作DOM，改变DOM元素，甚至它子节点。&lt;/p&gt;
+
+&lt;p&gt;一般都是用ng开始，表示指令。
+部分内置指令：ngBind,ngModle,ngView,ngClick等。
+指令匹配形式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 推荐使用方式
+&amp;lt;span ng-bing=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span ng:bind=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span ng_bind=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
+// 符合HTML验证，（data）
+&amp;lt;span data-ng-bind=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span x-ng-bing=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注册指令：&lt;/h4&gt;
+
+&lt;p&gt;基本方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.directive(&quot;dir&quot;,function(){
+    return {
+
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一般返回一个匿名的对象&lt;/p&gt;
+
+&lt;p&gt;替换内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&quot;&quot; ng-controller=&quot;de&quot;&amp;gt;
+    &amp;lt;hello&amp;gt;&amp;lt;/hello&amp;gt;
+&amp;lt;/div&amp;gt;
+
+//定义了一个hello指令
+var MyModule = angular.module(&quot;MyModule&quot;,[]);
+MyModule.directive(&quot;hello&quot;,function(){
+    return {
+        restrict : &quot;E&quot;,
+        template : &quot;&amp;lt;div&amp;gt;替换了&amp;lt;/div&amp;gt;&quot;,
+        replace : true
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;restrict 可以是四个值：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;E：表示元素标签，&lt;hello&gt;&lt;/hello&gt;&lt;/li&gt;
+&lt;li&gt;A：表示属性(默认属性), &lt;div hello&gt;&lt;/hello&gt;&lt;/li&gt;
+&lt;li&gt;M：表示注释, &lt;!-- directive: hello --&gt;&lt;/li&gt;
+&lt;li&gt;C：表示样式（class）,&lt;div class=&quot;hello&quot; &gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;blockquote&gt;&lt;p&gt;遇到一个问题，样式（C）时，使用在input输入框，不能用“－”并且在指令名称中不能用大写，如果标签中是大写，那么在注册的时候需要改成小写。
+但是不能input框，可以注册用大写。没有找到规律&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;保留原有内容，并且增加内容：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;MyModule.directive(&quot;hello&quot;,function(){
+    return {
+        restrict : &quot;E&quot;,
+        transclude : true,
+        template : &quot;&amp;lt;div&amp;gt;添加内容&amp;lt;div ng-transclude&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&quot;
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当有大量的html需要修改或者替换的时候可用，引用html模版文件，这样减少在js中写大量到html代码，并且还需要考虑拼接：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;MyModule.directive(&quot;hello&quot;,function(){
+    return {
+        restrict : &quot;E&quot;,
+        templateUrl : &quot;hello.html&quot;,
+        replace : true
+    }
+})
+&amp;lt;-- hello.html --&amp;gt;
+&amp;lt;div&amp;gt;替换内容&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;这里可以考虑一些常用的html模块，直接用这种方式，给一个指令直接就把需要的html结构给出来，但是这里还牵涉到一个css，和这个模块要用到的js。参考fis&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;缓存模版，当有一些模版会重复使用到到的时候可以使用缓存模版方式，主要是牵涉到几个方法，put、get&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//注射器加载完所有模块时，此方法执行一次，run。
+MyModule.run(function($templateCache){
+
+    //put设置缓存模版，第一参数定义名称，第二个是内容。
+    $templateCache.put(&quot;h&quot;,&quot;&amp;lt;div&amp;gt;缓存内容&amp;lt;/div&amp;gt;&quot;);
+
+})
+
+//获取缓存的内容
+MyModule.directive(&quot;hello&quot;,function(){
+    return {
+        restrict : &quot;E&quot;,
+        replace : true,
+        template : $templateCache.get(&quot;h&quot;)
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;LINk方法：
+参数有四个分别是scope,element,attr,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- 指令 link使用 --&amp;gt;
+&amp;lt;!-- 定义controller --&amp;gt;
+&amp;lt;div class=&quot;&quot; ng-controller=&quot;myLoad&quot;&amp;gt;
+    &amp;lt;load class=&quot;btn-deep-blue mt-vbig&quot;&amp;gt;测试加载&amp;lt;/load&amp;gt;
+    &amp;lt;div id=&quot;show&quot;&amp;gt;显示&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+ // 定义contraoller里面的方法
+var myLoadModule = angular.module(&quot;MyModule&quot;,[]);
+myLoadModule.controller(&quot;myLoad&quot;,[&quot;$scope&quot;,function($scope){
+
+    $scope.loadData = function(){
+        angular.element(document.querySelector(&quot;#show&quot;)).addClass(&quot;btn-deep-blue&quot;);
+        console.log(&quot;加载。。&quot;);
+    }
+
+}]);
+
+//定义指令
+    myLoadModule.directive(&quot;load&quot;,function(){
+    return {
+        restrict:&quot;E&quot;,
+        link : function(scope,element,attr){
+                element.bind(&quot;click&quot;,function(){
+//这里的scope相当于和控制器中的$scope相连接了，能够获取到控制中的方法，通过$scope中转站衔接
+                    scope.loadData();
+                    // 作用相同:
+                    // scope.$apply(&quot;loadData()&quot;)
+                })
+
+        }
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过link中的attr属性去复用指令&lt;/p&gt;
+
+&lt;p&gt;HTML:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&quot;&quot; ng-controller=&quot;myLoad1&quot;&amp;gt;
+    &amp;lt;loading class=&quot;btn-deep-blue mt-vbig&quot; loadfn=&quot;loadData()&quot;&amp;gt;测试加载&amp;lt;/loading&amp;gt;
+&amp;lt;/div&amp;gt;  
+&amp;lt;div class=&quot;&quot; ng-controller=&quot;myLoad2&quot;&amp;gt;
+    &amp;lt;loading class=&quot;btn-deep-blue mt-vbig&quot; loadfn=&quot;loadData2()&quot;&amp;gt;测试加载2&amp;lt;/loading&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 控制器定义
+var MyModule = angular.module(&quot;MyModule&quot;,[]);
+MyModule.controller(&quot;myLoad1&quot;,[&quot;$scope&quot;,function($scope){
+    $scope.loadData = function(){
+        console.log(&quot;加载。。1&quot;);
+    }
+}]);
+
+MyModule.controller(&quot;myLoad2&quot;,[&quot;$scope&quot;,function($scope){
+    $scope.loadData2 = function(){
+        console.log(&quot;加载。。2&quot;);
+    }
+}]);
+
+// 指令定义
+myLoadModule.directive(&quot;load&quot;,function(){
+    return {
+        restrict:&quot;E&quot;,
+        link : function(scope,element,attr){
+                element.bind(&quot;click&quot;,function(){
+                    scope.$apply(attr.loadfn)
+        // 这里loadfn注意要小写
+                })
+
+        }
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;指令间的调用&lt;/h4&gt;
+
+&lt;p&gt;这里说一下另外一个方法：
+controller方法和link方法，目前的理解是一个是用来执行的方法，一个是用来调用的方法。&lt;/p&gt;
+
+&lt;p&gt;HTML:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;ul&amp;gt;
+    &amp;lt;superman strength&amp;gt;力量&amp;lt;/superman&amp;gt;
+    &amp;lt;superman strength speed&amp;gt;力量、速度&amp;lt;/superman&amp;gt;
+    &amp;lt;superman strength speed light&amp;gt;力量、速度、光&amp;lt;/superman&amp;gt;
+&amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里的controller是指令内部的，是暴露一些方法给外部调用:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 指令间调用
+MyModule.directive(&quot;superman&quot;,function(){
+    return {
+        //独立作用域
+        scope:{},
+        restrict: &quot;AE&quot;,
+        controller: function($scope){
+            $scope.abilities=[];
+            // 这里的this指的是？这里看是调用这个controller方法的对象，通过下面的调用知道，这是指令对象
+            this.addStrength=function(){
+                $scope.abilities.push(&quot;strength&quot;);
+            }
+            this.addSpeed=function(){
+                $scope.abilities.push(&quot;speed&quot;);
+            }
+            this.addLight=function(){
+                $scope.abilities.push(&quot;light&quot;);
+            }
+        },
+        link : function(scope,element,attr){
+            element.addClass(&quot;btn-deep-blue mt-tiny&quot;);
+            element.bind(&quot;click&quot;,function(){
+                console.log(scope.abilities);
+            })
+        }
+    }
+});
+
+MyModule.directive(&quot;strength&quot;,function(){
+    return {
+        //require 引用了一个指令对象
+        require: &quot;^superman&quot;,
+        // link最后一个参数是传入 require引用的对象
+        link: function(scope,element,attr,s){
+            s.addStrength();
+        }
+    }
+});
+MyModule.directive(&quot;speed&quot;,function(){
+    return {
+        require: &quot;^superman&quot;,
+        link: function(scope,element,attr,supermanCtrl){
+            supermanCtrl.addSpeed();
+        }
+    }
+});
+MyModule.directive(&quot;light&quot;,function(){
+    return {
+        require: &quot;^superman&quot;,
+        link: function(scope,element,attr,supermanCtrl){
+            supermanCtrl.addLight();
+        }
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;什么时候用controller什么时候用link，link指指令内部，做一个绑定事件，或者一些事件的处理，而controller是给外部调用&lt;/p&gt;&lt;/blockquote&gt;
 </content>
    </entry>
    
@@ -805,6 +1084,107 @@ var module=require(./moduelA);
 
 &lt;p&gt;模块化加载》合并文件》这样也会产生一个问题，根据页面的功能不同，怎样加载不同页面并且还不会重复加载。
 比如&lt;code&gt;a.html&lt;/code&gt;页面功能有&lt;code&gt;a.js&lt;/code&gt; &lt;code&gt;b.js&lt;/code&gt; &lt;code&gt;c.js&lt;/code&gt;,合并成一个文件.&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>RequireJs应用</title>
+     <link href="http://beiyuu.com/RequireJs%E4%BD%BF%E7%94%A8"/>
+     <updated>2014-06-25T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/RequireJs使用</id>
+     <content type="html">&lt;h2&gt;说明&lt;/h2&gt;
+
+&lt;h4&gt;历史：&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;script src=&quot;a.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&quot;b.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&quot;c.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;问题：&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;阻塞页面渲染。&lt;/li&gt;
+&lt;li&gt;因为js之间依赖关系，必须按照顺序加载，后期维护起来费工夫&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h4&gt;RequireJs作用：&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;实现js文件异步加载，避免网页失去响应&lt;/li&gt;
+&lt;li&gt;管理模块之间的依赖性，便于代码维护和编写。&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;一般实现异步加载js的方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;async.js&quot; defer async=&quot;true&quot;&amp;gt;&amp;lt;/script&amp;gt;
+//加defer是为了兼容IE浏览器，IE不支持async属性
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;基本使用&lt;/h2&gt;
+
+&lt;h3&gt;页面引用&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;script data-main=&quot;js/app.js&quot; src=&quot;js/require.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;data-main表示的是主模块的意思，一般requirejs加载完成，就就加载主模块，一般有两个用途：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;定义配置文件&lt;/li&gt;
+&lt;li&gt;加载第一个应用模块&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h3&gt;加载文件&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;require([&quot;js/a&quot;])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里表示根据当前文件目录来说，加载js目录下面的a.js文件&lt;/p&gt;
+
+&lt;h4&gt;基本配置&lt;/h4&gt;
+
+&lt;p&gt;加载文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require.config({
+    paths: {
+        a : &quot;js/a&quot;
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;官方目录结构&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../images/requireFile.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;两个基本方法&lt;/h3&gt;
+
+&lt;h4&gt;require&lt;/h4&gt;
+
+&lt;h4&gt;define&lt;/h4&gt;
+
+&lt;h2&gt;高级配置&lt;/h2&gt;
+
+&lt;h3&gt;加载未标准定义文件&lt;/h3&gt;
+
+&lt;p&gt;单个方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; //singleFn.js
+ function a () {
+    console.log(&quot;show a fn&quot;);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;多个方法&lt;/p&gt;
+
+&lt;h2&gt;常见问题&lt;/h2&gt;
+
+&lt;h2&gt;项目建设建议&lt;/h2&gt;
+
+&lt;hr /&gt;
 </content>
    </entry>
    
