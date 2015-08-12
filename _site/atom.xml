@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-08-05T14:18:18+08:00</updated>
+   <updated>2015-08-12T10:45:12+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -146,10 +146,10 @@ category: blog
    </entry>
    
    <entry>
-     <title>AngularJS应用</title>
-     <link href="http://beiyuu.com/AngularJS%E5%AE%9E%E6%88%98"/>
+     <title>AngularJS应用－基础概念</title>
+     <link href="http://beiyuu.com/AngularJS%E5%AE%9E%E6%88%98%EF%BC%8D%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"/>
      <updated>2014-09-23T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/AngularJS实战</id>
+     <id>http://beiyuu.com/AngularJS实战－基础概念</id>
      <content type="html">&lt;h2&gt;一、MVC 框架&lt;/h2&gt;
 
 &lt;p&gt;所有实例基本框架：&lt;/p&gt;
@@ -160,8 +160,15 @@ category: blog
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2&gt;二、基本概念&lt;/h2&gt;
-
-&lt;h3&gt;2.2 指令&lt;/h3&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>AngularJS应用－指令</title>
+     <link href="http://beiyuu.com/AngularJS-%E6%8C%87%E4%BB%A4"/>
+     <updated>2014-09-23T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/AngularJS-指令</id>
+     <content type="html">&lt;h2&gt;一、基本概念&lt;/h2&gt;
 
 &lt;p&gt;说明概念：附加在HTML元素上面自定义标记，可以是：标签、属性、class类，通过AngularJS的HTML编辑器（$compile），在指定元素上面附加指定的行为，可以操作DOM，改变DOM元素，甚至它子节点。&lt;/p&gt;
 
@@ -178,7 +185,9 @@ category: blog
 &amp;lt;span x-ng-bing=&quot;name&quot;&amp;gt;&amp;lt;/span&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;注册指令：&lt;/h4&gt;
+&lt;h2&gt;二、应用&lt;/h2&gt;
+
+&lt;h3&gt;2.1 注册指令：&lt;/h3&gt;
 
 &lt;p&gt;基本方法：&lt;/p&gt;
 
@@ -221,7 +230,7 @@ MyModule.directive(&quot;hello&quot;,function(){
 &lt;blockquote&gt;&lt;p&gt;遇到一个问题，样式（C）时，使用在input输入框，不能用“－”并且在指令名称中不能用大写，如果标签中是大写，那么在注册的时候需要改成小写。
 但是不能input框，可以注册用大写。没有找到规律&lt;/p&gt;&lt;/blockquote&gt;
 
-&lt;p&gt;保留原有内容，并且增加内容：&lt;/p&gt;
+&lt;h3&gt;2.2 保留原有内容，并且增加内容：&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;MyModule.directive(&quot;hello&quot;,function(){
     return {
@@ -231,6 +240,8 @@ MyModule.directive(&quot;hello&quot;,function(){
     }
 })
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;2.3 引用html模版&lt;/h3&gt;
 
 &lt;p&gt;当有大量的html需要修改或者替换的时候可用，引用html模版文件，这样减少在js中写大量到html代码，并且还需要考虑拼接：&lt;/p&gt;
 
@@ -267,8 +278,9 @@ MyModule.directive(&quot;hello&quot;,function(){
 })
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;LINk方法：
-参数有四个分别是scope,element,attr,&lt;/p&gt;
+&lt;h3&gt;2.4 LINk方法：&lt;/h3&gt;
+
+&lt;p&gt;参数有四个分别是scope,element,attr,ctrl&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;lt;!-- 指令 link使用 --&amp;gt;
 &amp;lt;!-- 定义controller --&amp;gt;
@@ -276,9 +288,11 @@ MyModule.directive(&quot;hello&quot;,function(){
     &amp;lt;load class=&quot;btn-deep-blue mt-vbig&quot;&amp;gt;测试加载&amp;lt;/load&amp;gt;
     &amp;lt;div id=&quot;show&quot;&amp;gt;显示&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
 
- // 定义contraoller里面的方法
-var myLoadModule = angular.module(&quot;MyModule&quot;,[]);
+&lt;p&gt;定义contraoller里面的方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var myLoadModule = angular.module(&quot;MyModule&quot;,[]);
 myLoadModule.controller(&quot;myLoad&quot;,[&quot;$scope&quot;,function($scope){
 
     $scope.loadData = function(){
@@ -304,6 +318,8 @@ myLoadModule.controller(&quot;myLoad&quot;,[&quot;$scope&quot;,function($scope){
     }
 })
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;2.5 指令复用&lt;/h3&gt;
 
 &lt;p&gt;通过link中的attr属性去复用指令&lt;/p&gt;
 
@@ -348,10 +364,9 @@ myLoadModule.directive(&quot;load&quot;,function(){
 })
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;指令间的调用&lt;/h4&gt;
+&lt;h3&gt;2.6 指令间的调用&lt;/h3&gt;
 
-&lt;p&gt;这里说一下另外一个方法：
-controller方法和link方法，目前的理解是一个是用来执行的方法，一个是用来调用的方法。&lt;/p&gt;
+&lt;p&gt;这里说一下另外一个方法：controller&lt;/p&gt;
 
 &lt;p&gt;HTML:&lt;/p&gt;
 

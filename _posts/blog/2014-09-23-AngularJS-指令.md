@@ -1,20 +1,13 @@
 ---
 layout: post
-title: AngularJS应用
+title: AngularJS应用－指令
 description: AngularJS使用
 category: blog
 ---
-## 一、MVC 框架
 
-所有实例基本框架：
 
-	<body ng-app="MyModule">
-		// content...
-	</body>
+## 一、基本概念
 
-## 二、基本概念
-
-### 2.2 指令
 
 说明概念：附加在HTML元素上面自定义标记，可以是：标签、属性、class类，通过AngularJS的HTML编辑器（$compile），在指定元素上面附加指定的行为，可以操作DOM，改变DOM元素，甚至它子节点。
 
@@ -30,8 +23,9 @@ category: blog
 	<span data-ng-bind="name"></span>
 	<span x-ng-bing="name"></span>
 	
+## 二、应用	
 
-#### 注册指令：
+### 2.1 注册指令：
 基本方法：
 	
 	module.directive("dir",function(){
@@ -68,7 +62,7 @@ restrict 可以是四个值：
 > 但是不能input框，可以注册用大写。没有找到规律
 
 
-保留原有内容，并且增加内容：
+### 2.2 保留原有内容，并且增加内容：
 
 	MyModule.directive("hello",function(){
 		return {
@@ -78,6 +72,7 @@ restrict 可以是四个值：
 		}
 	})
 
+### 2.3 引用html模版
 当有大量的html需要修改或者替换的时候可用，引用html模版文件，这样减少在js中写大量到html代码，并且还需要考虑拼接：
 
 	MyModule.directive("hello",function(){
@@ -111,8 +106,8 @@ restrict 可以是四个值：
 		}
 	})
 	
-LINk方法：
-参数有四个分别是scope,element,attr,
+### 2.4 LINk方法：
+参数有四个分别是scope,element,attr,ctrl
 	
 	<!-- 指令 link使用 -->
 	<!-- 定义controller -->
@@ -121,7 +116,8 @@ LINk方法：
 		<div id="show">显示</div>
 	</div>
 	
-	 // 定义contraoller里面的方法
+定义contraoller里面的方法：
+
 	var myLoadModule = angular.module("MyModule",[]);
 	myLoadModule.controller("myLoad",["$scope",function($scope){
 
@@ -148,6 +144,7 @@ LINk方法：
 		}
 	})
 
+### 2.5 指令复用
 通过link中的attr属性去复用指令
 
 HTML:
@@ -189,9 +186,8 @@ JS:
 		}
 	})
 
-#### 指令间的调用
-这里说一下另外一个方法：
-controller方法和link方法，目前的理解是一个是用来执行的方法，一个是用来调用的方法。
+### 2.6 指令间的调用
+这里说一下另外一个方法：controller
 
 HTML:
 

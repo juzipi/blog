@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>AngularJS应用 | juzipi</title>
+    <title>AngularJS应用－指令 | juzipi</title>
     <meta name="renderer" content="webkit">
     <meta name="description" content="Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -33,20 +33,9 @@
 <div id="content">
     
     <div class="entry">
-        <h1 class="entry-title"><a href="/blog/AngularJS%E5%AE%9E%E6%88%98" title="AngularJS应用">AngularJS应用</a></h1>
+        <h1 class="entry-title"><a href="/blog/AngularJS-%E6%8C%87%E4%BB%A4" title="AngularJS应用－指令">AngularJS应用－指令</a></h1>
         <p class="entry-date">2014-09-23</p>
-        <h2>一、MVC 框架</h2>
-
-<p>所有实例基本框架：</p>
-
-<pre><code>&lt;body ng-app="MyModule"&gt;
-    // content...
-&lt;/body&gt;
-</code></pre>
-
-<h2>二、基本概念</h2>
-
-<h3>2.2 指令</h3>
+        <h2>一、基本概念</h2>
 
 <p>说明概念：附加在HTML元素上面自定义标记，可以是：标签、属性、class类，通过AngularJS的HTML编辑器（$compile），在指定元素上面附加指定的行为，可以操作DOM，改变DOM元素，甚至它子节点。</p>
 
@@ -63,7 +52,9 @@
 &lt;span x-ng-bing="name"&gt;&lt;/span&gt;
 </code></pre>
 
-<h4>注册指令：</h4>
+<h2>二、应用</h2>
+
+<h3>2.1 注册指令：</h3>
 
 <p>基本方法：</p>
 
@@ -106,7 +97,7 @@ MyModule.directive("hello",function(){
 <blockquote><p>遇到一个问题，样式（C）时，使用在input输入框，不能用“－”并且在指令名称中不能用大写，如果标签中是大写，那么在注册的时候需要改成小写。
 但是不能input框，可以注册用大写。没有找到规律</p></blockquote>
 
-<p>保留原有内容，并且增加内容：</p>
+<h3>2.2 保留原有内容，并且增加内容：</h3>
 
 <pre><code>MyModule.directive("hello",function(){
     return {
@@ -116,6 +107,8 @@ MyModule.directive("hello",function(){
     }
 })
 </code></pre>
+
+<h3>2.3 引用html模版</h3>
 
 <p>当有大量的html需要修改或者替换的时候可用，引用html模版文件，这样减少在js中写大量到html代码，并且还需要考虑拼接：</p>
 
@@ -152,8 +145,9 @@ MyModule.directive("hello",function(){
 })
 </code></pre>
 
-<p>LINk方法：
-参数有四个分别是scope,element,attr,</p>
+<h3>2.4 LINk方法：</h3>
+
+<p>参数有四个分别是scope,element,attr,ctrl</p>
 
 <pre><code>&lt;!-- 指令 link使用 --&gt;
 &lt;!-- 定义controller --&gt;
@@ -161,9 +155,11 @@ MyModule.directive("hello",function(){
     &lt;load class="btn-deep-blue mt-vbig"&gt;测试加载&lt;/load&gt;
     &lt;div id="show"&gt;显示&lt;/div&gt;
 &lt;/div&gt;
+</code></pre>
 
- // 定义contraoller里面的方法
-var myLoadModule = angular.module("MyModule",[]);
+<p>定义contraoller里面的方法：</p>
+
+<pre><code>var myLoadModule = angular.module("MyModule",[]);
 myLoadModule.controller("myLoad",["$scope",function($scope){
 
     $scope.loadData = function(){
@@ -189,6 +185,8 @@ myLoadModule.controller("myLoad",["$scope",function($scope){
     }
 })
 </code></pre>
+
+<h3>2.5 指令复用</h3>
 
 <p>通过link中的attr属性去复用指令</p>
 
@@ -233,10 +231,9 @@ myLoadModule.directive("load",function(){
 })
 </code></pre>
 
-<h4>指令间的调用</h4>
+<h3>2.6 指令间的调用</h3>
 
-<p>这里说一下另外一个方法：
-controller方法和link方法，目前的理解是一个是用来执行的方法，一个是用来调用的方法。</p>
+<p>这里说一下另外一个方法：controller</p>
 
 <p>HTML:</p>
 
@@ -317,7 +314,11 @@ MyModule.directive("light",function(){
         <h2>语言</h2>
         <ul class="artical-list">
         
-            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98">AngularJS应用</a>
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98%EF%BC%8D%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS-%E6%8C%87%E4%BB%A4">AngularJS应用－指令</a>
             
             </li>
         
