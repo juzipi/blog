@@ -4,13 +4,109 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-08-12T10:45:12+08:00</updated>
+   <updated>2015-08-21T09:46:36+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>15年08月19日－周工作记录</title>
+     <link href="http://beiyuu.com/%E5%91%A8%E7%BA%AA%E5%BD%95"/>
+     <updated>2015-08-19T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/周纪录</id>
+     <content type="html">&lt;p&gt;2015年08月19日&lt;/p&gt;
+
+&lt;p&gt;本周工作学习心得：&lt;/p&gt;
+
+&lt;h3&gt;一、垂直居中对齐&lt;/h3&gt;
+
+&lt;p&gt;需求：在弹出框中对内容进行垂直居中定位&lt;/p&gt;
+
+&lt;p&gt;状况：内容高度不定，&lt;/p&gt;
+
+&lt;p&gt;解决方法：&lt;/p&gt;
+
+&lt;p&gt;1、原来的解决方案，算出内容高度，然后用绝对定位，加上负边距实现&lt;/p&gt;
+
+&lt;p&gt;2、现有移动端的实现方式更加简单&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.box{display:flex; display:-webkit-flex;}
+.item{align-self:center;-webkit-align-self:center;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;二、数字自动转译&lt;/h3&gt;
+
+&lt;p&gt;需求：在手机端点击输入框出来数字键盘&lt;/p&gt;
+
+&lt;p&gt;问题：当输入到一定数字时候，数字自动转译&lt;/p&gt;
+
+&lt;p&gt;解决方案：把number类型改成tel类型。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3&gt;三、angularJS 过滤&lt;/h3&gt;
+
+&lt;p&gt;定义过滤器：对字符进行重新转换的过程。
+自定义和使用过滤&lt;/p&gt;
+
+&lt;p&gt;使用过滤服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.233 // 1.23保留两位小数点
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自定义服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var myAppMoudel = angular.module(&quot;myApp&quot;,[]);
+myAppMoudel.filter(&quot;addNum&quot;,function(){
+    return function(item){
+    //这里item指需要转换的字符
+        return item+1;
+    }
+})
+
+2 // 3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;四、angularJS 服务&lt;/h3&gt;
+
+&lt;p&gt;模版：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;body ng-app=&quot;myApp&quot;&amp;gt;
+    &amp;lt;div ng-controller=&quot;test&quot;&amp;gt;
+        &amp;lt;input type=&quot;button&quot; ng-click=&quot;show()&quot; value=&quot;点击&quot; /&amp;gt;
+    &amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;建立自定义服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var myAppModule = angular.module(&quot;myApp&quot;,[]);
+myAppModule.factory(&quot;myService&quot;,function(){
+    return {
+        fn:function(){
+            console.log(&quot;self&quot;);
+        }
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;引用服务：&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;自定义的服务一定是放在左右服务最后面。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;myAppModule.controller(&quot;test&quot;,[&quot;$scope&quot;,&quot;myService&quot;,function($scope,myService){
+
+$scope.show =function(){
+    myService.fn();
+}
+
+}])
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+   </entry>
    
    <entry>
      <title>jekyll基本使用方式</title>
