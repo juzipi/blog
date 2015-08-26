@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-08-26T10:30:55+08:00</updated>
+   <updated>2015-08-26T10:54:44+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -1467,17 +1467,18 @@ document.getElementById(&quot;show&quot;).onclick=function(){
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;3、借用其他方法&lt;/h2&gt;
+&lt;h2&gt;三、借用其他方法&lt;/h2&gt;
 
-&lt;p&gt;1、类数组借用
-一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。&lt;/p&gt;
+&lt;h3&gt;3.1 类数组借用&lt;/h3&gt;
+
+&lt;p&gt;一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[].shift.call(arguments); //取出最前面一项
 [].slice.call(arguments); //转换成数组
 [].push.call(arguments); //在后面添加一项
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;2、类似继承&lt;/p&gt;
+&lt;h3&gt;3.2 类似继承&lt;/h3&gt;
 
 &lt;p&gt;借用别的方法放到，构建对象中。使对象也能借用到别的方法。&lt;/p&gt;
 
@@ -1501,9 +1502,9 @@ console.log(C.getAddNum(9,2)); // 11
 console.log(C.del);// 3
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;3、应用实例&lt;/p&gt;
+&lt;h3&gt;3.3 应用实例&lt;/h3&gt;
 
-&lt;p&gt;3.1 单例模式实现&lt;/p&gt;
+&lt;h4&gt;3.3.1 单例模式实现&lt;/h4&gt;
 
 &lt;p&gt;单例，简单来说就是，只是存在一个，不会出现两个，这个在弹出框的时候特别有用，这里牵涉到匿名函数，闭包，apply应用。&lt;/p&gt;
 
@@ -1532,7 +1533,7 @@ document.getElementById(&quot;show&quot;).onclick=function(){
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;3.2 函数执行顺序&lt;/p&gt;
+&lt;h4&gt;3.3.2 函数执行顺序&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;Function.prototype.after = function(fn){
     var _self = this;

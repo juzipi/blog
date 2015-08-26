@@ -154,15 +154,15 @@ category: blog
 		fn("wo");
 	}
 
-## 3、借用其他方法
-1、类数组借用
+## 三、借用其他方法
+### 3.1 类数组借用
 一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。
 	
 	[].shift.call(arguments); //取出最前面一项
 	[].slice.call(arguments); //转换成数组
 	[].push.call(arguments); //在后面添加一项
 	
-2、类似继承
+### 3.2 类似继承
 
 借用别的方法放到，构建对象中。使对象也能借用到别的方法。
 	
@@ -185,9 +185,9 @@ category: blog
 	console.log(C.getAddNum(9,2)); // 11
 	console.log(C.del);// 3
 
-3、应用实例
+### 3.3 应用实例
 
-3.1 单例模式实现
+#### 3.3.1 单例模式实现
 
 单例，简单来说就是，只是存在一个，不会出现两个，这个在弹出框的时候特别有用，这里牵涉到匿名函数，闭包，apply应用。	
 	
@@ -215,7 +215,7 @@ category: blog
 		popup.style.display = "block";
 	}
 
-3.2 函数执行顺序
+#### 3.3.2 函数执行顺序
 
 	Function.prototype.after = function(fn){
 		var _self = this;

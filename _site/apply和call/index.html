@@ -198,17 +198,18 @@ document.getElementById("show").onclick=function(){
 }
 </code></pre>
 
-<h2>3、借用其他方法</h2>
+<h2>三、借用其他方法</h2>
 
-<p>1、类数组借用
-一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。</p>
+<h3>3.1 类数组借用</h3>
+
+<p>一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。</p>
 
 <pre><code>[].shift.call(arguments); //取出最前面一项
 [].slice.call(arguments); //转换成数组
 [].push.call(arguments); //在后面添加一项
 </code></pre>
 
-<p>2、类似继承</p>
+<h3>3.2 类似继承</h3>
 
 <p>借用别的方法放到，构建对象中。使对象也能借用到别的方法。</p>
 
@@ -232,9 +233,9 @@ console.log(C.getAddNum(9,2)); // 11
 console.log(C.del);// 3
 </code></pre>
 
-<p>3、应用实例</p>
+<h3>3.3 应用实例</h3>
 
-<p>3.1 单例模式实现</p>
+<h4>3.3.1 单例模式实现</h4>
 
 <p>单例，简单来说就是，只是存在一个，不会出现两个，这个在弹出框的时候特别有用，这里牵涉到匿名函数，闭包，apply应用。</p>
 
@@ -263,7 +264,7 @@ document.getElementById("show").onclick=function(){
 }
 </code></pre>
 
-<p>3.2 函数执行顺序</p>
+<h4>3.3.2 函数执行顺序</h4>
 
 <pre><code>Function.prototype.after = function(fn){
     var _self = this;
