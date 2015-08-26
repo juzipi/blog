@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-08-26T10:26:27+08:00</updated>
+   <updated>2015-08-26T10:29:21+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
@@ -1300,105 +1300,277 @@ var module=require(./moduelA);
    </entry>
    
    <entry>
-     <title>表单验证－策略模式</title>
-     <link href="http://beiyuu.com/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81"/>
-     <updated>2011-08-11T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/表单验证</id>
-     <content type="html">&lt;h1&gt;基本HTML&lt;/h1&gt;
+     <title>apply和call应用</title>
+     <link href="http://beiyuu.com/apply%E5%92%8Ccall"/>
+     <updated>2012-03-10T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/apply和call</id>
+     <content type="html">&lt;h2&gt;一、基本认识&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;form id=&quot;lifeForm&quot;&amp;gt;
-&amp;lt;div class=&quot;life-choose&quot;&amp;gt;
-    年龄：
-    &amp;lt;select class=&quot;select-life&quot; name=&quot;lifeYear&quot;&amp;gt;
-        &amp;lt;option&amp;gt;&amp;lt;/option&amp;gt;       
-        &amp;lt;option&amp;gt;1&amp;lt;/option&amp;gt;      
-        &amp;lt;option&amp;gt;2&amp;lt;/option&amp;gt;      
-    &amp;lt;/select&amp;gt;岁
-    &amp;lt;select class=&quot;select-life&quot; name=&quot;lifeMonth&quot;&amp;gt;
-        &amp;lt;option&amp;gt;&amp;lt;/option&amp;gt;       
-        &amp;lt;option&amp;gt;1&amp;lt;/option&amp;gt;
-        &amp;lt;option&amp;gt;2&amp;lt;/option&amp;gt;
-    &amp;lt;/select&amp;gt;
-    个月
+&lt;p&gt;都是Function原型定义的两个方法，Function.prototype.apply和Function.prototype.call。也就是可以通过函数进行调用。&lt;/p&gt;
 
-&amp;lt;/div&amp;gt;
-&amp;lt;div class=&quot;&quot;&amp;gt;
-    &amp;lt;input type=&quot;text&quot; name=&quot;lifeNum&quot; value=&quot;&quot; size=&quot;10&quot; class=&quot;input-normal&quot; /&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div class=&quot;t-c mt-normal&quot;&amp;gt;
-    &amp;lt;input class=&quot;btn-style01 dis&quot; value=&quot;转换&quot; name=&quot;&quot; type=&quot;botton&quot; /&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/form&amp;gt;
+&lt;pre&gt;&lt;code&gt;    fn.apply(this,[arg1,arg2]);
+    fn.call(this,arg1,arg2);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1&gt;验证代码&lt;/h1&gt;
+&lt;p&gt;两个方法作用相同，第一个参数传入的都是，该函数内 this 的指向。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;// 通用方法
-var vFn = {
-    isNoEmpty : function  (value,errorMsg) {
-        if(value===&quot;&quot;){
-            return errorMsg;
-        }
-    },
-    miniLength : function(value,length,errorMsg){
-        if(value.length&amp;lt;length){
-            return errorMsg;
-        }
-    }
+&lt;p&gt;从第二个参数开始，可以看到传入的参数不同。前面apply传入的是一个数组，call传入的参数依次传入函数。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;call是可以在确定传入什么参数的时候使用，而apply是可以在一些不确定的参数情况下面使用，比如可以针对这个数组做一些添加和删除的动作。&lt;/p&gt;
+
+&lt;p&gt;也就是apply传入的参数是可以变化的。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;如果第一个参数传入的是null，函数体内this会指向默认的宿主对象，如果在浏览器中就是 window。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var fn = function(){
+    console.log(this);
+}
+fn.apply(null); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果是严格模式下面，this还是为null。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var fn = function(){
+    &quot;use strict&quot;;
+    console.log(this===window);
+}
+fn.apply(null); //false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;二、使用场景&lt;/h2&gt;
+
+&lt;p&gt;1、改变this指向。
+改变的是需要执行函数的内部指向。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var FnApply = function(par){
+    this.name = &quot;apply&quot;;//这里其实是覆盖了ObjectApply对象的name属所以下面的这一行打印是apply
+    console.log(this.name);//apply  
+    console.log(this.sex); // man 这里调用的就是ObjectApply对象的色系属性
+    console.log(par) // me  这里调用的是传入进Arr数组的第一个参数
+    this.name = &quot;apply2&quot;;//如果在这里重新覆盖，是不会对console.log(this.name);这个起作用。
+}
+var ObjectApply = {
+    name : &quot;ObjectApply&quot;,
+    sex:&quot;man&quot;
+}
+var Arr = [&quot;me&quot;,&quot;you&quot;]
+FnApply.apply(ObjectApply,Arr); 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;首先 FnApply.apply(ObjectApply,Arr);是执行了FnApply该函数，而把函数体内的 this指向的是ObjectApply这个对象。&lt;/p&gt;
+
+&lt;p&gt;修正this指向，在一些函数嵌套多一些的时候this指向经常，出现问题。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
+    console.log(this.id); //show
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;＃验证方法&lt;/p&gt;
+&lt;p&gt;如果在其中加入一个函数&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    var Validator = function(){
-    this.cache = [];
- }
-
-// 
- Validator.prototype.add = function(dom,rule,errorMsg){
-    var ary=rule.split(&quot;:&quot;);//分割可能在rule中配置的第二种情况 minLength:4;
-    this.cache.push(function(){ // 把函数加入缓存列表
-        var strategy=ary.shift(); //取Ary第一个值，一般这是要执行验证方法
-        console.log(&quot;取出第一个值：&quot;+strategy)
-        ary.unshift(dom.value); // 把dom的值传入ary，这里有两种情况如果 验证是带“：”那么这个就是在第二个参数，否则就是第一个参数，对应相应验证方法里面的 value参数
-        console.log(&quot;加入dom值后：&quot;+ary)
-        ary.push(errorMsg); //把报错信息传入ary，对应验证方法里面errorMsg参数
-        console.log(&quot;再加入报错信息：&quot;+ary)
-        return strategies[strategy].apply(dom,ary); //执行相应的验证方法，并且把this指向该dom，然后参数使用ary数组里面参数
-    });
- };
-
- Validator.prototype.start = function(){
-    for(var i=0,validatorFunc; validatorFunc = this.cache[i++];){
-        var d = validatorFunc();
-        if(msg){
-            return msg;
-        }
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //undefined
     }
- };
+    fn();
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;运用方法&lt;/h2&gt;
+&lt;p&gt;这时候可以用apply或者是call来修正this指向。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;var lifeForm = document.getElementById(&quot;lifeForm&quot;);
-var validatorFunc = function(){
-    var validator =  new Validator();
-    validator.add(lifeForm.lifeMonth,&quot;isNoEmpty&quot;,&quot;月份不能为空&quot;);
-    validator.add(lifeForm.lifeYear,&quot;isNoEmpty&quot;,&quot;年份不能为空&quot;);
-    var errorMsg = validator.start();
-    return errorMsg;
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //show
+    }
+    fn.call(this);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;当然在这里也可以前面把this缓存起来，放在一个变量里面。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
+    var _self = this;
+    var fn = function(){
+        console.log(_self.id); //show
+    }
+    fn();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2、Function.prototype.bind
+一般现在的浏览器都能很好的支持这个方法，该方法就是为函数内部指定this对象。如果没有实现该方法，模拟方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Function.prototype.bind=function(context){
+    var _self = this;
+    return function(){
+        return _self.apply(context,arguments);
+    }
+}
+//分步骤解释一下该方法
+//原始方式
+document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //show
+    };
+    fn.bind(this)();
+// fn.bind(),这里的fn是一个函数对象，还没有执行，只是执行了对象上面的bind方法。
+// 而bind方法返回的一个函数，也就是需要再一次执行。fn.bind()(),这个时候才是真正执行了bind之后返回的方法。
+    fn(); //undefined,这里执行的是就是最开始的那段函数。
+
+}
+//直接把bind方法绑定在函数后面，这个时候赋给变量的fn就是执行bind完成之后返回的函数。
+//也就是：function(){
+        return _self.apply(context,arguments);
+    }
+
+document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //show
+    }.bind(this);
+    fn();
+    //这里执行的就是bind方法执行后返回的函数。
 }
 
-    $(&quot;.select-life&quot;).change(function() {
-        var errorMsg = validatorFunc();
-        if (errorMsg) {
-            console.log(errorMsg);
-            $(&quot;.btn-style01&quot;).addClass(&#39;dis&#39;);
-            return false;
-        };
-        $(&quot;.btn-style01&quot;).removeClass(&#39;dis&#39;);
-    });
+//也可以是这样：
+document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //show
+    };
+    var fnfn = fn.bind(this);
+    //把返回函数赋予一个变量
+    fnfn();
+}
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;了解bind方法，需要了解的一点是，函数绑定该方法后，一定返回的是一个函数，需要再一次执行，实际上是执行了_self.apply(content,arguments);&lt;/p&gt;
+
+&lt;p&gt;高级bind方法实现：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Function.prototype.bind = function(){
+    var _self = this;
+    var context = [].shift.call(arguments);
+//取出第一个参数作为上下文替换
+    var arg = [].slice.call(arguments);
+//把其他参数转换成数组
+    return function(){
+        return _self.apply(context,[].concat.apply(arg,[].slice.call(arguments)));
+//concat合并后面执行函数的参数和前面arg数组
+    }
+}
+
+document.getElementById(&quot;show&quot;).onclick=function(){
+    var fn = function(){
+        console.log(this.id); //show
+        console.log(arguments); //you,wo 
+    }.bind(this,&quot;you&quot;);
+    fn(&quot;wo&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;3、借用其他方法&lt;/h2&gt;
+
+&lt;p&gt;1、类数组借用
+一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[].shift.call(arguments); //取出最前面一项
+[].slice.call(arguments); //转换成数组
+[].push.call(arguments); //在后面添加一项
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2、类似继承&lt;/p&gt;
+
+&lt;p&gt;借用别的方法放到，构建对象中。使对象也能借用到别的方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var Add = function(a,b){
+    return a + b;
+}
+var Del = function(a,b){
+    return a - b;
+}
+var B =function(){
+    this.add = Add.apply(this,arguments);
+    this.del = Del.apply(this,arguments);
+}
+B.prototype.getAddNum = function(){
+    return Add.apply(this,arguments);
+    // 借用了Add方法，在对象中也有Add方法了。
+}
+
+var C  = new B(8,5);
+console.log(C.getAddNum(9,2)); // 11
+console.log(C.del);// 3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3、应用实例&lt;/p&gt;
+
+&lt;p&gt;3.1 单例模式实现&lt;/p&gt;
+
+&lt;p&gt;单例，简单来说就是，只是存在一个，不会出现两个，这个在弹出框的时候特别有用，这里牵涉到匿名函数，闭包，apply应用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var singleFn = function(fn){
+    var rel;
+    return function(){
+        return rel || (rel = fn.apply(this,arguments));
+        //如果有rel,则返回rel，如果没有则执行fn函数。
+    }
+}
+
+var creatPopup = function(content){
+    var popup = document.createElement(&quot;div&quot;);
+    popup.style.display=&quot;none&quot;;
+    popup.innerHTML = content;
+    document.body.appendChild(popup);
+    retuen popup;
+}
+
+var newCreatPopup = singleFn(creatPopup);
+
+document.getElementById(&quot;show&quot;).onclick=function(){
+    var popup = newCreatPopup(&quot;创建弹出框&quot;);
+    //这里应用就是单例函数中return返回回来的函数
+    popup.style.display = &quot;block&quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.2 函数执行顺序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Function.prototype.after = function(fn){
+    var _self = this;
+    //保存原有函数
+    return function(){
+        fn.apply(this,arguments);
+        return _self.apply(this,arguments);
+    // 返回原来函数执行结果
+    }
+}
+Function.prototype.before= function(fn){
+    var _self = this;
+    return function(){
+        var _s = _self.apply(this,arguments);
+        fn.apply(this,arguments);
+        return _s;
+    // 返回原来函数执行结果
+    }
+}
+var fn1 = function(){
+    console.log(1);
+}
+var fn3 = function(){
+    console.log(3);
+}
+var fn2 = function(){
+    console.log(2);
+}
+
+var fnA = fn1.after(fn3).before(fn2);
+
+fnA(); // 3,1,2
+//这里先执行fn3,再到before方法中，这里首先执行fn1方法，再执行fn2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;四、总结&lt;/h2&gt;
+
+&lt;p&gt;使用apply或call，改变原有函数的上下文执行情况，要看当前函数执行的环境，在高级的函数使用中会经常用到apply概念。&lt;/p&gt;
 </content>
    </entry>
    
