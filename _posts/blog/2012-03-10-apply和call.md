@@ -2,7 +2,7 @@
 layout: post
 title: apply和call应用
 description: 两个方法，详细使用场景
-category: project
+category: blog
 ---
 
 ## 一、基本认识
