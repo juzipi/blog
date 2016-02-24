@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>promise对象 | juzipi</title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/blog/css/default.css" type="text/css" />
+    <link rel="icon" href="/blog/logo.png" type="image/png">
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/blog/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="/blog/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+<div class="head">
+    <a href="../">
+        <img src="../images/logo_24.png" alt="logo" class="logo" />
+    </a>
+</div>
+<div id="content">
+    
+    <div class="entry">
+        <h1 class="entry-title"><a href="/blog/promise" title="promise对象">promise对象</a></h1>
+        <p class="entry-date">2015-10-13</p>
+        <h3>一、概述</h3>
+
+<p>在解释promise对象之前，先了解，js中异步的概念。
+js语言的执行环境是"单线程",也就是一次只能执行一个任务,如果任务多了,就需要排队,前面任务完成才能执行后面的任务.例如：</p>
+
+<h4>同步和异步：</h4>
+
+<ul>
+<li><p>同步是一个任务完成执行下一个任务,每一个任务按照顺序来执行。</p></li>
+<li><p>异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A>B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。</p>
+
+<p>  var f1 = function(fn){
+      console.log("1");
+      setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
+  }
+  var f2 = function(){
+      console.log("2")
+  }
+  //再执行f2函数一秒之前，f3会执行。
+  var f3 = function(){
+      console.log("3");
+  }
+  f1(f2)
+  f3();</p></li>
+</ul>
+
+
+<blockquote><p>打印出来的结果是1>3>2，这里任务排列是f1>f2>f3但是真正执行的时候顺序改变了,这就是"异步模式".</p></blockquote>
+
+<p>上面回调模式是建立在f2执行时间比较长，有可能会影响f3执行，不过这种模式缺点比较明显，不容易阅读，回调函数的名称必须写多了，作用是什么可能不是很清楚，而且每一种任务，只能有一个回调函数。</p>
+
+<h4>异步的流程控制</h4>
+
+<pre><code>var async = function (arg,callback){
+    console.log("参数为"+arg+"一秒后返回");
+    setTimeout(function(){callback(arg+1);}, 1000);
+}
+
+var final = function (value) {
+    console.log('完成: ', value);
+}
+async(1,function(value){
+    async(value,final)
+})
+</code></pre>
+
+<ol>
+<li>首先第一次执行async代码，执行里面的内容。</li>
+<li>一秒钟后再执行callback函数，这里callback函数就是执行async，第二遍执行，里面内容，并且取函数的第一个参数值+1.</li>
+<li>第二遍执行async里面的函数的callback函数，这里函数就是final</li>
+<li><p>final函数的会取value为参数。
+这里会在执行完两遍async函数后再执行final，也就是两秒之后，这只是一层的嵌套，如果多几层嵌套，比如：</p>
+
+<pre><code>  async(1, function(value){
+      async(value, function(value){
+          async(value, function(value){
+              async(value, function(value){
+                  async(value, function(value){
+                  async(value, final);
+                  });
+              });
+          });
+      });
+  });
+</code></pre></li>
+</ol>
+
+
+<h3>串行执行</h3>
+
+<p>串行执行可以是一个任务完成再来执行另外一个任务，可以用来控制异步任务。</p>
+
+<pre><code>var items = [ 1, 2, 3, 4, 5, 6 ];
+var results = [];
+function series(item) {
+  if(item) {
+    async( item, function(result) {//这里的result也是item+1的值
+      results.push(result);
+      return arguments.callee(items.shift());
+      //返回并且再次执行自身一遍。
+    });
+  } else {
+    return final(results);
+    //如果数组中没有项目，则执行final
+  }
+}
+
+series(items.shift());
+</code></pre>
+
+<h3>并行执行</h3>
+
+<p>也就是一同把所有的函数执行完成，再执行final，这个在效率上面有提升，</p>
+
+<pre><code>items.forEach(function(item){
+    async(item,function(reulse){
+        results.push(reulse);
+        if(results.length == items.length){
+            final(reulses)
+        }
+    })
+})
+</code></pre>
+
+<p>这种方式和前面串行方式不同的是，不需要等待前面一个执行完成执行后面那个任务，可以同时进行，但是这个也有一个弊端就是当同时进行的任务过多，给机器带来的性能压力就会体现出来。需要有一种结合这两种方式的更好的方法出来</p>
+
+<pre><code>function launcher(){
+    while(running &lt; limit &amp;&amp; items.length &gt; 0){
+        var item = items.shift();
+        async(item,function(result){
+            results.push(result);
+            running--;
+        })
+    }
+}
+</code></pre>
+
+<p>二、 Promise</p>
+
+<h3>概述</h3>
+
+
+       
+    </div>
+
+
+
+    <div class="sidenav">
+        <h2>语言</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/promise">promise对象</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F">装饰性模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS-%E6%8C%87%E4%BB%A4">AngularJS应用－指令</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0-%E5%87%BD%E6%95%B0">学习笔记－设计模式 －函数</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0">学习笔记－设计模式－基础</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83">模块化学习思考</a>
+            
+            </li>
+        
+            <li><a href="/blog/RequireJs%E4%BD%BF%E7%94%A8">RequireJs应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/apply%E5%92%8Ccall">apply和call应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81">表单验证－策略模式</a>
+            
+            </li>
+        
+        </ul>
+
+        <h2>工具</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/jekyll%E4%BD%BF%E7%94%A8">jekyll基本使用方式</a></li>
+        
+        </ul>
+
+        <h2>项目沉淀</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/%E5%91%A8%E7%BA%AA%E5%BD%95">15年08月19日－周工作记录</a></li>
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/blog/js/post.js" type="text/javascript"></script>
+
+
+    
+</body>
+</html>

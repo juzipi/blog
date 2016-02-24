@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>15年08月19日－周工作记录 | juzipi</title>
+    <title>jekyll基本使用方式 | juzipi</title>
     <meta name="renderer" content="webkit">
     <meta name="description" content="Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -33,96 +33,45 @@
 <div id="content">
     
     <div class="entry">
-        <h1 class="entry-title"><a href="/blog/%E5%91%A8%E7%BA%AA%E5%BD%95" title="15年08月19日－周工作记录">15年08月19日－周工作记录</a></h1>
-        <p class="entry-date">2015-08-19</p>
-        <p>2015年08月19日</p>
+        <h1 class="entry-title"><a href="/blog/jekyll%E4%BD%BF%E7%94%A8" title="jekyll基本使用方式">jekyll基本使用方式</a></h1>
+        <p class="entry-date">2015-06-25</p>
+        <h2>基本使用方式</h2>
 
-<p>本周工作学习心得：</p>
+<p>安装</p>
 
-<h3>一、垂直居中对齐</h3>
-
-<p>需求：在弹出框中对内容进行垂直居中定位</p>
-
-<p>状况：内容高度不定，</p>
-
-<p>解决方法：</p>
-
-<p>1、原来的解决方案，算出内容高度，然后用绝对定位，加上负边距实现</p>
-
-<p>2、现有移动端的实现方式更加简单</p>
-
-<pre><code>.box{display:flex; display:-webkit-flex;}
-.item{align-self:center;-webkit-align-self:center;}
+<pre><code>gem install jekyll
 </code></pre>
 
-<h3>二、数字自动转译</h3>
+<p>进入文件夹</p>
 
-<p>需求：在手机端点击输入框出来数字键盘</p>
-
-<p>问题：当输入到一定数字时候，数字自动转译</p>
-
-<p>解决方案：把number类型改成tel类型。</p>
-
-<blockquote><p>该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好</p></blockquote>
-
-<h3>三、angularJS 过滤</h3>
-
-<p>定义过滤器：对字符进行重新转换的过程。
-自定义和使用过滤</p>
-
-<p>使用过滤服务：</p>
-
-<pre><code>1.233 // 1.23保留两位小数点
+<pre><code>jekyll new my-site
+cd my-site
 </code></pre>
 
-<p>自定义服务：</p>
+<p>起服务</p>
 
-<pre><code>var myAppMoudel = angular.module("myApp",[]);
-myAppMoudel.filter("addNum",function(){
-    return function(item){
-    //这里item指需要转换的字符
-        return item+1;
-    }
-})
+<pre><code>jekyll serve
 
-2 // 3
+服务地址：http://localhost:4000
 </code></pre>
 
-<h3>四、angularJS 服务</h3>
+<p>建立</p>
 
-<p>模版：</p>
+<pre><code>jekyll build
 
-<pre><code>&lt;body ng-app="myApp"&gt;
-    &lt;div ng-controller="test"&gt;
-        &lt;input type="button" ng-click="show()" value="点击" /&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
+jekyll build -watch //持续跟踪
 </code></pre>
 
-<p>建立自定义服务</p>
+<p>文章要求</p>
 
-<pre><code>var myAppModule = angular.module("myApp",[]);
-myAppModule.factory("myService",function(){
-    return {
-        fn:function(){
-            console.log("self");
-        }
-    }
-})
+<pre><code>---
+layout: post
+title: jekyll基本使用方式
+description: jekyll基本使用方式
+category: blog
 </code></pre>
 
-<p>引用服务：</p>
-
-<blockquote><p>自定义的服务一定是放在左右服务最后面。</p></blockquote>
-
-<pre><code>myAppModule.controller("test",["$scope","myService",function($scope,myService){
-
-$scope.show =function(){
-    myService.fn();
-}
-
-}])
-</code></pre>
+<hr />
 
 
        
@@ -134,7 +83,15 @@ $scope.show =function(){
         <h2>语言</h2>
         <ul class="artical-list">
         
-            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98%EF%BC%8D%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            <li><a href="/blog/promise">promise对象</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F">装饰性模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
             
             </li>
         

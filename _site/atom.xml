@@ -4,13 +4,227 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2015-08-26T10:54:44+08:00</updated>
+   <updated>2016-02-24T15:00:23+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>promise对象</title>
+     <link href="http://beiyuu.com/promise"/>
+     <updated>2015-10-13T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/promise</id>
+     <content type="html">&lt;h3&gt;一、概述&lt;/h3&gt;
+
+&lt;p&gt;在解释promise对象之前，先了解，js中异步的概念。
+js语言的执行环境是&quot;单线程&quot;,也就是一次只能执行一个任务,如果任务多了,就需要排队,前面任务完成才能执行后面的任务.例如：&lt;/p&gt;
+
+&lt;h4&gt;同步和异步：&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;同步是一个任务完成执行下一个任务,每一个任务按照顺序来执行。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A&gt;B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。&lt;/p&gt;
+
+&lt;p&gt;  var f1 = function(fn){
+      console.log(&quot;1&quot;);
+      setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
+  }
+  var f2 = function(){
+      console.log(&quot;2&quot;)
+  }
+  //再执行f2函数一秒之前，f3会执行。
+  var f3 = function(){
+      console.log(&quot;3&quot;);
+  }
+  f1(f2)
+  f3();&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;blockquote&gt;&lt;p&gt;打印出来的结果是1&gt;3&gt;2，这里任务排列是f1&gt;f2&gt;f3但是真正执行的时候顺序改变了,这就是&quot;异步模式&quot;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;上面回调模式是建立在f2执行时间比较长，有可能会影响f3执行，不过这种模式缺点比较明显，不容易阅读，回调函数的名称必须写多了，作用是什么可能不是很清楚，而且每一种任务，只能有一个回调函数。&lt;/p&gt;
+
+&lt;h4&gt;异步的流程控制&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;var async = function (arg,callback){
+    console.log(&quot;参数为&quot;+arg+&quot;一秒后返回&quot;);
+    setTimeout(function(){callback(arg+1);}, 1000);
+}
+
+var final = function (value) {
+    console.log(&#39;完成: &#39;, value);
+}
+async(1,function(value){
+    async(value,final)
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;首先第一次执行async代码，执行里面的内容。&lt;/li&gt;
+&lt;li&gt;一秒钟后再执行callback函数，这里callback函数就是执行async，第二遍执行，里面内容，并且取函数的第一个参数值+1.&lt;/li&gt;
+&lt;li&gt;第二遍执行async里面的函数的callback函数，这里函数就是final&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;final函数的会取value为参数。
+这里会在执行完两遍async函数后再执行final，也就是两秒之后，这只是一层的嵌套，如果多几层嵌套，比如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  async(1, function(value){
+      async(value, function(value){
+          async(value, function(value){
+              async(value, function(value){
+                  async(value, function(value){
+                  async(value, final);
+                  });
+              });
+          });
+      });
+  });
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h3&gt;串行执行&lt;/h3&gt;
+
+&lt;p&gt;串行执行可以是一个任务完成再来执行另外一个任务，可以用来控制异步任务。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var items = [ 1, 2, 3, 4, 5, 6 ];
+var results = [];
+function series(item) {
+  if(item) {
+    async( item, function(result) {//这里的result也是item+1的值
+      results.push(result);
+      return arguments.callee(items.shift());
+      //返回并且再次执行自身一遍。
+    });
+  } else {
+    return final(results);
+    //如果数组中没有项目，则执行final
+  }
+}
+
+series(items.shift());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;并行执行&lt;/h3&gt;
+
+&lt;p&gt;也就是一同把所有的函数执行完成，再执行final，这个在效率上面有提升，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;items.forEach(function(item){
+    async(item,function(reulse){
+        results.push(reulse);
+        if(results.length == items.length){
+            final(reulses)
+        }
+    })
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这种方式和前面串行方式不同的是，不需要等待前面一个执行完成执行后面那个任务，可以同时进行，但是这个也有一个弊端就是当同时进行的任务过多，给机器带来的性能压力就会体现出来。需要有一种结合这两种方式的更好的方法出来&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function launcher(){
+    while(running &amp;lt; limit &amp;amp;&amp;amp; items.length &amp;gt; 0){
+        var item = items.shift();
+        async(item,function(result){
+            results.push(result);
+            running--;
+        })
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二、 Promise&lt;/p&gt;
+
+&lt;h3&gt;概述&lt;/h3&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>装饰性模式</title>
+     <link href="http://beiyuu.com/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F"/>
+     <updated>2015-09-10T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/装饰性模式</id>
+     <content type="html">&lt;h2&gt;一、理解&lt;/h2&gt;
+
+&lt;p&gt;在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
+有时候不想去改变原有的功能，就需要用到这种装饰者模式。
+一个简单实例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var a = function(){
+    consol.log(&quot;a&quot;);
+}
+//为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
+
+var _a = a;
+var a = function(){
+    _a();
+    console.log(&quot;aa&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
+还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
+三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//保存方法
+var _getId = document.getElementById;
+
+document.getElementById = function(id){
+//添加新功能
+    console.log(&quot;新功能&quot;);
+//执行原来保存的方法
+    return _getId(id); //报错：Illegal invocation    
+}
+var btn = document.getElementById(&quot;btn&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.getElementById = function(id){
+    console.log(&quot;新功能&quot;);
+    return _getId.apply(document,arguments);    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二、用AOP装饰&lt;/p&gt;
+
+&lt;p&gt;通过高阶函数，可以实现一些更加松散的方法，也更友好。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Function.prototype.after = function(fn){
+    var _self = this;//保存原来的函数
+    return function(){
+        var ret = _self.apply(this,arguments);
+        fn.apply(this,arguments);
+        return ret;
+    }
+}
+
+Function.prototype.before = function(fn){
+    var _self = this;
+    return function(){
+        fn.apply(this,arguments);
+        return _self.apply(this,arguments);
+    }       
+}
+
+var a = function(){
+    console.log(&quot;a&quot;);
+}
+
+var b = function(){
+    console.log(&quot;b&quot;);
+}
+
+var _a = a.after(b);    
+_a(); // ab
+
+var _b = a.before(b);
+_b(); //ba
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面两个方法，对于函数来说更加友好，不会去改变原有函数名称，并且动态的去添加新的功能。&lt;/p&gt;
+</content>
+   </entry>
    
    <entry>
      <title>15年08月19日－周工作记录</title>
@@ -36,6 +250,19 @@
 &lt;pre&gt;&lt;code&gt;.box{display:flex; display:-webkit-flex;}
 .item{align-self:center;-webkit-align-self:center;}
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是要兼容更加低端的手机还需要用box这个老属性&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.box{
+    display:box; display:-webkit-box;
+    box-align:center; -webkit-box-align:center;
+    display:flex; display:-webkit-flex;
+
+}
+.item{align-self:center;-webkit-align-self:center;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;经常会遇到flex一些老浏览器和手机不支持情况，这个时候可以用box这个老的属性，兼容实现。&lt;/p&gt;&lt;/blockquote&gt;
 
 &lt;h3&gt;二、数字自动转译&lt;/h3&gt;
 
@@ -243,7 +470,7 @@ category: blog
    
    <entry>
      <title>AngularJS应用－基础概念</title>
-     <link href="http://beiyuu.com/AngularJS%E5%AE%9E%E6%88%98%EF%BC%8D%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"/>
+     <link href="http://beiyuu.com/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"/>
      <updated>2014-09-23T00:00:00+08:00</updated>
      <id>http://beiyuu.com/AngularJS实战－基础概念</id>
      <content type="html">&lt;h2&gt;一、MVC 框架&lt;/h2&gt;
@@ -1195,383 +1422,6 @@ var module=require(./moduelA);
 
 &lt;p&gt;模块化加载》合并文件》这样也会产生一个问题，根据页面的功能不同，怎样加载不同页面并且还不会重复加载。
 比如&lt;code&gt;a.html&lt;/code&gt;页面功能有&lt;code&gt;a.js&lt;/code&gt; &lt;code&gt;b.js&lt;/code&gt; &lt;code&gt;c.js&lt;/code&gt;,合并成一个文件.&lt;/p&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>RequireJs应用</title>
-     <link href="http://beiyuu.com/RequireJs%E4%BD%BF%E7%94%A8"/>
-     <updated>2014-06-25T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/RequireJs使用</id>
-     <content type="html">&lt;h2&gt;说明&lt;/h2&gt;
-
-&lt;h4&gt;历史：&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;script src=&quot;a.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script src=&quot;b.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script src=&quot;c.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;问题：&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;阻塞页面渲染。&lt;/li&gt;
-&lt;li&gt;因为js之间依赖关系，必须按照顺序加载，后期维护起来费工夫&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h4&gt;RequireJs作用：&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;实现js文件异步加载，避免网页失去响应&lt;/li&gt;
-&lt;li&gt;管理模块之间的依赖性，便于代码维护和编写。&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;p&gt;一般实现异步加载js的方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;async.js&quot; defer async=&quot;true&quot;&amp;gt;&amp;lt;/script&amp;gt;
-//加defer是为了兼容IE浏览器，IE不支持async属性
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;基本使用&lt;/h2&gt;
-
-&lt;h3&gt;页面引用&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;script data-main=&quot;js/app.js&quot; src=&quot;js/require.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;data-main表示的是主模块的意思，一般requirejs加载完成，就就加载主模块，一般有两个用途：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;定义配置文件&lt;/li&gt;
-&lt;li&gt;加载第一个应用模块&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h3&gt;加载文件&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;require([&quot;js/a&quot;])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里表示根据当前文件目录来说，加载js目录下面的a.js文件&lt;/p&gt;
-
-&lt;h4&gt;基本配置&lt;/h4&gt;
-
-&lt;p&gt;加载文件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require.config({
-    paths: {
-        a : &quot;js/a&quot;
-    }
-})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;官方目录结构&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;../../images/requireFile.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;两个基本方法&lt;/h3&gt;
-
-&lt;h4&gt;require&lt;/h4&gt;
-
-&lt;h4&gt;define&lt;/h4&gt;
-
-&lt;h2&gt;高级配置&lt;/h2&gt;
-
-&lt;h3&gt;加载未标准定义文件&lt;/h3&gt;
-
-&lt;p&gt;单个方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt; //singleFn.js
- function a () {
-    console.log(&quot;show a fn&quot;);
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;多个方法&lt;/p&gt;
-
-&lt;h2&gt;常见问题&lt;/h2&gt;
-
-&lt;h2&gt;项目建设建议&lt;/h2&gt;
-
-&lt;hr /&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>apply和call应用</title>
-     <link href="http://beiyuu.com/apply%E5%92%8Ccall"/>
-     <updated>2012-03-10T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/apply和call</id>
-     <content type="html">&lt;h2&gt;一、基本认识&lt;/h2&gt;
-
-&lt;p&gt;都是Function原型定义的两个方法，Function.prototype.apply和Function.prototype.call。也就是可以通过函数进行调用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    fn.apply(this,[arg1,arg2]);
-    fn.call(this,arg1,arg2);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;两个方法作用相同，第一个参数传入的都是，该函数内 this 的指向。&lt;/p&gt;
-
-&lt;p&gt;从第二个参数开始，可以看到传入的参数不同。前面apply传入的是一个数组，call传入的参数依次传入函数。&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;call是可以在确定传入什么参数的时候使用，而apply是可以在一些不确定的参数情况下面使用，比如可以针对这个数组做一些添加和删除的动作。&lt;/p&gt;
-
-&lt;p&gt;也就是apply传入的参数是可以变化的。&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;如果第一个参数传入的是null，函数体内this会指向默认的宿主对象，如果在浏览器中就是 window。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var fn = function(){
-    console.log(this);
-}
-fn.apply(null); //true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果是严格模式下面，this还是为null。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var fn = function(){
-    &quot;use strict&quot;;
-    console.log(this===window);
-}
-fn.apply(null); //false
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;二、使用场景&lt;/h2&gt;
-
-&lt;p&gt;1、改变this指向。
-改变的是需要执行函数的内部指向。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var FnApply = function(par){
-    this.name = &quot;apply&quot;;//这里其实是覆盖了ObjectApply对象的name属所以下面的这一行打印是apply
-    console.log(this.name);//apply  
-    console.log(this.sex); // man 这里调用的就是ObjectApply对象的色系属性
-    console.log(par) // me  这里调用的是传入进Arr数组的第一个参数
-    this.name = &quot;apply2&quot;;//如果在这里重新覆盖，是不会对console.log(this.name);这个起作用。
-}
-var ObjectApply = {
-    name : &quot;ObjectApply&quot;,
-    sex:&quot;man&quot;
-}
-var Arr = [&quot;me&quot;,&quot;you&quot;]
-FnApply.apply(ObjectApply,Arr); 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;首先 FnApply.apply(ObjectApply,Arr);是执行了FnApply该函数，而把函数体内的 this指向的是ObjectApply这个对象。&lt;/p&gt;
-
-&lt;p&gt;修正this指向，在一些函数嵌套多一些的时候this指向经常，出现问题。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
-    console.log(this.id); //show
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果在其中加入一个函数&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //undefined
-    }
-    fn();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这时候可以用apply或者是call来修正this指向。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //show
-    }
-    fn.call(this);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;&lt;p&gt;当然在这里也可以前面把this缓存起来，放在一个变量里面。&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;show&quot;).onclick=function(){
-    var _self = this;
-    var fn = function(){
-        console.log(_self.id); //show
-    }
-    fn();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2、Function.prototype.bind
-一般现在的浏览器都能很好的支持这个方法，该方法就是为函数内部指定this对象。如果没有实现该方法，模拟方法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Function.prototype.bind=function(context){
-    var _self = this;
-    return function(){
-        return _self.apply(context,arguments);
-    }
-}
-//分步骤解释一下该方法
-//原始方式
-document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //show
-    };
-    fn.bind(this)();
-// fn.bind(),这里的fn是一个函数对象，还没有执行，只是执行了对象上面的bind方法。
-// 而bind方法返回的一个函数，也就是需要再一次执行。fn.bind()(),这个时候才是真正执行了bind之后返回的方法。
-    fn(); //undefined,这里执行的是就是最开始的那段函数。
-
-}
-//直接把bind方法绑定在函数后面，这个时候赋给变量的fn就是执行bind完成之后返回的函数。
-//也就是：function(){
-        return _self.apply(context,arguments);
-    }
-
-document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //show
-    }.bind(this);
-    fn();
-    //这里执行的就是bind方法执行后返回的函数。
-}
-
-//也可以是这样：
-document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //show
-    };
-    var fnfn = fn.bind(this);
-    //把返回函数赋予一个变量
-    fnfn();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;了解bind方法，需要了解的一点是，函数绑定该方法后，一定返回的是一个函数，需要再一次执行，实际上是执行了_self.apply(content,arguments);&lt;/p&gt;
-
-&lt;p&gt;高级bind方法实现：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Function.prototype.bind = function(){
-    var _self = this;
-    var context = [].shift.call(arguments);
-//取出第一个参数作为上下文替换
-    var arg = [].slice.call(arguments);
-//把其他参数转换成数组
-    return function(){
-        return _self.apply(context,[].concat.apply(arg,[].slice.call(arguments)));
-//concat合并后面执行函数的参数和前面arg数组
-    }
-}
-
-document.getElementById(&quot;show&quot;).onclick=function(){
-    var fn = function(){
-        console.log(this.id); //show
-        console.log(arguments); //you,wo 
-    }.bind(this,&quot;you&quot;);
-    fn(&quot;wo&quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;三、借用其他方法&lt;/h2&gt;
-
-&lt;h3&gt;3.1 类数组借用&lt;/h3&gt;
-
-&lt;p&gt;一些类数组，但是不是真正的数组，不能使哟push方法，但是可以通过借用的方法，使得有数组的方法。例如arguments，它不是数组，但是通过借用可以实现数组的一些方法。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[].shift.call(arguments); //取出最前面一项
-[].slice.call(arguments); //转换成数组
-[].push.call(arguments); //在后面添加一项
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;3.2 类似继承&lt;/h3&gt;
-
-&lt;p&gt;借用别的方法放到，构建对象中。使对象也能借用到别的方法。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var Add = function(a,b){
-    return a + b;
-}
-var Del = function(a,b){
-    return a - b;
-}
-var B =function(){
-    this.add = Add.apply(this,arguments);
-    this.del = Del.apply(this,arguments);
-}
-B.prototype.getAddNum = function(){
-    return Add.apply(this,arguments);
-    // 借用了Add方法，在对象中也有Add方法了。
-}
-
-var C  = new B(8,5);
-console.log(C.getAddNum(9,2)); // 11
-console.log(C.del);// 3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;3.3 应用实例&lt;/h3&gt;
-
-&lt;h4&gt;3.3.1 单例模式实现&lt;/h4&gt;
-
-&lt;p&gt;单例，简单来说就是，只是存在一个，不会出现两个，这个在弹出框的时候特别有用，这里牵涉到匿名函数，闭包，apply应用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var singleFn = function(fn){
-    var rel;
-    return function(){
-        return rel || (rel = fn.apply(this,arguments));
-        //如果有rel,则返回rel，如果没有则执行fn函数。
-    }
-}
-
-var creatPopup = function(content){
-    var popup = document.createElement(&quot;div&quot;);
-    popup.style.display=&quot;none&quot;;
-    popup.innerHTML = content;
-    document.body.appendChild(popup);
-    retuen popup;
-}
-
-var newCreatPopup = singleFn(creatPopup);
-
-document.getElementById(&quot;show&quot;).onclick=function(){
-    var popup = newCreatPopup(&quot;创建弹出框&quot;);
-    //这里应用就是单例函数中return返回回来的函数
-    popup.style.display = &quot;block&quot;;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;3.3.2 函数执行顺序&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Function.prototype.after = function(fn){
-    var _self = this;
-    //保存原有函数
-    return function(){
-        fn.apply(this,arguments);
-        return _self.apply(this,arguments);
-    // 返回原来函数执行结果
-    }
-}
-Function.prototype.before= function(fn){
-    var _self = this;
-    return function(){
-        var _s = _self.apply(this,arguments);
-        fn.apply(this,arguments);
-        return _s;
-    // 返回原来函数执行结果
-    }
-}
-var fn1 = function(){
-    console.log(1);
-}
-var fn3 = function(){
-    console.log(3);
-}
-var fn2 = function(){
-    console.log(2);
-}
-
-var fnA = fn1.after(fn3).before(fn2);
-
-fnA(); // 3,1,2
-//这里先执行fn3,再到before方法中，这里首先执行fn1方法，再执行fn2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;四、总结&lt;/h2&gt;
-
-&lt;p&gt;使用apply或call，改变原有函数的上下文执行情况，要看当前函数执行的环境，在高级的函数使用中会经常用到apply概念。&lt;/p&gt;
 </content>
    </entry>
    

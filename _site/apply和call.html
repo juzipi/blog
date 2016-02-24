@@ -39,8 +39,8 @@
 
 <p>都是Function原型定义的两个方法，Function.prototype.apply和Function.prototype.call。也就是可以通过函数进行调用。</p>
 
-<pre><code>    fn.apply(this,[arg1,arg2]);
-    fn.call(this,arg1,arg2);
+<pre><code>fn.apply(this,[arg1,arg2]);
+fn.call(this,arg1,arg2);
 </code></pre>
 
 <p>两个方法作用相同，第一个参数传入的都是，该函数内 this 的指向。</p>
@@ -150,9 +150,10 @@ document.getElementById("show").onclick=function(){
 
 }
 //直接把bind方法绑定在函数后面，这个时候赋给变量的fn就是执行bind完成之后返回的函数。
+
 //也就是：function(){
-        return _self.apply(context,arguments);
-    }
+//              return _self.apply(context,arguments);
+//          }
 
 document.getElementById("show").onclick=function(){
     var fn = function(){
@@ -314,7 +315,15 @@ fnA(); // 3,1,2
         <h2>语言</h2>
         <ul class="artical-list">
         
-            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98%EF%BC%8D%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            <li><a href="/blog/promise">promise对象</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F">装饰性模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
             
             </li>
         

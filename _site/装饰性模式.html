@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>装饰性模式 | juzipi</title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/blog/css/default.css" type="text/css" />
+    <link rel="icon" href="/blog/logo.png" type="image/png">
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/blog/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="/blog/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+<div class="head">
+    <a href="../">
+        <img src="../images/logo_24.png" alt="logo" class="logo" />
+    </a>
+</div>
+<div id="content">
+    
+    <div class="entry">
+        <h1 class="entry-title"><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F" title="装饰性模式">装饰性模式</a></h1>
+        <p class="entry-date">2015-09-10</p>
+        <h2>一、理解</h2>
+
+<p>在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
+有时候不想去改变原有的功能，就需要用到这种装饰者模式。
+一个简单实例：</p>
+
+<pre><code>var a = function(){
+    consol.log("a");
+}
+//为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
+
+var _a = a;
+var a = function(){
+    _a();
+    console.log("aa");
+}
+</code></pre>
+
+<p>这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
+还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
+三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：</p>
+
+<pre><code>//保存方法
+var _getId = document.getElementById;
+
+document.getElementById = function(id){
+//添加新功能
+    console.log("新功能");
+//执行原来保存的方法
+    return _getId(id); //报错：Illegal invocation    
+}
+var btn = document.getElementById("btn");
+</code></pre>
+
+<p>因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：</p>
+
+<pre><code>document.getElementById = function(id){
+    console.log("新功能");
+    return _getId.apply(document,arguments);    }
+</code></pre>
+
+<p>二、用AOP装饰</p>
+
+<p>通过高阶函数，可以实现一些更加松散的方法，也更友好。</p>
+
+<pre><code>Function.prototype.after = function(fn){
+    var _self = this;//保存原来的函数
+    return function(){
+        var ret = _self.apply(this,arguments);
+        fn.apply(this,arguments);
+        return ret;
+    }
+}
+
+Function.prototype.before = function(fn){
+    var _self = this;
+    return function(){
+        fn.apply(this,arguments);
+        return _self.apply(this,arguments);
+    }       
+}
+
+var a = function(){
+    console.log("a");
+}
+
+var b = function(){
+    console.log("b");
+}
+
+var _a = a.after(b);    
+_a(); // ab
+
+var _b = a.before(b);
+_b(); //ba
+</code></pre>
+
+<p>上面两个方法，对于函数来说更加友好，不会去改变原有函数名称，并且动态的去添加新的功能。</p>
+
+
+       
+    </div>
+
+
+
+    <div class="sidenav">
+        <h2>语言</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/promise">promise对象</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F">装饰性模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS-%E6%8C%87%E4%BB%A4">AngularJS应用－指令</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0-%E5%87%BD%E6%95%B0">学习笔记－设计模式 －函数</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0">学习笔记－设计模式－基础</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83">模块化学习思考</a>
+            
+            </li>
+        
+            <li><a href="/blog/RequireJs%E4%BD%BF%E7%94%A8">RequireJs应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/apply%E5%92%8Ccall">apply和call应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81">表单验证－策略模式</a>
+            
+            </li>
+        
+        </ul>
+
+        <h2>工具</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/jekyll%E4%BD%BF%E7%94%A8">jekyll基本使用方式</a></li>
+        
+        </ul>
+
+        <h2>项目沉淀</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/%E5%91%A8%E7%BA%AA%E5%BD%95">15年08月19日－周工作记录</a></li>
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/blog/js/post.js" type="text/javascript"></script>
+
+
+    
+</body>
+</html>
