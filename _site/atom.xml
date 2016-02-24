@@ -4,13 +4,43 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2016-02-24T15:02:46+08:00</updated>
+   <updated>2016-02-24T17:14:12+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>前端规范的思考</title>
+     <link href="http://beiyuu.com/javascript%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"/>
+     <updated>2016-01-01T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/javascript代码规范</id>
+     <content type="html">&lt;h2&gt;Javascript代码规范&lt;/h2&gt;
+
+&lt;h4&gt;遵守严格模式下的代码规范，因为ES6自动采用严格模式，不管模块头部是不是加了“use strict”,&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;变量必须声明后再使用&lt;/li&gt;
+&lt;li&gt;函数的参数不能有同名属性，否则报错&lt;/li&gt;
+&lt;li&gt;不能使用with语句&lt;/li&gt;
+&lt;li&gt;不能对只读属性赋值，否则报错&lt;/li&gt;
+&lt;li&gt;不能使用前缀0表示八进制数，否则报错&lt;/li&gt;
+&lt;li&gt;不能删除不可删除的属性，否则报错&lt;/li&gt;
+&lt;li&gt;不能删除变量delete prop，会报错，只能删除属性delete global[prop]&lt;/li&gt;
+&lt;li&gt;eval不会在它的外层作用域引入变量&lt;/li&gt;
+&lt;li&gt;eval和arguments不能被重新赋值&lt;/li&gt;
+&lt;li&gt;arguments不会自动反映函数参数的变化&lt;/li&gt;
+&lt;li&gt;不能使用arguments.callee&lt;/li&gt;
+&lt;li&gt;不能使用arguments.caller&lt;/li&gt;
+&lt;li&gt;禁止this指向全局对象&lt;/li&gt;
+&lt;li&gt;不能使用fn.caller和fn.arguments获取函数调用的堆栈&lt;/li&gt;
+&lt;li&gt;增加了保留字（比如protected、static和interface）&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+   </entry>
    
    <entry>
      <title>promise对象</title>
@@ -1352,76 +1382,6 @@ var p_01=new p();
 &lt;p&gt;这个时候就不会发生错误，能够得到里面的值，但是这个有一个问题，不能继承方法的原型。&lt;/p&gt;
 
 &lt;blockquote&gt;&lt;p&gt;这里的that可以是任何的字&lt;/p&gt;&lt;/blockquote&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>模块化学习思考</title>
-     <link href="http://beiyuu.com/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83"/>
-     <updated>2014-09-05T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/学习思考</id>
-     <content type="html">&lt;h1&gt;模块化思考&lt;/h1&gt;
-
-&lt;p&gt;最近看了一些模块化相关的库或者是文章，本文的目的也是给自己里一个头绪，到底怎样才能真正推行到团队里面的模块化，这个概念说了这么久，现在这两年开始真正推行起来。&lt;/p&gt;
-
-&lt;p&gt;作为一个由美工转过来的前端，我知道我自己在编程这一块是我的弱项。不过这两年发现前端慢慢转到工程化这个阶段，在这方面我还是能够提升。&lt;/p&gt;
-
-&lt;p&gt;原来我一直说是自动化其实最近，我越来越感觉应该是一个工程化的概念，甚至可以说是一个系统工程。&lt;/p&gt;
-
-&lt;p&gt;原来我们的初级阶段的模块化，按照功能模块把，html和css分割开来，&lt;/p&gt;
-
-&lt;p&gt;HTML：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;ul class=&#39;Module&#39;&amp;gt;
-    &amp;lt;li&amp;gt;Tab 1&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Tab 2&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Tab 3&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;CSS：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;.Module li{..}  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;那么后面调用这个CSS和HTML就组成一个模块，但是这个没有解决几个问题，如果里面有交互牵涉到js怎么模块化，这里只是CSS和HTML。&lt;/p&gt;
-
-&lt;p&gt;后面用到百度的fis，这个工具我自己的给它的定位就是管理并且发布静态资源。解决的是静态资源的问题，&lt;/p&gt;
-
-&lt;h3&gt;js加载模块化&lt;/h3&gt;
-
-&lt;p&gt;在js加载这一块目前国内说得比较多的是Requery.js和seajs这两个加载库，给我感觉作用差不多，只不过require和seajs神明模块的方式不同&lt;/p&gt;
-
-&lt;h3&gt;require&lt;/h3&gt;
-
-&lt;p&gt;申明方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;define(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,function(&quot;modelA&quot;,&quot;modelB&quot;,&quot;modelC&quot;){
-
-})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;调用方式：&lt;/p&gt;
-
-&lt;h3&gt;seajs&lt;/h3&gt;
-
-&lt;p&gt;申明方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;define(function(require, exports, module) {
-
-// 引用moduleA.js文件
-var module=require(./moduelA);
-
-
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;调用方式：&lt;/p&gt;
-
-&lt;p&gt;但是这种模块加载会演变成一个问题，每一个模块都是一个js文件，一个项目可能会有几十个文件，这样导致浏览器请求增加太多，对性能有所影响，这时候就需要合并js文件。&lt;/p&gt;
-
-&lt;p&gt;模块化加载》合并文件》这样也会产生一个问题，根据页面的功能不同，怎样加载不同页面并且还不会重复加载。
-比如&lt;code&gt;a.html&lt;/code&gt;页面功能有&lt;code&gt;a.js&lt;/code&gt; &lt;code&gt;b.js&lt;/code&gt; &lt;code&gt;c.js&lt;/code&gt;,合并成一个文件.&lt;/p&gt;
 </content>
    </entry>
    
