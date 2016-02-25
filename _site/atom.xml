@@ -4,13 +4,95 @@
    <title>juzipi</title>
    <link href="/blog/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="/blog" rel="alternate" type="text/html" />
-   <updated>2016-02-24T17:23:17+08:00</updated>
+   <updated>2016-02-25T18:34:49+08:00</updated>
    <id>/blog</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>Webpack基础使用</title>
+     <link href="http://beiyuu.com/webpack%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"/>
+     <updated>2016-02-25T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/webpack基础使用</id>
+     <content type="html">&lt;pre&gt;&lt;code&gt;---
+layout: post
+title: webpack使用方法
+description: 主要记录一下，学习的情况，担心以后忘记
+category: tool
+---
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;webpack基础使用&lt;/h2&gt;
+
+&lt;h3&gt;基本概念&lt;/h3&gt;
+
+&lt;p&gt;也是一个脚手架工具，和原来的grunt和gulp作用相似，但是又有新的改进，更是现在因为react流行后，配合度最好的一个构建工具。&lt;/p&gt;
+
+&lt;p&gt;前端资源模块化管理和打包工具，（这里强调的是两个作用一个管理一个是打包），不要认为就是一个打包工具。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将原来一些松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。&lt;/li&gt;
+&lt;li&gt;可以按需加载模块进行代码分离，等到实际需要再异步加载
+
+&lt;blockquote&gt;&lt;p&gt;怎样实现的按需加载？&lt;/p&gt;&lt;/blockquote&gt;&lt;/li&gt;
+&lt;li&gt;通过loader的转换，任何形式的资源都可以视做模块，比如CommonJs模块、AMD模块、ES6模块、css、图片、josn、Less、Sass等。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;一图胜万言，把官网的图拿过来&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/juzipi/blog/gh-pages/_posts/tool/webpack.png&quot; alt=&quot;webpack&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;把各种资源整合整合到最后，不管是js、css、图片，最后通过webpack输出成需要的文件。&lt;/p&gt;
+
+&lt;h3&gt;现状&lt;/h3&gt;
+
+&lt;p&gt;前端资源管理，一直都是一个比较难的难题，和后台管理不同，他面临的资源种类复杂，包括html、css、图片、js，这四样基本的东西，并且各自都交叉融合。&lt;/p&gt;
+
+&lt;p&gt;项目小的时候，还不能体现复杂性，当一个项目大的时候，就需要考虑模块化重复利用，特别是现在webapp，或者是单页应用越来越多的时候，按需加载这个需求就是必然会产生，手机端对于流量和页面渲染的速度要求更加高。&lt;/p&gt;
+
+&lt;p&gt;现在的js规范也有多种多样AMD、CMD、ES6等等，当项目上线的时候需要有一个能够整合所有gef&lt;/p&gt;
+
+&lt;p&gt;这也是这几年前端界一直都是在解决的问题，很早有百度的fis，现在有webpack。这也是这两年刚刚推出来的一个脚手架工具。&lt;/p&gt;
+
+&lt;h2&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;需要先安装node才能，node自带npm管包工具。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install webpack -g
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;全局安装&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install webpack --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;&lt;p&gt;安装到本文件夹，并且写入&lt;code&gt;package-json&lt;/code&gt;文件中&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2&gt;快速使用&lt;/h2&gt;
+
+&lt;p&gt;编译js文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;    //entry.js
+    document.write(&quot;first&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;webpack entry.js module.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;会得到一个编译后的文件module.js，但是这是最简单的一种方式，一般真实的使用场景中是用配置文件来管理。下面就来看看配置文件怎么来做。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/app&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+   </entry>
    
    <entry>
      <title>前端规范的思考</title>
@@ -1125,263 +1207,6 @@ if(typeof window.addEventListener == &quot;function&quot;){
         }
     }   
 &lt;/code&gt;&lt;/pre&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>学习笔记－设计模式－基础</title>
-     <link href="http://beiyuu.com/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0"/>
-     <updated>2014-09-18T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/Javascript模式学习</id>
-     <content type="html">&lt;h1&gt;Javascript模式学习&lt;/h1&gt;
-
-&lt;hr /&gt;
-
-&lt;h2&gt;变量&lt;/h2&gt;
-
-&lt;h3&gt;1、全局变量&lt;/h3&gt;
-
-&lt;p&gt;都知道不能随便取全局变量，在浏览器中存在一个默认的一个全局对象this，还有一个全局的属性window，&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var n = 2；
-this.n; //2
-this.window.n; //2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果想要改变全局对象名称也可以随便在任何函数里面都可以&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt; var global=(function(){
-    return this;
- }())
- //重新命名全局对象的名称未global;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;2、函数内变量会前置&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;var n=&quot;blue&quot;;
-function varFront(){
-    consloe.log(n); //undefined
-    var n = &quot;red&quot;; 
-    console.log(n); //red
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里我认为的第一个会是&lt;code&gt;blue&lt;/code&gt;，但是却是&lt;code&gt;undefined&lt;/code&gt;，因为&lt;code&gt;javascript&lt;/code&gt;的引擎机制的原因，会先创建变量、函数、参数，这个阶段是一个预编译的阶段，会扫描整个上下文，再来代码运行阶段，运行里面的函数表达式。在这一段代码中因为后面创建的变量和前面的全局变量是同名的，根据刚才的原则先创建变量再运算。&lt;/p&gt;
-
-&lt;p&gt;实际就变成：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var n=&quot;blue&quot;;
-function varFront(){
-    var n; //提前到前面
-    console.log(n);
-    var n = &quot;red&quot;;
-    console.log(n); //rend
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;循环&lt;/h2&gt;
-
-&lt;h3&gt;1、for&lt;/h3&gt;
-
-&lt;p&gt;循环也是常用的一种语法方式，在开发中避免对于DOM操作时候多次寻找耗费资源&lt;/p&gt;
-
-&lt;p&gt;比如有一个ul下面的li集合&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for（var i = 0; i&amp;lt;li.length;i++ ）{
-    //li[i];
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里每一次的读取i都回去重新找一遍li，而操作DOM是非常耗资源的一个事情，应该改成：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var length=li.length;
-for (var i=0; i&amp;lt;length; i++){
-    //li[i]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;保存为一个变量存起来，就读取一次减少资源消耗。
-再简化一下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var i,li=[];
-for(i=li.length;i--){
-    //li[i]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里减少一个变量，并且是减量循环，减量循环比增量循环速度更快，解释是：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;因为和零比较要比和非零数字或数组长度比较要高效的多&lt;/code&gt;?这个没有很明白；
-再有就是while循环&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var li=[],i=li.length;
-while(i--){
-    //li[li];
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;2、for-in&lt;/h3&gt;
-
-&lt;p&gt;这个用来循环对象里面的属性，这里需要了解对象属性有两种情况，一种是原生一种prototype原型立案链集成。通过方法hasOwnProperty()去过滤。
-实例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var man={hands:2,head:1,legs:2},i;
-if(Object.prototype.clone==&quot;undefined&quot;){
-    Object.prototype.clone=function(){};
-}
-for(i in man){
-    if(man.hasOwnProperty(i)){ 
-    //通过hasOwnProperyt判断clone是不是原有的属性，还是通过prototype加进来的。这里如果运行到clone，通过的值是false；
-        console.log(i, &quot;:&quot;, man[i]);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;不扩充内置原型&lt;/h3&gt;
-
-&lt;p&gt;可以扩充构造函数的prototype的原型，可以给object()，添加新的方法，但是这种方式尽量不要使用因为：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;不好控制，和你一起开发的人员不知道你加了这么一个原型在里面，会不会重新覆盖，&lt;/li&gt;
-&lt;li&gt;一个有可能新的EC版本增加新的方法和现在的方法冲突，&lt;/li&gt;
-&lt;li&gt;就像上面那个object遍历如果不加hasOwnProperty()判断会遍历出来，这个和预想的结果不一样，而加了这个需要和你合作的每个开发人员说明。&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;也有情况是可以加上的，就是未来EC版本会加上这个方法，你可以预先把这个实现了，并且和团队其他人员沟通过后，给出文档。&lt;/p&gt;
-
-&lt;h3&gt;switch&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;var i=0,t=&#39;&#39;;
-switch (i){
-case 1:
-    t=&#39;不显示&#39;;
-    break;
-case 0:
-    t=&#39;显示&#39;;
-    break;
-defalut:
-    t=&#39;默认显示&#39;        
-}
-//显示
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;代码格式规范&lt;/h2&gt;
-
-&lt;p&gt;团队之间代码格式规范是一个团队合作的基础&lt;/p&gt;
-
-&lt;h1&gt;3、直接量和构造函数&lt;/h1&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;这一章原来一直都有接触，但是并没有真正理解里面的运行逻辑，通过这一章的了解需要了解里面的运行逻辑是什么。并且对于直接量和构造函数之间的区别有所收获。&lt;/p&gt;
-
-&lt;h2&gt;3.1 对象创建的三种形式&lt;/h2&gt;
-
-&lt;h4&gt;一种是直接量例如：&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;    //这里创建了一个空对象
-    var o={}；
-    //也可以给这个对象直接加上方法和属性。
-    var o={
-        name:&quot;juzi&quot;,
-        age:12,
-        title:function(){
-            return &quot;工程师&quot;；
-        }  //这里说明一下‘,&#39;该符号，可以在现代浏览器中加上，但是在IE中会报错
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;第二种就是根据内置的Object对象创建一个实例&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;var o=new Object();
-//创建一个数字对象
-var n=new Object(2);
-console.log(n.constructor === Number); // true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;第三种是自定义构造函数&lt;/h4&gt;
-
-&lt;p&gt;要好理解这种方式，就是把p当做Object来对待，相当于实例了一个p对象。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var p=function(){
-    this.age=12;
-    this.name=&#39;juzi&#39;;
-    this.title=function(){
-        return &quot;工程师&quot;；
-    }
-}
-
-var p_01=new p();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;实际创建的过程：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;创建一个空的对象｛｝；并且把它引用赋给this，继承函数原型&lt;/li&gt;
-&lt;li&gt;添加属性和方法给this&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;返回this指向的新对象&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  var p = function(){
-      //this={}
-      this.age = 12;
-      this.name = &quot;juzi&quot;;
-      this.title = function(){
-          return &quot;工程师&quot;
-      }
-      //return this;
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;构造函数返回值&lt;/h4&gt;
-
-&lt;p&gt;当用new调用一个构造函数的时候，其实调用的是这个构造函数里面的返回的对象，可以自定义返回的对象，如果没有定义的话，默认返回的事this这个对象。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    var p ＝ function(){
-        this.name=&quot;juzi&quot;;
-        var that = {};
-        that.name = &quot;juzipi&quot;;
-        return that;
-    }
-    var me = new p();
-    me.name;  // juzipi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;&lt;p&gt;如果返回的不是对象，是字符串，数字，布尔值，程序不会抱错，这个值会被忽略，最终还是返回this所指的对象。&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;h4&gt;如果没有使用new&lt;/h4&gt;
-
-&lt;p&gt;没有使用new的时候，函数内部的this实际上面指的是全局对象，如果是在浏览器里面指的就是window对象，这个并不是我们想要的效果。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    var p = function(){
-        this.name = &quot;juzi&quot;;
-    }
-    var me = new p(); // suc
-    var me = p();
-    console.log(typeof me);  //undefined
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所以这就需要我们在用函数命名的时候，有一个约定，不然自己搞混了，函数开始字母用小写（myFunction），构造函数就用大写（MyFunction）。&lt;/p&gt;
-
-&lt;h4&gt;使用that&lt;/h4&gt;
-
-&lt;p&gt;为了避免忘记new等一些错误写法，可以全部返还that这个对象，例如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    var p = function(){
-        var that = {}
-        that.name = &quot;juzi&quot;;
-        return that;
-    }
-    var me = p();
-    me.name; //juzi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个时候就不会发生错误，能够得到里面的值，但是这个有一个问题，不能继承方法的原型。&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;这里的that可以是任何的字&lt;/p&gt;&lt;/blockquote&gt;
 </content>
    </entry>
    
