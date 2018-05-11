@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>装饰性模式 | juzipi</title>
+    <title>再看返回函数 | juzipi</title>
     <meta name="renderer" content="webkit">
     <meta name="description" content="Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -33,86 +33,60 @@
 <div id="content">
     
     <div class="entry">
-        <h1 class="entry-title"><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F" title="装饰性模式">装饰性模式</a></h1>
-        <p class="entry-date">2015-09-10</p>
-        <h2>一、理解</h2>
+        <h1 class="entry-title"><a href="/blog/%E5%86%8D%E7%9C%8B%E8%BF%94%E5%9B%9E%E5%87%BD%E6%95%B0" title="再看返回函数">再看返回函数</a></h1>
+        <p class="entry-date">2011-08-11</p>
+        <h1>基本方法</h1>
 
-<p>在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
-有时候不想去改变原有的功能，就需要用到这种装饰者模式。
-一个简单实例：</p>
+<p>主要是想看看返回方法之后，this的指向的是什么。相应的解释在代码中。</p>
 
-<pre><code>var a = function(){
-    consol.log("a");
-}
-//为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
-
-var _a = a;
-var a = function(){
-    _a();
-    console.log("aa");
-}
-</code></pre>
-
-<p>这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
-还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
-三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：</p>
-
-<pre><code>//保存方法
-var _getId = document.getElementById;
-
-document.getElementById = function(id){
-//添加新功能
-    console.log("新功能");
-//执行原来保存的方法
-    return _getId(id); //报错：Illegal invocation    
-}
-var btn = document.getElementById("btn");
-</code></pre>
-
-<p>因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：</p>
-
-<pre><code>document.getElementById = function(id){
-    console.log("新功能");
-    return _getId.apply(document,arguments);    }
-</code></pre>
-
-<p>二、用AOP装饰</p>
-
-<p>通过高阶函数，可以实现一些更加松散的方法，也更友好。</p>
-
-<pre><code>Function.prototype.after = function(fn){
-    var _self = this;//保存原来的函数
+<pre><code class="javascript">Function.prototype.after = function(fn){
+    var _self = this;
     return function(){
-        var ret = _self.apply(this,arguments);
+        var e = _self.apply(this,arguments);
+        // this指的是调用的这个函数的上一级对象，如果是在windows下调用，这个this指的就是window
         fn.apply(this,arguments);
-        return ret;
+        return e;
     }
 }
-
 Function.prototype.before = function(fn){
     var _self = this;
     return function(){
         fn.apply(this,arguments);
-        return _self.apply(this,arguments);
-    }       
+        _self.apply(this,arguments)
+    }
 }
-
-var a = function(){
-    console.log("a");
+var fn1 = function(n){
+    console.log(n+1)
 }
-
-var b = function(){
-    console.log("b");
+var fn2 = function(n){
+    // console.log(n+2)
+    console.log(this.opp)
 }
+var fn3 = function(n){
+    console.log(n+3)
+    // console.log(arguments.callee())
+}
+window.opp = "opp";
+//设置全局对象window属性，看看后面是否被覆盖。
 
-var _a = a.after(b);    
-_a(); // ab
-
-var _b = a.before(b);
-_b(); //ba
+var o = {
+    fn4: function(n){
+        console.log(n+4);
+        console.log(this)
+    }
+}
+var fn22 = o.fn4.after(fn2).before(fn3);
+fn22("+")
+// 这里定义的o对象没有opp属性，所以对应fn2方法钟的this打印出来的就是“window”，
+var oo = {
+    fn : fn22,
+    opp:"ppo"
+}
+oo.fn("-")
+// 这里定义的oo对象有opp属性，所以对应fn2方法打印出来的就是“ppo”，
 </code></pre>
 
-<p>上面两个方法，对于函数来说更加友好，不会去改变原有函数名称，并且动态的去添加新的功能。</p>
+<p>这里需要说明最后的oo.fn()里面的参数都会传入里面的方法，也就是说这里的参数，对于其他方法来说是同一个。</p>
 
 
        

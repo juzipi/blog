@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>装饰性模式 | juzipi</title>
+    <title>图片加载的几种方式 | juzipi</title>
     <meta name="renderer" content="webkit">
     <meta name="description" content="Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -33,86 +33,98 @@
 <div id="content">
     
     <div class="entry">
-        <h1 class="entry-title"><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F" title="装饰性模式">装饰性模式</a></h1>
-        <p class="entry-date">2015-09-10</p>
-        <h2>一、理解</h2>
+        <h1 class="entry-title"><a href="/blog/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F" title="图片加载的几种方式">图片加载的几种方式</a></h1>
+        <p class="entry-date">2016-11-12</p>
+        <p>图片加载的几种方式</p>
 
-<p>在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
-有时候不想去改变原有的功能，就需要用到这种装饰者模式。
-一个简单实例：</p>
+<p>一、传统加载方式</p>
 
-<pre><code>var a = function(){
-    consol.log("a");
+<pre><code class="javascript">var imgSrc = {
+    img1 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/logo_white_ee663702.png",
+    img2 : "http://www.youjiaus.net/activities/images/1504paypal/760x142.jpg",
+    img3 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/lg_main_a11_1.png",
+    img4 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/isay_icons.3.png"
 }
-//为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
 
-var _a = a;
-var a = function(){
-    _a();
-    console.log("aa");
-}
+//建立img标签加载
+var loadImg = function(url){
+    var Imgs = document.createElement("img");
+    Imgs.setAttribute("src",url);
+    return Imgs;
+} 
+
+loadImg(imgSrc.img1)//加载进来但是不显示。
+//document.body.appendChild(loadImg(imgSrc.img1)) //加载进来并且插入dom中
+
+//建立 Image对象加载
+var report = function(src){
+        var i = new Image();
+        i.src =src; 
+}  
+report(imgSrc.img2)  
+
+
+//回调再加载   
+var reportCallback = function(src,callback){
+        var i = new Image();
+        i.src =src; 
+    if(typeof callback == "function"){
+        callback(imgSrc.img4);  
+    } 
+} 
+//reportCallback(imgSrc.img3,report) 
+
+
+// ajax加载
+
+$.ajax({
+    url: "http://runjs.cn/img/runjs_icon.gif",  
+    type: 'GET',
+    global: false,
+    beforeSend : function(){
+        //发送之前
+    },
+     success: function(){
+         //成功之后
+        console.log("suc");
+    },
+    complete: function(){
+        //完成之后
+            //var w=img.naturalWidth,h=img.naturalHeight,wh=w/h;
+     }
+ });
 </code></pre>
 
-<p>这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
-还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
-三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：</p>
+<p>promise加载方式</p>
 
-<pre><code>//保存方法
-var _getId = document.getElementById;
-
-document.getElementById = function(id){
-//添加新功能
-    console.log("新功能");
-//执行原来保存的方法
-    return _getId(id); //报错：Illegal invocation    
+<pre><code class="javascript">
+var loadImg = function(urls){
+    return new Promise(function(resolve,reject){
+        var length = urls.length;
+        var n=0;
+        for(var i =0; i&lt;length; i++){
+            var image = new Image();
+            image.src = urls[i];
+            image.onload = function(){
+                n++;
+                if(n==length){
+                    resolve("suc")
+                }
+            }
+            image.onerror=function(){
+                reject(urls[i]+"错误")
+                // console.log(urls[i]+"错误")
+            }
+        }
+    })
 }
-var btn = document.getElementById("btn");
+ loadImg(["st/img/404.png","st/img/go_up.png"]).then(function(i){
+    console.log(i)
+    console.log("you")
+ },function(i){
+    console.log(i)
+ })
 </code></pre>
-
-<p>因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：</p>
-
-<pre><code>document.getElementById = function(id){
-    console.log("新功能");
-    return _getId.apply(document,arguments);    }
-</code></pre>
-
-<p>二、用AOP装饰</p>
-
-<p>通过高阶函数，可以实现一些更加松散的方法，也更友好。</p>
-
-<pre><code>Function.prototype.after = function(fn){
-    var _self = this;//保存原来的函数
-    return function(){
-        var ret = _self.apply(this,arguments);
-        fn.apply(this,arguments);
-        return ret;
-    }
-}
-
-Function.prototype.before = function(fn){
-    var _self = this;
-    return function(){
-        fn.apply(this,arguments);
-        return _self.apply(this,arguments);
-    }       
-}
-
-var a = function(){
-    console.log("a");
-}
-
-var b = function(){
-    console.log("b");
-}
-
-var _a = a.after(b);    
-_a(); // ab
-
-var _b = a.before(b);
-_b(); //ba
-</code></pre>
-
-<p>上面两个方法，对于函数来说更加友好，不会去改变原有函数名称，并且动态的去添加新的功能。</p>
 
 
        
