@@ -6,7 +6,7 @@ category: blog
 ---
 
 ## 一、基本认识
-都是Function原型定义的两个方法，Function.prototype.apply和Function.prototype.call。也就是可以通过函数进行调用。
+都是Function原型定义的两个方法，Function.prototype.apply和Function.prototype.call。也就是可以通过函数进行调用
 		
 	fn.apply(this,[arg1,arg2]);
 	fn.call(this,arg1,arg2);
