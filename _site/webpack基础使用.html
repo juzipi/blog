@@ -234,6 +234,47 @@ devtool: "source-map",
     // 为组件分配ID，通过这个插件webpack可以分析和优先考虑使用最多的模块，并为它们分配最小的ID
 </code></pre>
 
+<h4>合并图片</h4>
+
+<pre><code class="javascript">var SpritesmithPlugin = require('webpack-spritesmith');
+
+plugins: [
+    new SpritesmithPlugin({
+      src: {
+      //需要设置雪碧图文件夹
+        cwd: './src/assets/sp/',
+      //包含什么文件类型
+        glob: '*.png'
+      },
+      target: {
+      //合并后的图片
+        image: './src/st/img/sprite.png',
+        //引用的css
+        css: './src/st/css/_sprite.scss'
+      },
+      apiOptions: {
+      //在css中设置的图片路径
+        cssImageRef: '../img/sprite.png'
+      },
+      spritesmithOptions: {
+      //排序方式，该处是从上到下
+        algorithm: 'top-down'
+      }
+    })
+  ]
+</code></pre>
+
+<p>使用方法:</p>
+
+<pre><code>    //引入css文件
+    @import '_sprite.scss';
+
+     .icon-error {
+     //该处$error是合并前，文件名
+      @include sprite($error);
+     }
+</code></pre>
+
 <h4>devtool</h4>
 
 <p>为解决打包后，soure map问题，webpack给出四种不同的等级，对于调试难度，这里在开发过程中建议用eval-source-map，即保证打包时间，又能够方便调试。
@@ -293,6 +334,10 @@ devtool: "source-map",
             
             </li>
         
+            <li><a href="/blog/%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F">async、defer、preload区别</a>
+            
+            </li>
+        
             <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
             
             </li>
@@ -333,6 +378,8 @@ devtool: "source-map",
 
         <h2>工具</h2>
         <ul class="artical-list">
+        
+            <li><a href="/blog/ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95">ES6 常用语法</a></li>
         
             <li><a href="/blog/webpack%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8">webpack使用方法</a></li>
         

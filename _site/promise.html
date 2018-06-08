@@ -42,25 +42,30 @@ js语言的执行环境是"单线程",也就是一次只能执行一个任务,�
 
 <h4>同步和异步：</h4>
 
+<blockquote><p>朴灵：操作分为：发出调用和得到结果两步。发出调用，立即得到结果是为同步。发出调用，但无法立即得到结果，需要额外的操作才能得到预期的结果是为异步。同步就是调用之后一直等待，直到返回结果。异步则是调用之后，不能直接拿到结果，通过一系列的手段才最终拿到结果（调用之后，拿到结果中间的时间可以介入其他任务）。</p>
+
+<p>Javascript内部有一个事件队列，所有的处理方法都在这个队列中，Javascript主线程就是轮询这个队列处理，这个好处是使得CPU永远是忙碌状态。这个机制和Windows中的消息泵是一样的，都是靠消息（事件）驱动。</p></blockquote>
+
 <ul>
 <li><p>同步是一个任务完成执行下一个任务,每一个任务按照顺序来执行。</p></li>
-<li><p>异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A>B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。</p>
-
-<p>  var f1 = function(fn){
-      console.log("1");
-      setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
-  }
-  var f2 = function(){
-      console.log("2")
-  }
-  //再执行f2函数一秒之前，f3会执行。
-  var f3 = function(){
-      console.log("3");
-  }
-  f1(f2)
-  f3();</p></li>
+<li><p>异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A>B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。</p></li>
 </ul>
 
+
+<pre><code class="javascript   ">var f1 = function(fn){
+    console.log("1");
+    setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
+    }
+var f2 = function(){
+    console.log("2")
+}
+//再执行f2函数一秒之前，f3会执行。
+var f3 = function(){
+    console.log("3");
+}
+f1(f2)
+f3();
+</code></pre>
 
 <blockquote><p>打印出来的结果是1>3>2，这里任务排列是f1>f2>f3但是真正执行的时候顺序改变了,这就是"异步模式".</p></blockquote>
 
@@ -68,93 +73,202 @@ js语言的执行环境是"单线程",也就是一次只能执行一个任务,�
 
 <h4>异步的流程控制</h4>
 
-<pre><code>var async = function (arg,callback){
-    console.log("参数为"+arg+"一秒后返回");
-    setTimeout(function(){callback(arg+1);}, 1000);
-}
+<pre><code class="javascript   ">    var async = function (arg,callback){
+        console.log("参数为"+arg+"一秒后返回");
+        setTimeout(function(){callback(arg+1);}, 1000);
+    }
 
-var final = function (value) {
-    console.log('完成: ', value);
-}
-async(1,function(value){
-    async(value,final)
-})
+    var final = function (value) {
+        console.log('完成: ', value);
+    }
+    async(1,function(value){
+        async(value,final)
+    })
 </code></pre>
 
 <ol>
 <li>首先第一次执行async代码，执行里面的内容。</li>
 <li>一秒钟后再执行callback函数，这里callback函数就是执行async，第二遍执行，里面内容，并且取函数的第一个参数值+1.</li>
 <li>第二遍执行async里面的函数的callback函数，这里函数就是final</li>
-<li><p>final函数的会取value为参数。
-这里会在执行完两遍async函数后再执行final，也就是两秒之后，这只是一层的嵌套，如果多几层嵌套，比如：</p>
-
-<pre><code>  async(1, function(value){
-      async(value, function(value){
-          async(value, function(value){
-              async(value, function(value){
-                  async(value, function(value){
-                  async(value, final);
-                  });
-              });
-          });
-      });
-  });
-</code></pre></li>
+<li>final函数的会取value为参数。
+这里会在执行完两遍async函数后再执行final，也就是两秒之后，这只是一层的嵌套，如果多几层嵌套，比如：</li>
 </ol>
 
+
+<pre><code class="javascript   ">        async(1, function(value){
+            async(value, function(value){
+                async(value, function(value){
+                    async(value, function(value){
+                        async(value, function(value){
+                        async(value, final);
+                        });
+                    });
+                });
+            });
+        });
+</code></pre>
 
 <h3>串行执行</h3>
 
 <p>串行执行可以是一个任务完成再来执行另外一个任务，可以用来控制异步任务。</p>
 
-<pre><code>var items = [ 1, 2, 3, 4, 5, 6 ];
-var results = [];
-function series(item) {
-  if(item) {
-    async( item, function(result) {//这里的result也是item+1的值
-      results.push(result);
-      return arguments.callee(items.shift());
-      //返回并且再次执行自身一遍。
-    });
-  } else {
-    return final(results);
-    //如果数组中没有项目，则执行final
-  }
-}
+<pre><code class="javascript   ">    var items = [ 1, 2, 3, 4, 5, 6 ];
+    var results = [];
+    function series(item) {
+      if(item) {
+        async( item, function(result) {//这里的result也是item+1的值
+          results.push(result);
+          return arguments.callee(items.shift());
+          //返回并且再次执行自身一遍。
+        });
+      } else {
+        return final(results);
+        //如果数组中没有项目，则执行final
+      }
+    }
 
-series(items.shift());
+    series(items.shift());
 </code></pre>
 
 <h3>并行执行</h3>
 
 <p>也就是一同把所有的函数执行完成，再执行final，这个在效率上面有提升，</p>
 
-<pre><code>items.forEach(function(item){
-    async(item,function(reulse){
-        results.push(reulse);
-        if(results.length == items.length){
-            final(reulses)
-        }
+<pre><code class="javascript       ">    items.forEach(function(item){
+        async(item,function(reulse){
+            results.push(reulse);
+            if(results.length == items.length){
+                final(reulses)
+            }
+        })
     })
-})
 </code></pre>
 
 <p>这种方式和前面串行方式不同的是，不需要等待前面一个执行完成执行后面那个任务，可以同时进行，但是这个也有一个弊端就是当同时进行的任务过多，给机器带来的性能压力就会体现出来。需要有一种结合这两种方式的更好的方法出来</p>
 
-<pre><code>function launcher(){
-    while(running &lt; limit &amp;&amp; items.length &gt; 0){
-        var item = items.shift();
-        async(item,function(result){
-            results.push(result);
-            running--;
-        })
+<pre><code class="javascript   ">    function launcher(){
+        while(running &lt; limit &amp;&amp; items.length &gt; 0){
+            var item = items.shift();
+            async(item,function(result){
+                results.push(result);
+                running--;
+            })
+        }
     }
-}
 </code></pre>
 
 <p>二、 Promise</p>
 
 <h3>概述</h3>
+
+<p>Promise 对象用于一个异步操作的最终完成（或失败）及其结果值的表示，处理异步请求</p>
+
+<p>异步加载两种不同类型文件实例：</p>
+
+<pre><code class="javascript">
+let loadImgAsync = function (url) {
+        return new Promise(function(resolve,reject){
+            let image = new Image;
+            image.onload = function () {
+                resolve(image);
+            }
+            image.onerror = function () {
+                reject(new Error('错误：'+url))
+            }
+            image.src = url;
+        })
+    }
+//调用方法
+//bad
+    loadImgAsync('/img/gameb.png').then(function (val) {
+        console.log(val)
+    },function (val) {
+        console.log(val)
+    });
+ //good
+     loadImgAsync('/img/gameb.png')
+     .then((val) =&gt;  {
+        console.log(val)
+    }).catch((error)=&gt; {
+        console.log(error)
+    });
+
+
+ let getJson = function (url) {
+        let promise = new Promise(function (resolve,reject) {
+            let client = new XMLHttpRequest();
+            client.open('GET',url);
+            client.onreadystatechange = handler;
+            client.responseType = 'json';
+            client.setRequestHeader('Accept','application/json');
+            client.send();
+            function handler () {
+                if(this.readyState !== 4){
+                    return ;
+                }
+                if(this.status === 200){
+                    resolve(this.response)
+                }else{
+                    reject(new Error("错误信息"+url))
+                }
+            }
+
+        })
+        return promise;
+    }
+
+   // 调用方法
+    getJson('p.json')
+     .then((val) =&gt;  {
+        console.log(val)
+    }).catch((error)=&gt; {
+        console.log(error)
+    });
+</code></pre>
+
+<p>怎样实现链式调用</p>
+
+<pre><code class="~javascript">getJson('p.js5`~~~~on')
+    .then(function (val){
+        console.log(val)
+        return loadImgAsync('/img/gamebg.png');
+    }).then((re) =&gt; {
+        console.log(re);
+    }).catch((error)=&gt;{
+        console.log(error)
+    })
+    );
+</code></pre>
+
+<h3>穿透</h3>
+
+<p>这是因为当then()接受非函数的参数时，会解释为then(null)，导致前一个promise的结果传递到后面的promise；</p>
+
+<pre><code class="~javascript">
+Promise.resolve(‘foo’)
+    .then(Promise.resolve(‘bar’))
+    .then(function(result){
+        console.log(result); // foo
+        });
+
+ //改进的写法
+ Promise.resolve(‘foo’)
+    .then(function(){
+        return Promise.resolve(‘bar’);
+    }).then(function(result){
+            console.log(result); // bar
+     });
+</code></pre>
+
+<p> 实际上asnyc和await可以实现上面的效果</p>
+
+<pre><code class="~~javascript"> async function loadsrc (){
+        await loadImage2('result_bg.png').then((re)=&gt; {console.log(2)});
+        await loadJson2('p.json');
+        console.log(1)
+    }
+    loadsrc();  //打印顺序： result_bg.png &gt; 2 &gt; p.json &gt; 1
+</code></pre>
 
 
        
@@ -179,6 +293,10 @@ series(items.shift());
             </li>
         
             <li><a href="/blog/%E7%A6%BB%E7%BA%BF%E7%BC%93%E5%AD%98">离线缓存(manifest)</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F">async、defer、preload区别</a>
             
             </li>
         
@@ -222,6 +340,8 @@ series(items.shift());
 
         <h2>工具</h2>
         <ul class="artical-list">
+        
+            <li><a href="/blog/ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95">ES6 常用语法</a></li>
         
             <li><a href="/blog/webpack%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8">webpack使用方法</a></li>
         

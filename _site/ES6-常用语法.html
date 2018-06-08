@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>ES6 常用语法 | juzipi</title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/blog/css/default.css" type="text/css" />
+    <link rel="icon" href="/blog/logo.png" type="image/png">
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/blog/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="/blog/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+<div class="head">
+    <a href="/blog/">
+        <img src="/blog/images/logo_24.png" alt="logo" class="logo" />
+    </a>
+</div>
+<div id="content">
+    
+    <div class="entry">
+        <h1 class="entry-title"><a href="/blog/ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95" title="ES6 常用语法">ES6 常用语法</a></h1>
+        <p class="entry-date">2016-04-11</p>
+        <h2>let、const、var</h2>
+
+<p>用一个表格可以表示，他们的区别和相同:</p>
+
+<p> | var  | let | const
+------------- | ------------- | -------------| -------------
+ 变量提前 | 是 | 不是 | 不是
+ 有效范围 | 作用域 | 块级作用域 | 块级作用域
+ 是否可以更改 | 可改 | 可改 | 指向的内存是不变，<br>例如：数字、字符串、布尔值是不变，数组和对象是可以改，<br>但不能重新用其他数组或对象赋值，好比占坑不挪位置。
+ 是否允许重复声明 | 可以 | 在同一作用域不可以 | 在同一作用域不可以</p>
+
+<h2>字符串</h2>
+
+<h3>模板</h3>
+
+<p>非常方便代替原来拼接不方便，比如原来换行需要用'\'；</p>
+
+<pre><code class="javascript">let age=23, name='李逍遥';
+console.log(`age:${age},name:${name}`);  // age:23,name:李逍遥
+</code></pre>
+
+<h3>常用</h3>
+
+<ul>
+<li>includes：判断是否包含后直接返回布尔值。</li>
+<li>startsWith: 判断参数是否在字符串头部，返回布尔值。</li>
+<li>endsWith：判断参数是否在字符串尾部，返回布尔值。</li>
+</ul>
+
+
+<pre><code class="javascript">let str  = 'happy';
+console.log(str.includes('h'));  // true
+console.log(str.startsWith('ha')); // true
+console.log(str.endsWith('ppy'));  // true
+</code></pre>
+
+<h2>对象</h2>
+
+<h3>初始化简写</h3>
+
+<pre><code class="javascript">//es 5
+function p(name,age)  {
+    return {
+        name:name,
+        age:age,
+        getName : function(){
+            return this.name;
+        }
+    }
+}
+//es6 ,
+function p(name,age) {
+    return {
+    //当键值对重名的时候，可以简化
+        name,
+        age,
+    //可以省略 冒号和function关键字
+        getName () {
+            return this.name;
+        }
+    }
+}
+</code></pre>
+
+<h3>直接取对象值</h3>
+
+<pre><code class="javascript">var obj = {age:21,name:'李逍遥'};
+//ES 5
+var age = obj.age;
+var name = obj.name;
+
+//ES 6
+var {age,name }  = obj;
+console.log(age);  // 21
+</code></pre>
+
+<h3>浅拷贝</h3>
+
+<p>可以把多个源对象自身枚举的属性拷贝给目标对象，然后返回目标对象，第一个参数是目标对象，一般为了不改变源对象，目标对象一般未：{}，</p>
+
+<pre><code class="javascript">var o1 = {a:1};
+var o2 = {b:2};
+var o3 = {c:3};
+var o4 = Object.assing({},o1,o2,o3);  //  {a:1,b:2,c:3}
+
+//原型里面的属性不能拷贝
+var p  =function () {}
+p.prototype.name= 'wowo';
+var pp = new p();
+pp.age = 21;
+var o = Object.assign({},pp);
+console.log(o); // {age:21}
+</code></pre>
+
+<ul>
+<li>如果目标对象中的属性具有相同的键，则属性被源中的属性覆盖</li>
+<li>后来的源的属性覆盖早先相同属性。</li>
+<li>假如源对象的属性指向对象的引用，它指是拷贝引用值</li>
+</ul>
+
+
+<blockquote><p>IE全系列不支持</p></blockquote>
+
+<pre><code class="javascript">// 深拷贝，这不是es 6 的内容，对上面知识的拓展
+let o = {a:1,b:{c:2,d:3}};
+let g = Object.assign({},o)
+let h = JSON.parse(JSON.stringify(o));
+o.b.c=4;
+console.log(h.b.c);  // 2
+console.log(g.b.c);  // 4
+</code></pre>
+
+<h3>展开运算符 (...)</h3>
+
+<p>用来组装对象或者数组</p>
+
+<pre><code class="javascript">// 数组
+let size = ['small','big'];
+let resetSize  = [...size,'vbig','huge'];
+console.log(resetSize); // ["small", "big", "vbig", "huge"];
+//对象
+const alp = { fist: 'a', second: 'b'}    
+const alphabets = { ...alp, third: 'c' }; 
+console.log(alphabets); //{ "fist": "a", "second": "b", "third": "c"}   
+</code></pre>
+
+<p>获取数组或者对象除前几项的其他项，这里必须是放到最后才能执行。</p>
+
+<pre><code class="javascript"> //数组
+const number = [1,2,3,4,5]    
+const [first, ...rest] = number
+console.log(rest) // 2,3,4,5
+console.log(first) // 1
+//这里就和前面的解构知识点对接上。
+ //对象
+const user = {
+    username: 'lux',
+    gender: 'female',
+        age: 19,
+        address: 'peking'
+ }    
+const { username, ...rest } = user    
+console.log(rest);  //{"address": "peking", "age": 19, "gender": "female"}
+</code></pre>
+
+<h2>函数</h2>
+
+<h3>箭头函数</h3>
+
+<p>ES5 写法：</p>
+
+<pre><code class="javascript">var getNumber  = function(num){
+    num = num || 20;
+    return num +1;
+}
+var n = getNumber(10)
+</code></pre>
+
+<p>ES6 写法：</p>
+
+<pre><code class="javascript">//如果没有逻辑，直接返回结果，可以不用return和大括号。
+let getNumber  = (num = 20) =&gt; num +1;
+let n = getNumber(10)
+//正常使用
+let getNumber  = (num = 20) =&gt; {
+    return num +1;
+}
+</code></pre>
+
+<h3>默认值</h3>
+
+<p>ES5 写法：</p>
+
+<pre><code class="javascript">var getNumber  = function(num){
+    num = num || 20;
+    return num +1;
+}
+</code></pre>
+
+<p>该写法，当num为0时，其实执行的是20的数字。</p>
+
+<p>ES6 写法：</p>
+
+<pre><code class="javascript">let getNumber  = function(num =20){
+    return num +1;
+}
+getNumber();
+</code></pre>
+
+
+       
+    </div>
+
+
+
+    <div class="sidenav">
+        <h2>语言</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F">图片加载的几种方式</a>
+            
+            </li>
+        
+            <li><a href="/blog/promise">promise对象</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F">装饰性模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E7%A6%BB%E7%BA%BF%E7%BC%93%E5%AD%98">离线缓存(manifest)</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F">async、defer、preload区别</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS%E5%AE%9E%E6%88%98-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5">AngularJS应用－基础概念</a>
+            
+            </li>
+        
+            <li><a href="/blog/AngularJS-%E6%8C%87%E4%BB%A4">AngularJS应用－指令</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0-%E5%87%BD%E6%95%B0">学习笔记－设计模式 －函数</a>
+            
+            </li>
+        
+            <li><a href="/blog/Javascript%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0">学习笔记－设计模式－基础</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83">模块化学习思考</a>
+            
+            </li>
+        
+            <li><a href="/blog/RequireJs%E4%BD%BF%E7%94%A8">RequireJs应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/apply%E5%92%8Ccall">apply和call应用</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81">表单验证－策略模式</a>
+            
+            </li>
+        
+            <li><a href="/blog/%E5%86%8D%E7%9C%8B%E8%BF%94%E5%9B%9E%E5%87%BD%E6%95%B0">再看返回函数</a>
+            
+            </li>
+        
+        </ul>
+
+        <h2>工具</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95">ES6 常用语法</a></li>
+        
+            <li><a href="/blog/webpack%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8">webpack使用方法</a></li>
+        
+            <li><a href="/blog/javascript%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83">前端规范的思考</a></li>
+        
+            <li><a href="/blog/jekyll%E4%BD%BF%E7%94%A8">jekyll基本使用方式</a></li>
+        
+        </ul>
+
+        <h2>项目沉淀</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/blog/%E5%91%A8%E7%BA%AA%E5%BD%95">15年08月19日－周工作记录</a></li>
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/blog/js/post.js" type="text/javascript"></script>
+
+
+    
+</body>
+</html>
