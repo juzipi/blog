@@ -35,9 +35,9 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//%E7%A6%BB%E7%BA%BF%E7%BC%93%E5%AD%98" title="离线缓存(manifest)">离线缓存(manifest)</a></h1>
         <p class="entry-date">2015-08-11</p>
-        <h1 id="manifest">离线缓存(manifest)</h1>
+        <h1>离线缓存(manifest)</h1>
 
-<p>##基本配置</p>
+<h2>基本配置</h2>
 
 <pre><code>CACHE MANIFEST
 # version xx.xx.xx
@@ -53,9 +53,11 @@ FALLBACK:  //备用资源，当资源无法访问，通过这个访问
 / 404.html
 </code></pre>
 
-<h2 id="section">坑</h2>
-<p>### manifest除了缓存manifest.appcache文件所指定的资源外，还必定会缓存当前的html页面。
-具体来说：</p>
+<h2>坑</h2>
+
+<h3>manifest除了缓存manifest.appcache文件所指定的资源外，还必定会缓存当前的html页面。</h3>
+
+<p>具体来说：</p>
 
 <p>当用户第一次访问页面，会从服务器上拉取html页面，以及其它静态资源。
 浏览器会把html页面，连同manifest.appcache文件，连同manifest.appcache文件里所指定的静态资源一并存入Application Cache。

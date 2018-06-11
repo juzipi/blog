@@ -1,85 +1,80 @@
-<h1 id="section">原型解析</h1>
+<h1>原型解析</h1>
 
 <ul>
-  <li>什么是原型?</li>
-  <li>原型的作用是什么？</li>
-  <li>堆和栈的区别？</li>
+<li>什么是原型?</li>
+<li>原型的作用是什么？</li>
+<li>堆和栈的区别？</li>
 </ul>
 
-<h2 id="section-1">1.对象分类</h2>
+
+<h2>1.对象分类</h2>
+
 <p>在js中有一个概念就是一切皆是对象，但是对象也有分不同的类型
 先抛出几个问题在这篇文章中去解答：</p>
 
 <ol>
-  <li>
-    <p>普通对象</p>
+<li><p>普通对象</p>
 
-    <pre><code> var o = new Object();
+<pre><code> var o = new Object();
  var o1 = {};
  var ff=function(){}; var o2=new ff();
-</code></pre>
-  </li>
-  <li>
-    <p>函数对象</p>
+</code></pre></li>
+<li><p>函数对象</p>
 
-    <pre><code> var f=function(){};
+<pre><code> var f=function(){};
  var f1=Function("sopit","alert('a')");
  function f2(){}
-</code></pre>
-  </li>
-  <li>
-    <p>原型对象 </p>
+</code></pre></li>
+<li><p>原型对象</p>
 
-    <pre><code> //源码
-	
+<pre><code> //源码
+
  function myFun(){
      var name="juzi";
  }
-	
+
  function myFunPro(){
      this.name="juzi";
      this.t=function(){
          return "tt";
      }
  }
-	
+
  myFunPro.prototype.title=function(){
      return "biaoti";
  }
-	
+
  var m=new myFun();
-    
+
  myFun.prototype=m;
-    
+
  var u=i=m;
-    
+
  var mP=new myFunPro();
-    
+
  var o=new Object();
-</code></pre>
-  </li>
+</code></pre></li>
 </ol>
 
-<blockquote>
-  <p>顺便说几个方法 </p>
 
-  <ol>
-    <li>tpyeof 可以知道数据类型，number,object,function,undefinded,boolean,string
+<blockquote><p>顺便说几个方法</p>
+
+<ol>
+<li>tpyeof 可以知道数据类型，number,object,function,undefinded,boolean,string
  判断变量是否存在，使用typeof，例如：</li>
-  </ol>
+</ol>
 </blockquote>
 
-<pre><code>	if(a){alert("a");} //有抱错信息
-	if(typeof !="undefined"){ alert("a"); } //不会报错
+<pre><code>    if(a){alert("a");} //有抱错信息
+    if(typeof !="undefined"){ alert("a"); } //不会报错
 </code></pre>
 
 <ol>
-  <li>instanceof 可以判断是否是实例，例如： a instanceof A；输出的事一个布尔值</li>
+<li>instanceof 可以判断是否是实例，例如： a instanceof A；输出的事一个布尔值</li>
 </ol>
 
-<blockquote>
 
-</blockquote>
+<blockquote></blockquote>
 
 <p>我想到这里可以说一下原型有什么作用了：
 1. 用来继承减少空间占用</p>

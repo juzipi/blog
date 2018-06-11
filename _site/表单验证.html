@@ -35,100 +35,100 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81" title="表单验证－策略模式">表单验证－策略模式</a></h1>
         <p class="entry-date">2011-08-11</p>
-        <p>#基本HTML</p>
+        <h1>基本HTML</h1>
 
 <pre><code>&lt;form id="lifeForm"&gt;
 &lt;div class="life-choose"&gt;
-	年龄：
-	&lt;select class="select-life" name="lifeYear"&gt;
-		&lt;option&gt;&lt;/option&gt;		
-		&lt;option&gt;1&lt;/option&gt;		
-		&lt;option&gt;2&lt;/option&gt;		
-	&lt;/select&gt;岁
-	&lt;select class="select-life" name="lifeMonth"&gt;
-		&lt;option&gt;&lt;/option&gt;		
-		&lt;option&gt;1&lt;/option&gt;
-		&lt;option&gt;2&lt;/option&gt;
-	&lt;/select&gt;
-	个月
+    年龄：
+    &lt;select class="select-life" name="lifeYear"&gt;
+        &lt;option&gt;&lt;/option&gt;       
+        &lt;option&gt;1&lt;/option&gt;      
+        &lt;option&gt;2&lt;/option&gt;      
+    &lt;/select&gt;岁
+    &lt;select class="select-life" name="lifeMonth"&gt;
+        &lt;option&gt;&lt;/option&gt;       
+        &lt;option&gt;1&lt;/option&gt;
+        &lt;option&gt;2&lt;/option&gt;
+    &lt;/select&gt;
+    个月
 
 &lt;/div&gt;
 &lt;div class=""&gt;
-	&lt;input type="text" name="lifeNum" value="" size="10" class="input-normal" /&gt;
+    &lt;input type="text" name="lifeNum" value="" size="10" class="input-normal" /&gt;
 &lt;/div&gt;
 &lt;div class="t-c mt-normal"&gt;
-	&lt;input class="btn-style01 dis" value="转换" name="" type="botton" /&gt;
+    &lt;input class="btn-style01 dis" value="转换" name="" type="botton" /&gt;
 &lt;/div&gt;
 &lt;/form&gt;
 </code></pre>
 
-<p>#验证代码</p>
+<h1>验证代码</h1>
 
 <pre><code>// 通用方法
 var vFn = {
-	isNoEmpty : function  (value,errorMsg) {
-		if(value===""){
-			return errorMsg;
-		}
-	},
-	miniLength : function(value,length,errorMsg){
-		if(value.length&lt;length){
-			return errorMsg;
-		}
-	}
+    isNoEmpty : function  (value,errorMsg) {
+        if(value===""){
+            return errorMsg;
+        }
+    },
+    miniLength : function(value,length,errorMsg){
+        if(value.length&lt;length){
+            return errorMsg;
+        }
+    }
 }
 </code></pre>
 
 <p>＃验证方法</p>
 
-<pre><code>	var Validator = function(){
- 	this.cache = [];
+<pre><code>    var Validator = function(){
+    this.cache = [];
  }
 
 // 
  Validator.prototype.add = function(dom,rule,errorMsg){
- 	var ary=rule.split(":");//分割可能在rule中配置的第二种情况 minLength:4;
- 	this.cache.push(function(){ // 把函数加入缓存列表
- 		var strategy=ary.shift(); //取Ary第一个值，一般这是要执行验证方法
- 		console.log("取出第一个值："+strategy)
- 		ary.unshift(dom.value); // 把dom的值传入ary，这里有两种情况如果 验证是带“：”那么这个就是在第二个参数，否则就是第一个参数，对应相应验证方法里面的 value参数
- 		console.log("加入dom值后："+ary)
- 		ary.push(errorMsg); //把报错信息传入ary，对应验证方法里面errorMsg参数
- 		console.log("再加入报错信息："+ary)
- 		return strategies[strategy].apply(dom,ary); //执行相应的验证方法，并且把this指向该dom，然后参数使用ary数组里面参数
- 	});
+    var ary=rule.split(":");//分割可能在rule中配置的第二种情况 minLength:4;
+    this.cache.push(function(){ // 把函数加入缓存列表
+        var strategy=ary.shift(); //取Ary第一个值，一般这是要执行验证方法
+        console.log("取出第一个值："+strategy)
+        ary.unshift(dom.value); // 把dom的值传入ary，这里有两种情况如果 验证是带“：”那么这个就是在第二个参数，否则就是第一个参数，对应相应验证方法里面的 value参数
+        console.log("加入dom值后："+ary)
+        ary.push(errorMsg); //把报错信息传入ary，对应验证方法里面errorMsg参数
+        console.log("再加入报错信息："+ary)
+        return strategies[strategy].apply(dom,ary); //执行相应的验证方法，并且把this指向该dom，然后参数使用ary数组里面参数
+    });
  };
 
  Validator.prototype.start = function(){
- 	for(var i=0,validatorFunc; validatorFunc = this.cache[i++];){
- 		var d = validatorFunc();
- 		if(msg){
- 			return msg;
- 		}
- 	}
+    for(var i=0,validatorFunc; validatorFunc = this.cache[i++];){
+        var d = validatorFunc();
+        if(msg){
+            return msg;
+        }
+    }
  };
 </code></pre>
 
-<p>##运用方法</p>
+<h2>运用方法</h2>
 
 <pre><code>var lifeForm = document.getElementById("lifeForm");
 var validatorFunc = function(){
-	var validator =  new Validator();
-	validator.add(lifeForm.lifeMonth,"isNoEmpty","月份不能为空");
-	validator.add(lifeForm.lifeYear,"isNoEmpty","年份不能为空");
-	var errorMsg = validator.start();
-	return errorMsg;
+    var validator =  new Validator();
+    validator.add(lifeForm.lifeMonth,"isNoEmpty","月份不能为空");
+    validator.add(lifeForm.lifeYear,"isNoEmpty","年份不能为空");
+    var errorMsg = validator.start();
+    return errorMsg;
 }
 
-	$(".select-life").change(function() {
-		var errorMsg = validatorFunc();
-		if (errorMsg) {
-			console.log(errorMsg);
-			$(".btn-style01").addClass('dis');
-			return false;
-		};
-		$(".btn-style01").removeClass('dis');
-	});
+    $(".select-life").change(function() {
+        var errorMsg = validatorFunc();
+        if (errorMsg) {
+            console.log(errorMsg);
+            $(".btn-style01").addClass('dis');
+            return false;
+        };
+        $(".btn-style01").removeClass('dis');
+    });
 </code></pre>
 
 

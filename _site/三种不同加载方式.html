@@ -39,7 +39,7 @@
 
 <p>示例：</p>
 
-<pre><code class="language-html">&lt;html&gt;
+<pre><code class="html">&lt;html&gt;
 &lt;head&gt;
     &lt;link rel="stylesheet" type="text/css" href="/style.css"&gt;
     &lt;script type="text/javascript" src="/header.js"&gt;&lt;/script&gt;
@@ -65,42 +65,45 @@
 
 <p>6、完成html解析</p>
 
-<p>###preload</p>
+<h3>preload</h3>
 
 <p>当设置preload时候，浏览器不会暂停html解析，但是会加载资源。</p>
 
 <p>支持的类型包括img、js、css、font、audio、video、fetch</p>
 
-<pre><code class="language-html">&lt;link rel="preload" herf="style.css" as="style"&gt;
+<pre><code class="html">&lt;link rel="preload" herf="style.css" as="style"&gt;
 &lt;link rel="perload" herf="main.js" as="script"&gt;
 &lt;link rel="preload" href="bg-image-wide.png" as="image" media="(min-width: 601px)"&gt;
 &lt;link rel="preload" href="fonts/cicle_fina-webfont.ttf" as="font" type="font/ttf" crossorigin="anonymous"&gt;
 </code></pre>
-<blockquote>
-  <p>这里只是把资源加载进来，并没有对文档产生影响，比如里面定义的class和变量是获取不到。</p>
 
-  <p>加载跨域的资源的需要设置：crossorigin</p>
-</blockquote>
+<blockquote><p>这里只是把资源加载进来，并没有对文档产生影响，比如里面定义的class和变量是获取不到。</p>
+
+<p>加载跨域的资源的需要设置：crossorigin</p></blockquote>
 
 <p>直到真正需要使用的时候再正常引入</p>
 
-<pre><code class="language-html">&lt;link rel="stylesheet" href="style.css"&gt;
-&lt;script src="main.js"&gt;&lt;/script&gt;
+<p>~~~html
+<link rel="stylesheet" href="style.css"></p>
+
+<script src="main.js"></script>
+
+
+<pre><code>
+### 自由控制
+
+控制资源什么时候加载什么时候解析，通过脚本来完成：
 </code></pre>
 
-<p>###自由控制</p>
-
-<p>控制资源什么时候加载什么时候解析，通过脚本来完成：</p>
-
-<pre><code class="language-javascript">var preloadLink = document.createElement("link");
+<p>var preloadLink = document.createElement("link");
 preloadLink.href = "myscript.js";
 preloadLink.rel = "preload";
 preloadLink.as = "script";
 document.head.appendChild(preloadLink);
-</code></pre>
-<p>这里只是预加载并不执行，当需要执行的时候可以：</p>
+~~~
+这里只是预加载并不执行，当需要执行的时候可以：</p>
 
-<pre><code class="language-javascript">var preloadedScript = document.createElement("script");
+<pre><code class="javascript">var preloadedScript = document.createElement("script");
 preloadedScript.src = "myscript.js";
 document.body.appendChild(preloadedScript);
 </code></pre>
@@ -108,47 +111,46 @@ document.body.appendChild(preloadedScript);
 <p>兼容性：
 <img src="http://juzipi.github.io/blog/images/preload.png" alt="preload" /></p>
 
-<blockquote>
-  <p>手机端目前兼容性太差</p>
-</blockquote>
+<blockquote><p>手机端目前兼容性太差</p></blockquote>
 
-<p>###Prefetch</p>
+<h3>Prefetch</h3>
 
 <p>浏览器空闲之后下载， 也就是把预加载的权限开放给浏览器来决定。
 但是有一个问题，当预加载未完成的时候，后面又引用需要的资源，这个时候浏览器会两次加载。</p>
 
-<pre><code class="language-html">&lt;link rel="prefetch" href="style.css" /&gt;
+<pre><code class="html">&lt;link rel="prefetch" href="style.css" /&gt;
 </code></pre>
 
-<p>###async、defer</p>
+<h3>async、defer</h3>
 
 <p>基本上所有的大的互联网首页都有对这两个属性的应用，到底有什么用。用于在不阻塞页面文档解析的前提下，控制脚本的下载和执行，流程和解析：
-<img src="http://juzipi.github.io/blog/images/延迟加载js方案.jpg" alt="" />
+<img src="http://juzipi.github.io/blog/images/%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDjs%E6%96%B9%E6%A1%88.jpg" alt="" />
 可以看到当设置defer时，先会加载然后等待HTML解析完成后在解析js。
 设置async时，先加载然后加载完成后就立刻解析js，这个时候会中断html解析。等解析完成js后再继续HTML解析。</p>
 
 <p>兼容性：
 <img src="http://juzipi.github.io/blog/images/async.png" alt="" /></p>
 
-<p>###dns-prefetch
-提前给域名解析，提升加载速度。</p>
+<h3>dns-prefetch</h3>
+
+<p>提前给域名解析，提升加载速度。</p>
 
 <p>合理的应用dns-prefetch可以加快整个商户度50ms-300ms.</p>
 
 <ul>
-  <li>浏览器会对页面中包含的link、href的域名自动dns-prefetch。（对https不起作用，需要手动开启）</li>
+<li>浏览器会对页面中包含的link、href的域名自动dns-prefetch。（对https不起作用，需要手动开启）</li>
 </ul>
 
-<pre><code class="language-html">&lt;meta http-equiv="x-dns-prefetch-control" content="on" &gt;
+
+<pre><code class="html">&lt;meta http-equiv="x-dns-prefetch-control" content="on" &gt;
 </code></pre>
 
 <ul>
-  <li>需要手动添加link标签的场景是：你预计用户在后面的访问中需要用到当前页面的所有链接都不包含的域名</li>
+<li>需要手动添加link标签的场景是：你预计用户在后面的访问中需要用到当前页面的所有链接都不包含的域名</li>
 </ul>
 
-<blockquote>
-  <p>查看chrome中域名预解析情况：chrome://dns/或者chrome://histograms/DNS</p>
-</blockquote>
+
+<blockquote><p>查看chrome中域名预解析情况：chrome://dns/或者chrome://histograms/DNS</p></blockquote>
 
 
        

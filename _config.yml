@@ -1,6 +1,6 @@
 auto: true
 
-markdown: kramdown
+markdown: rdiscount
 highlighter: pygments
 paginate: 8
 permalink: /:title

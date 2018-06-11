@@ -35,24 +35,30 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//RequireJs%E4%BD%BF%E7%94%A8" title="RequireJs应用">RequireJs应用</a></h1>
         <p class="entry-date">2014-06-25</p>
-        <p>##说明
-#### 历史：</p>
+        <h2>说明</h2>
+
+<h4>历史：</h4>
 
 <pre><code>&lt;script src="a.js"&gt;&lt;/script&gt;
 &lt;script src="b.js"&gt;&lt;/script&gt;
-&lt;script src="c.js"&gt;&lt;/script&gt; #### 问题：
+&lt;script src="c.js"&gt;&lt;/script&gt;
 </code></pre>
 
+<h4>问题：</h4>
+
 <ol>
-  <li>阻塞页面渲染。</li>
-  <li>因为js之间依赖关系，必须按照顺序加载，后期维护起来费工夫</li>
+<li>阻塞页面渲染。</li>
+<li>因为js之间依赖关系，必须按照顺序加载，后期维护起来费工夫</li>
 </ol>
 
-<h4 id="requirejs">RequireJs作用：</h4>
+
+<h4>RequireJs作用：</h4>
+
 <ol>
-  <li>实现js文件异步加载，避免网页失去响应 </li>
-  <li>管理模块之间的依赖性，便于代码维护和编写。</li>
+<li>实现js文件异步加载，避免网页失去响应</li>
+<li>管理模块之间的依赖性，便于代码维护和编写。</li>
 </ol>
+
 
 <p>一般实现异步加载js的方法</p>
 
@@ -60,66 +66,68 @@
 //加defer是为了兼容IE浏览器，IE不支持async属性
 </code></pre>
 
-<h2 id="section">基本使用</h2>
+<h2>基本使用</h2>
 
-<h3 id="section-1">页面引用</h3>
+<h3>页面引用</h3>
 
-<pre><code>&lt;script data-main="js/app.js" src="js/require.js"&gt;&lt;/script&gt; data-main表示的是主模块的意思，一般requirejs加载完成，就就加载主模块，一般有两个用途：
+<pre><code>&lt;script data-main="js/app.js" src="js/require.js"&gt;&lt;/script&gt;
 </code></pre>
 
+<p>data-main表示的是主模块的意思，一般requirejs加载完成，就就加载主模块，一般有两个用途：</p>
+
 <ol>
-  <li>定义配置文件</li>
-  <li>加载第一个应用模块</li>
+<li>定义配置文件</li>
+<li>加载第一个应用模块</li>
 </ol>
 
-<h3 id="section-2">加载文件</h3>
+
+<h3>加载文件</h3>
 
 <pre><code>require(["js/a"])
 </code></pre>
 
 <p>这里表示根据当前文件目录来说，加载js目录下面的a.js文件</p>
 
-<h4 id="section-3">基本配置</h4>
+<h4>基本配置</h4>
 
 <p>加载文件</p>
 
 <pre><code>require.config({
-	paths: {
-		a : "js/a"
-	}
+    paths: {
+        a : "js/a"
+    }
 })
 </code></pre>
 
-<h3 id="section-4">官方目录结构</h3>
+<h3>官方目录结构</h3>
 
 <p><img src="../../images/requireFile.png" alt="image" /></p>
 
-<h3 id="section-5">两个基本方法</h3>
+<h3>两个基本方法</h3>
 
-<h4 id="require">require</h4>
+<h4>require</h4>
 
-<h4 id="define">define</h4>
+<h4>define</h4>
 
-<h2 id="section-6">高级配置</h2>
+<h2>高级配置</h2>
 
-<h3 id="section-7">加载未标准定义文件</h3>
+<h3>加载未标准定义文件</h3>
 
 <p>单个方法</p>
 
 <pre><code> //singleFn.js
  function a () {
- 	console.log("show a fn");
- 	}
+    console.log("show a fn");
+    }
 </code></pre>
 
 <p>多个方法</p>
 
-<h2 id="section-8">常见问题</h2>
+<h2>常见问题</h2>
 
-<h2 id="section-9">项目建设建议</h2>
+<h2>项目建设建议</h2>
 
 <hr />
-
 
 
        

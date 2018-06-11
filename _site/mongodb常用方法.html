@@ -1,57 +1,52 @@
+<h1>mongodb 常用方法</h1>
 
-<p>#mongodb 常用方法</p>
+<h4>简介：</h4>
 
-<p>####简介：
-非关系型数据库（NoSql）：非关系型、分布式、开源的、水平可扩展</p>
+<p>非关系型数据库（NoSql）：非关系型、分布式、开源的、水平可扩展</p>
 
-<p>####安装：
-&gt; 这里主要是mac的安装方法</p>
+<h4>安装：</h4>
+
+<blockquote><p>这里主要是mac的安装方法</p></blockquote>
 
 <ul>
-  <li>下载安装包</li>
-  <li>
-    <p>创建目录</p>
+<li>下载安装包</li>
+<li><p>创建目录</p>
 
-    <pre><code>  sudo mkdir -P /data/db
-</code></pre>
-  </li>
-  <li>
-    <p>修改系统变量PATH，把<code> /Users/userName/Documents/mongodb/bin </code>  就是下载下来的安装目录，添加到PATH中。</p>
+<pre><code>  sudo mkdir -P /data/db
+</code></pre></li>
+<li><p>修改系统变量PATH，把<code>/Users/userName/Documents/mongodb/bin</code>  就是下载下来的安装目录，添加到PATH中。</p>
 
-    <pre><code>  // 第一步
+<pre><code>  // 第一步
   echo 'export PATH=/Users/userName/Documents/mongodb/bin:$PATH'&gt;&gt;~/.bash_profile 
   //第二步 ，重启终端
   echo $PATH
   如果添加成功，会把加入的路径打印出来
-</code></pre>
-  </li>
-  <li>
-    <p>添加操作权限</p>
+</code></pre></li>
+<li><p>添加操作权限</p>
 
-    <pre><code>  sudo chown -R  用户名 /data/db
-</code></pre>
-  </li>
-  <li>
-    <p>启动mongodb </p>
+<pre><code>  sudo chown -R  用户名 /data/db
+</code></pre></li>
+<li><p>启动mongodb</p>
 
-    <pre><code>  sudo mongod
-</code></pre>
-  </li>
+<pre><code>  sudo mongod
+</code></pre></li>
 </ul>
+
 
 <p>启动成功之后会开启一个服务，如果要操作数据库执行：sudo mongo</p>
 
-<p>####常用方法：</p>
+<h4>常用方法：</h4>
 
 <ul>
-  <li>db：查看当前使用的数据库名称</li>
-  <li>show collections：查询有多少数据集</li>
-  <li>show dbs : 查看本地安装的所有数据库名称</li>
-  <li>use xxx : 切换使用那个数据库</li>
-  <li>db.xxxx.find()：查询xxx数据集下面的数据</li>
+<li>db：查看当前使用的数据库名称</li>
+<li>show collections：查询有多少数据集</li>
+<li>show dbs : 查看本地安装的所有数据库名称</li>
+<li>use xxx : 切换使用那个数据库</li>
+<li>db.xxxx.find()：查询xxx数据集下面的数据</li>
 </ul>
 
-<h4 id="section">不常用方法</h4>
+
+<h4>不常用方法</h4>
 
 <pre><code>  db.addUser(username, password) 添加数据库授权用户
   db.auth(username, password)                访问认证
@@ -86,4 +81,3 @@
   db.shutdownServer()
   db.version() current version of the server
 </code></pre>
-

@@ -39,7 +39,8 @@
 
 <p>本周工作学习心得：</p>
 
-<h3 id="section">一、垂直居中对齐</h3>
+<h3>一、垂直居中对齐</h3>
+
 <p>需求：在弹出框中对内容进行垂直居中定位</p>
 
 <p>状况：内容高度不定，</p>
@@ -51,33 +52,34 @@
 <p>2、现有移动端的实现方式更加简单</p>
 
 <pre><code>.box{display:flex; display:-webkit-flex;}
-.item{align-self:center;-webkit-align-self:center;} 但是要兼容更加低端的手机还需要用box这个老属性
+.item{align-self:center;-webkit-align-self:center;}
+</code></pre>
 
-.box{
-	display:box; display:-webkit-box;
-	box-align:center; -webkit-box-align:center;
-	display:flex; display:-webkit-flex;
-	
+<p>但是要兼容更加低端的手机还需要用box这个老属性</p>
+
+<pre><code>.box{
+    display:box; display:-webkit-box;
+    box-align:center; -webkit-box-align:center;
+    display:flex; display:-webkit-flex;
+
 }
 .item{align-self:center;-webkit-align-self:center;}
 </code></pre>
 
-<blockquote>
-  <p>经常会遇到flex一些老浏览器和手机不支持情况，这个时候可以用box这个老的属性，兼容实现。</p>
-</blockquote>
+<blockquote><p>经常会遇到flex一些老浏览器和手机不支持情况，这个时候可以用box这个老的属性，兼容实现。</p></blockquote>
 
-<h3 id="section-1">二、数字自动转译</h3>
+<h3>二、数字自动转译</h3>
+
 <p>需求：在手机端点击输入框出来数字键盘</p>
 
 <p>问题：当输入到一定数字时候，数字自动转译</p>
 
 <p>解决方案：把number类型改成tel类型。</p>
 
-<blockquote>
-  <p>该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好</p>
-</blockquote>
+<blockquote><p>该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好</p></blockquote>
 
-<h3 id="angularjs-">三、angularJS 过滤</h3>
+<h3>三、angularJS 过滤</h3>
+
 <p>定义过滤器：对字符进行重新转换的过程。
 自定义和使用过滤</p>
 
@@ -90,23 +92,23 @@
 
 <pre><code>var myAppMoudel = angular.module("myApp",[]);
 myAppMoudel.filter("addNum",function(){
-	return function(item){
-	//这里item指需要转换的字符
-		return item+1;
-	}
+    return function(item){
+    //这里item指需要转换的字符
+        return item+1;
+    }
 })
 
 2 // 3
 </code></pre>
 
-<h3 id="angularjs--1">四、angularJS 服务</h3>
+<h3>四、angularJS 服务</h3>
 
 <p>模版：</p>
 
 <pre><code>&lt;body ng-app="myApp"&gt;
-	&lt;div ng-controller="test"&gt;
-		&lt;input type="button" ng-click="show()" value="点击" /&gt;
-	&lt;/div&gt;
+    &lt;div ng-controller="test"&gt;
+        &lt;input type="button" ng-click="show()" value="点击" /&gt;
+    &lt;/div&gt;
 &lt;/body&gt;
 </code></pre>
 
@@ -114,26 +116,26 @@ myAppMoudel.filter("addNum",function(){
 
 <pre><code>var myAppModule = angular.module("myApp",[]);
 myAppModule.factory("myService",function(){
-	return {
-		fn:function(){
-			console.log("self");
-		}
-	}
+    return {
+        fn:function(){
+            console.log("self");
+        }
+    }
 })
 </code></pre>
 
-<p>引用服务：
-&gt; 自定义的服务一定是放在左右服务最后面。</p>
+<p>引用服务：</p>
+
+<blockquote><p>自定义的服务一定是放在左右服务最后面。</p></blockquote>
 
 <pre><code>myAppModule.controller("test",["$scope","myService",function($scope,myService){
 
 $scope.show =function(){
-	myService.fn();
+    myService.fn();
 }
-	
+
 }])
 </code></pre>
-
 
 
        

@@ -35,59 +35,58 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//%E5%86%8D%E7%9C%8B%E8%BF%94%E5%9B%9E%E5%87%BD%E6%95%B0" title="再看返回函数">再看返回函数</a></h1>
         <p class="entry-date">2011-08-11</p>
-        <p>#基本方法
-主要是想看看返回方法之后，this的指向的是什么。相应的解释在代码中。</p>
+        <h1>基本方法</h1>
 
-<pre><code class="language-javascript">Function.prototype.after = function(fn){
-	var _self = this;
-	return function(){
-		var e = _self.apply(this,arguments);
-		// this指的是调用的这个函数的上一级对象，如果是在windows下调用，这个this指的就是window
-		fn.apply(this,arguments);
-		return e;
-	}
+<p>主要是想看看返回方法之后，this的指向的是什么。相应的解释在代码中。</p>
+
+<pre><code class="javascript">Function.prototype.after = function(fn){
+    var _self = this;
+    return function(){
+        var e = _self.apply(this,arguments);
+        // this指的是调用的这个函数的上一级对象，如果是在windows下调用，这个this指的就是window
+        fn.apply(this,arguments);
+        return e;
+    }
 }
 Function.prototype.before = function(fn){
-	var _self = this;
-	return function(){
-		fn.apply(this,arguments);
-		_self.apply(this,arguments)
-	}
+    var _self = this;
+    return function(){
+        fn.apply(this,arguments);
+        _self.apply(this,arguments)
+    }
 }
 var fn1 = function(n){
-	console.log(n+1)
+    console.log(n+1)
 }
 var fn2 = function(n){
-	// console.log(n+2)
-	console.log(this.opp)
+    // console.log(n+2)
+    console.log(this.opp)
 }
 var fn3 = function(n){
-	console.log(n+3)
-	// console.log(arguments.callee())
+    console.log(n+3)
+    // console.log(arguments.callee())
 }
 window.opp = "opp";
 //设置全局对象window属性，看看后面是否被覆盖。
 
 var o = {
-	fn4: function(n){
-		console.log(n+4);
-		console.log(this)
-	}
+    fn4: function(n){
+        console.log(n+4);
+        console.log(this)
+    }
 }
 var fn22 = o.fn4.after(fn2).before(fn3);
 fn22("+")
 // 这里定义的o对象没有opp属性，所以对应fn2方法钟的this打印出来的就是“window”，
 var oo = {
-	fn : fn22,
-	opp:"ppo"
+    fn : fn22,
+    opp:"ppo"
 }
 oo.fn("-")
 // 这里定义的oo对象有opp属性，所以对应fn2方法打印出来的就是“ppo”，
-
 </code></pre>
 
 <p>这里需要说明最后的oo.fn()里面的参数都会传入里面的方法，也就是说这里的参数，对于其他方法来说是同一个。</p>
-
 
 
        
