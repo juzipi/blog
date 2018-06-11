@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
  
    <title>juzipi</title>
-   <link href=".//atom.xml" rel="self" type="application/atom+xml"/>
-   <link href="./" rel="alternate" type="text/html" />
-   <updated>2018-06-11T15:51:10+08:00</updated>
-   <id>./</id>
+   <link href="./atom.xml" rel="self" type="application/atom+xml"/>
+   <link href="." rel="alternate" type="text/html" />
+   <updated>2018-06-11T17:13:42+08:00</updated>
+   <id>.</id>
    <author>
      <name></name>
      <email></email>
@@ -83,6 +83,299 @@
 
 &lt;p&gt;问题是每次请求，因为用了keep-alive详情中内容不会变化。
 解决方法是在beforeRouteEnter这个钩子中重新获取一边数据&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>上传图片</title>
+     <!-- <link href="http://beiyuu.com/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"/> -->
+     <updated>2017-02-22T00:00:00+08:00</updated>
+     <id>http://beiyuu.com/文件上传</id>
+     <content type="html">&lt;h1&gt;上传图片&lt;/h1&gt;
+
+&lt;h2&gt;基础知识&lt;/h2&gt;
+
+&lt;h3&gt;FormData&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;通过FormData对象可以组装一组用 XMLHttpRequest发送请求的键/值对。它可以更灵活方便的发送表单数据，因为可以独立于表单使用。如果你把表单的编码类型设置为multipart/form-data ，则通过FormData传输的数据格式和表单通过submit() 方法传输的数据格式相同。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;这是一种常见的移动端上传方式，FormData也是H5新增的 兼容性如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://juzipi.github.io/blog/images/formdata.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;base64&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Base64是一种基于64个可打印字符来表示二进制数据的表示方法。 由于2的6次方等于64，所以每6个位元为一个单元，对应某个可打印字符。 三个字节有24个位元，对应于4个Base64单元，即3个字节可表示4个可打印字符。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;base64可以说是很出名了，就是用一段字符串来描述一个二进制数据，所以很多时候也可以使用base64方式上传。兼容性如下：
+&lt;img src=&quot;http://juzipi.github.io/blog/images/base64.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Blob对象&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;一个 Blob对象表示一个不可变的, 原始数据的类似文件对象。Blob表示的数据不一定是一个JavaScript原生格式。 File 接口基于Blob，继承 blob功能并将其扩展为支持用户系统上的文件。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;简单说Blob就是一个二进制对象，是原生支持的，兼容性如下:
+&lt;img src=&quot;http://juzipi.github.io/blog/images/blob.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;FileReader对象&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;FileReader 对象允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;FileReader也就是将本地文件转换成base64格式的dataUrl。
+&lt;img src=&quot;http://juzipi.github.io/blog/images/filereader.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;图片上传思路&lt;/h3&gt;
+
+&lt;p&gt;准备工作都做完了，那怎样用这些材料完成一件事情呢。&lt;/p&gt;
+
+&lt;p&gt;这里要强调的是，考虑到移动端流量很贵，所以有必要对大图片进行下压缩再上传。&lt;/p&gt;
+
+&lt;p&gt;图片压缩很简单，将图片用canvas画出来，再使用canvas.toDataUrl方法将图片转成base64格式。&lt;/p&gt;
+
+&lt;p&gt;所以图片上传思路大致是：&lt;/p&gt;
+
+&lt;p&gt;1、监听一个input(type=‘file’)的onchange事件，这样获取到文件file；&lt;/p&gt;
+
+&lt;p&gt;2、将file转成dataUrl;&lt;/p&gt;
+
+&lt;p&gt;3、然后根据dataUrl利用canvas绘制图片压缩，然后再转成新的dataUrl；&lt;/p&gt;
+
+&lt;p&gt;4、再把dataUrl转成Blob；&lt;/p&gt;
+
+&lt;p&gt;5、把Blob append进FormData中；&lt;/p&gt;
+
+&lt;p&gt;6、xhr实现上传。&lt;/p&gt;
+
+&lt;h3&gt;手机兼容性问题&lt;/h3&gt;
+
+&lt;p&gt;理想很丰满，现实很骨感。
+实际上由于手机平台兼容性问题，上面这套流程并不能全都支持。
+所以需要根据兼容性判断。&lt;/p&gt;
+
+&lt;p&gt;经过试验发现：&lt;/p&gt;
+
+&lt;p&gt;1、部分安卓微信浏览器无法触发onchange事件（第一步就特么遇到问题）
+这其实安卓微信的一个遗留问题。 查看讨论 解决办法也很简单：input标签 &lt;input type=“file&quot; name=&quot;image&quot; accept=&quot;image/gif, image/jpeg, image/png”&gt;要写成&lt;input type=&quot;file&quot; name=&quot;image&quot; accept=“image/*”&gt;就没问题了。&lt;/p&gt;
+
+&lt;p&gt;2、部分安卓微信不支持Blob对象&lt;/p&gt;
+
+&lt;p&gt;3、部分Blob对象append进FormData中出现问题&lt;/p&gt;
+
+&lt;p&gt;4、iOS 8不支持new File Constructor，但是支持input里的file对象。&lt;/p&gt;
+
+&lt;p&gt;5、iOS 上经过压缩后的图片可以上传成功 但是size是0 无法打开。&lt;/p&gt;
+
+&lt;p&gt;6、部分手机出现图片上传转换问题，请移步。&lt;/p&gt;
+
+&lt;p&gt;7、安卓手机不支持多选，原因在于multiple属性根本就不支持。&lt;/p&gt;
+
+&lt;p&gt;8、多张图片转base64时候卡顿，因为调用了cpu进行了计算。&lt;/p&gt;
+
+&lt;p&gt;9、上传图片可以使用base64上传或者formData上传&lt;/p&gt;
+
+&lt;h2&gt;上传思路修改方案&lt;/h2&gt;
+
+&lt;p&gt;经过考虑，我们决定做兼容性处理：
+&lt;img src=&quot;http://juzipi.github.io/blog/images/upimgflow.png&quot; alt=&quot;&quot; /&gt;
+这里边两条路，最后都是File对象append进FormData中实现上传。&lt;/p&gt;
+
+&lt;h3&gt;代码实现&lt;/h3&gt;
+
+&lt;p&gt;html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;html&quot;&gt;&amp;lt;input type=&quot;file&quot; name=&quot;image&quot; accept=“image/*” onchange=&#39;handleInputChange&#39;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;// 全局对象，不同function使用传递数据
+const imgFile = {};
+
+function handleInputChange (event) {
+    // 获取当前选中的文件
+    const file = event.target.files[0];
+    const imgMasSize = 1024 * 1024 * 10; // 10MB
+
+    // 检查文件类型
+    if([&#39;jpeg&#39;, &#39;png&#39;, &#39;gif&#39;, &#39;jpg&#39;].indexOf(file.type.split(&quot;/&quot;)[1]) &amp;lt; 0){
+        // 自定义报错方式
+        // Toast.error(&quot;文件类型仅支持 jpeg/png/gif！&quot;, 2000, undefined, false);
+        return;
+    }
+
+    // 文件大小限制
+    if(file.size &amp;gt; imgMasSize ) {
+        // 文件大小自定义限制
+        // Toast.error(&quot;文件大小不能超过10MB！&quot;, 2000, undefined, false);
+        return;
+    }
+
+    // 判断是否是ios
+    if(!!window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+        // iOS
+        transformFileToFormData(file);
+        return;
+    }
+
+    // 图片压缩之旅
+    transformFileToDataUrl(file);
+}
+// 将File append进 FormData
+function transformFileToFormData (file) {
+    const formData = new FormData();
+    // 自定义formData中的内容
+    // type
+    formData.append(&#39;type&#39;, file.type);
+    // size
+    formData.append(&#39;size&#39;, file.size || &quot;image/jpeg&quot;);
+    // name
+    formData.append(&#39;name&#39;, file.name);
+    // lastModifiedDate
+    formData.append(&#39;lastModifiedDate&#39;, file.lastModifiedDate);
+    // append 文件
+    formData.append(&#39;file&#39;, file);
+    // 上传图片
+    uploadImg(formData);
+}
+// 将file转成dataUrl
+function transformFileToDataUrl (file) {
+    const imgCompassMaxSize = 200 * 1024; // 超过 200k 就压缩
+
+    // 存储文件相关信息
+    imgFile.type = file.type || &#39;image/jpeg&#39;; // 部分安卓出现获取不到type的情况
+    imgFile.size = file.size;
+    imgFile.name = file.name;
+    imgFile.lastModifiedDate = file.lastModifiedDate;
+
+    // 封装好的函数
+    const reader = new FileReader();
+
+    // file转dataUrl是个异步函数，要将代码写在回调里
+    reader.onload = function(e) {
+        const result = e.target.result;
+
+        if(result.length &amp;lt; imgCompassMaxSize) {
+            compress(result, processData, false );    // 图片不压缩
+        } else {
+            compress(result, processData);            // 图片压缩
+        }
+    };
+
+    reader.readAsDataURL(file);
+}
+// 使用canvas绘制图片并压缩
+function compress (dataURL, callback, shouldCompress = true) {
+    const img = new window.Image();
+
+    img.src = dataURL;
+
+    img.onload = function () {
+        const canvas = document.createElement(&#39;canvas&#39;);
+        const ctx = canvas.getContext(&#39;2d&#39;);
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        let compressedDataUrl;
+
+        if(shouldCompress){
+            compressedDataUrl = canvas.toDataURL(imgFile.type, 0.2);
+        } else {
+            compressedDataUrl = canvas.toDataURL(imgFile.type, 1);
+        }
+
+        callback(compressedDataUrl);
+    }
+}
+
+function processData (dataURL) {
+    // 这里使用二进制方式处理dataUrl
+    const binaryString = window.atob(dataUrl.split(&#39;,&#39;)[1]);
+    const arrayBuffer = new ArrayBuffer(binaryString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+    const imgFile = this.imgFile;
+
+    for (let i = 0, j = binaryString.length; i &amp;lt; j; i++) {
+        intArray[i] = binaryString.charCodeAt(i);
+    }
+
+    const data = [intArray];
+
+    let blob;
+
+    try {
+        blob = new Blob(data, { type: imgFile.type });
+    } catch (error) {
+        window.BlobBuilder = window.BlobBuilder ||
+            window.WebKitBlobBuilder ||
+            window.MozBlobBuilder ||
+            window.MSBlobBuilder;
+        if (error.name === &#39;TypeError&#39; &amp;amp;&amp;amp; window.BlobBuilder){
+            const builder = new BlobBuilder();
+            builder.append(arrayBuffer);
+            blob = builder.getBlob(imgFile.type);
+        } else {
+            // Toast.error(&quot;版本过低，不支持上传图片&quot;, 2000, undefined, false);
+            throw new Error(&#39;版本过低，不支持上传图片&#39;);
+        }
+    }
+
+    // blob 转file
+    const fileOfBlob = new File([blob], imgFile.name);
+    const formData = new FormData();
+
+    // type
+    formData.append(&#39;type&#39;, imgFile.type);
+    // size
+    formData.append(&#39;size&#39;, fileOfBlob.size);
+    // name
+    formData.append(&#39;name&#39;, imgFile.name);
+    // lastModifiedDate
+    formData.append(&#39;lastModifiedDate&#39;, imgFile.lastModifiedDate);
+    // append 文件
+    formData.append(&#39;file&#39;, fileOfBlob);
+
+    uploadImg(formData);
+}
+
+// 上传图片
+uploadImg (formData) {
+    const xhr = new XMLHttpRequest();
+
+    // 进度监听
+    xhr.upload.addEventListener(&#39;progress&#39;, (e)=&amp;gt;{console.log(e.loaded / e.total)}, false);
+    // 加载监听
+    // xhr.addEventListener(&#39;load&#39;, ()=&amp;gt;{console.log(&quot;加载中&quot;);}, false);
+    // 错误监听
+    xhr.addEventListener(&#39;error&#39;, ()=&amp;gt;{Toast.error(&quot;上传失败！&quot;, 2000, undefined, false);}, false);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            const result = JSON.parse(xhr.responseText);
+            if (xhr.status === 200) {
+                // 上传成功
+
+
+            } else {
+                // 上传失败
+            }
+        }
+    };
+    xhr.open(&#39;POST&#39;, &#39;/uploadUrl&#39; , true);
+    xhr.send(formData);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;延伸阅读&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/CommanderXL/imgResize&quot;&gt;移动端H5图片压缩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/27627436&quot;&gt;移动端图片上传旋转、压缩的解决方案&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.zhihu.com/question/59267048/answer/164201665&quot;&gt;如何比较canvas的toDataURL和toBlob方法？&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/blueimp/JavaScript-Canvas-to-Blob&quot;&gt;JavaScript-Canvas-to-Blob转换bug修复&lt;/a&gt;&lt;/p&gt;
 </content>
    </entry>
    
@@ -1160,51 +1453,6 @@ FALLBACK:  //备用资源，当资源无法访问，通过这个访问
 浏览器会把html页面，连同manifest.appcache文件，连同manifest.appcache文件里所指定的静态资源一并存入Application Cache。
 当用户第二次访问该页面，manifest.appcache文件里所指定的静态资源就不需要重新加载了，直接从cache读出。这很好，问题是，当前的html页面也从cache直接读出来了，根本就不管线上的版本呀！
 这造成的问题是，网站如果更新了，用户的浏览器根本不知道，还显示cache里的版本&lt;/p&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>jekyll基本使用方式</title>
-     <!-- <link href="http://beiyuu.com/jekyll%E4%BD%BF%E7%94%A8"/> -->
-     <updated>2015-06-25T00:00:00+08:00</updated>
-     <id>http://beiyuu.com/jekyll使用</id>
-     <content type="html">&lt;h2&gt;基本使用方式&lt;/h2&gt;
-
-&lt;p&gt;安装&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gem install jekyll
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;进入文件夹&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;jekyll new my-site
-cd my-site
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;起服务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;jekyll serve
-
-服务地址：http://localhost:4000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;建立&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;jekyll build
-
-jekyll build -watch //持续跟踪
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;文章要求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-layout: post
-title: jekyll基本使用方式
-description: jekyll基本使用方式
-category: blog
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
 </content>
    </entry>
    
