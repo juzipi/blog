@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href=".//atom.xml" rel="self" type="application/atom+xml"/>
    <link href="./" rel="alternate" type="text/html" />
-   <updated>2018-06-11T15:06:55+08:00</updated>
+   <updated>2018-06-11T15:11:40+08:00</updated>
    <id>./</id>
    <author>
      <name></name>
@@ -17,30 +17,27 @@
      <!-- <link href="http://beiyuu.com/vue%E7%9A%84keep-alive"/> -->
      <updated>2017-03-30T00:00:00+08:00</updated>
      <id>http://beiyuu.com/vue的keep-alive</id>
-     <content type="html">&lt;h1&gt;vue中的keep-alive&lt;/h1&gt;
+     <content type="html">&lt;p&gt;#vue中的keep-alive&lt;/p&gt;
 
-&lt;h3&gt;一、介绍&lt;/h3&gt;
+&lt;p&gt;###一、介绍
+能够缓存组件，避免重复加载。&lt;/p&gt;
 
-&lt;p&gt;能够缓存组件，避免重复加载。&lt;/p&gt;
+&lt;p&gt;页面生命周期钩子如上面的代码所示，这四个是最常用到的部分。这部分需要注意下，当引入keep-alive的时候，页面第一次进入，钩子的触发顺序created-&amp;gt; mounted-&amp;gt; activated，退出时触发deactivated。当再次进入（前进或者后退）时，只触发activated。&lt;/p&gt;
 
-&lt;p&gt;页面生命周期钩子如上面的代码所示，这四个是最常用到的部分。这部分需要注意下，当引入keep-alive的时候，页面第一次进入，钩子的触发顺序created-&gt; mounted-&gt; activated，退出时触发deactivated。当再次进入（前进或者后退）时，只触发activated。&lt;/p&gt;
-
-&lt;h3&gt;二、使用&lt;/h3&gt;
-
-&lt;h4&gt;实例1：返回充填&lt;/h4&gt;
-
-&lt;p&gt;可以使用该方式，返回回去，前面一步填写内容还保存在内存中。当不需要保存的时候可以用：&lt;/p&gt;
+&lt;p&gt;###二、使用
+####实例1：返回充填
+可以使用该方式，返回回去，前面一步填写内容还保存在内存中。当不需要保存的时候可以用：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;to=&quot;{name:XXX,from:&#39;xxx&#39;}；
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;通过activated钩子能够知道上一步from是什么，以此确定是否要清空还是保持数据。&lt;/p&gt;
 
-&lt;h4&gt;实例2：部分组件保持keep-alive&lt;/h4&gt;
+&lt;p&gt;####实例2：部分组件保持keep-alive&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;lt;!-- 这里是需要keepalive的 --&amp;gt;
 &amp;lt;keep-alive&amp;gt;
- &amp;lt;router-view v-if=&quot;$route.meta.keepAlive&quot;&amp;gt;&amp;lt;/router-view&amp;gt;
+   	 &amp;lt;router-view v-if=&quot;$route.meta.keepAlive&quot;&amp;gt;&amp;lt;/router-view&amp;gt;
 &amp;lt;/keep-alive&amp;gt;
 
 &amp;lt;!-- 这里不会被keepalive --&amp;gt;
@@ -63,16 +60,15 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;实例3：列表和详情&lt;/h3&gt;
-
-&lt;p&gt;list.vue&lt;/p&gt;
+&lt;p&gt;###实例3：列表和详情
+list.vue&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;lt;ul&amp;gt;
-        &amp;lt;li v-for=&quot;(value, index) in getFilterData().data&quot;&amp;gt;
-        &amp;lt;router-link(:to=&quot;&#39;/article/&#39; + index&quot;)&amp;gt;
+		&amp;lt;li v-for=&quot;(value, index) in getFilterData().data&quot;&amp;gt;
+    	&amp;lt;router-link(:to=&quot;&#39;/article/&#39; + index&quot;)&amp;gt;
       &amp;lt;span v-text=&quot;value.title&quot;&amp;gt;&amp;lt;/span&amp;gt;
     &amp;lt;/router-link&amp;gt;
- &amp;lt;/li&amp;gt;
+   	 &amp;lt;/li&amp;gt;
 &amp;lt;ul&amp;gt;  
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -83,6 +79,7 @@
 
 &lt;p&gt;问题是每次请求，因为用了keep-alive详情中内容不会变化。
 解决方法是在beforeRouteEnter这个钩子中重新获取一边数据&lt;/p&gt;
+
 </content>
    </entry>
    
@@ -95,18 +92,18 @@
 
 &lt;p&gt;一、传统加载方式&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var imgSrc = {
-    img1 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/logo_white_ee663702.png&quot;,
-    img2 : &quot;http://www.youjiaus.net/activities/images/1504paypal/760x142.jpg&quot;,
-    img3 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/lg_main_a11_1.png&quot;,
-    img4 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/isay_icons.3.png&quot;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var imgSrc = {
+	img1 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/logo_white_ee663702.png&quot;,
+	img2 : &quot;http://www.youjiaus.net/activities/images/1504paypal/760x142.jpg&quot;,
+	img3 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/lg_main_a11_1.png&quot;,
+	img4 : &quot;http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/isay_icons.3.png&quot;
 }
 
 //建立img标签加载
 var loadImg = function(url){
-    var Imgs = document.createElement(&quot;img&quot;);
-    Imgs.setAttribute(&quot;src&quot;,url);
-    return Imgs;
+	var Imgs = document.createElement(&quot;img&quot;);
+	Imgs.setAttribute(&quot;src&quot;,url);
+	return Imgs;
 } 
 
 loadImg(imgSrc.img1)//加载进来但是不显示。
@@ -114,73 +111,77 @@ loadImg(imgSrc.img1)//加载进来但是不显示。
 
 //建立 Image对象加载
 var report = function(src){
-        var i = new Image();
-        i.src =src; 
+		var i = new Image();
+		i.src =src; 
 }  
 report(imgSrc.img2)  
 
-
-//回调再加载   
+	
+//回调再加载	
 var reportCallback = function(src,callback){
-        var i = new Image();
-        i.src =src; 
-    if(typeof callback == &quot;function&quot;){
-        callback(imgSrc.img4);  
-    } 
+		var i = new Image();
+		i.src =src; 
+	if(typeof callback == &quot;function&quot;){
+		callback(imgSrc.img4);	
+	} 
 } 
 //reportCallback(imgSrc.img3,report) 
 
 
 // ajax加载
-
+	
 $.ajax({
-    url: &quot;http://runjs.cn/img/runjs_icon.gif&quot;,  
-    type: &#39;GET&#39;,
-    global: false,
-    beforeSend : function(){
-        //发送之前
-    },
-     success: function(){
-         //成功之后
-        console.log(&quot;suc&quot;);
-    },
-    complete: function(){
-        //完成之后
-            //var w=img.naturalWidth,h=img.naturalHeight,wh=w/h;
-     }
+	url: &quot;http://runjs.cn/img/runjs_icon.gif&quot;,  
+	type: &#39;GET&#39;,
+	global: false,
+	beforeSend : function(){
+		//发送之前
+	},
+	 success: function(){
+		 //成功之后
+		console.log(&quot;suc&quot;);
+	},
+	complete: function(){
+		//完成之后
+		  	//var w=img.naturalWidth,h=img.naturalHeight,wh=w/h;
+	 }
  });
+ 
+
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;promise加载方式&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;
 var loadImg = function(urls){
-    return new Promise(function(resolve,reject){
-        var length = urls.length;
-        var n=0;
-        for(var i =0; i&amp;lt;length; i++){
-            var image = new Image();
-            image.src = urls[i];
-            image.onload = function(){
-                n++;
-                if(n==length){
-                    resolve(&quot;suc&quot;)
-                }
-            }
-            image.onerror=function(){
-                reject(urls[i]+&quot;错误&quot;)
-                // console.log(urls[i]+&quot;错误&quot;)
-            }
-        }
-    })
+	return new Promise(function(resolve,reject){
+		var length = urls.length;
+		var n=0;
+		for(var i =0; i&amp;lt;length; i++){
+			var image = new Image();
+			image.src = urls[i];
+			image.onload = function(){
+				n++;
+				if(n==length){
+					resolve(&quot;suc&quot;)
+				}
+			}
+			image.onerror=function(){
+				reject(urls[i]+&quot;错误&quot;)
+				// console.log(urls[i]+&quot;错误&quot;)
+			}
+		}
+	})
 }
  loadImg([&quot;st/img/404.png&quot;,&quot;st/img/go_up.png&quot;]).then(function(i){
-    console.log(i)
-    console.log(&quot;you&quot;)
+	console.log(i)
+	console.log(&quot;you&quot;)
  },function(i){
-    console.log(i)
+ 	console.log(i)
  })
+
 &lt;/code&gt;&lt;/pre&gt;
+
 </content>
    </entry>
    
@@ -189,87 +190,112 @@ var loadImg = function(urls){
      <!-- <link href="http://beiyuu.com/ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95"/> -->
      <updated>2016-04-11T00:00:00+08:00</updated>
      <id>http://beiyuu.com/ES6 常用语法</id>
-     <content type="html">&lt;h2&gt;let、const、var&lt;/h2&gt;
+     <content type="html">&lt;p&gt;##let、const、var
+用一个表格可以表示，他们的区别和相同:&lt;/p&gt;
 
-&lt;p&gt;用一个表格可以表示，他们的区别和相同:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;var&lt;/th&gt;
+      &lt;th&gt;let&lt;/th&gt;
+      &lt;th&gt;const&lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;变量提前&lt;/td&gt;
+      &lt;td&gt;是&lt;/td&gt;
+      &lt;td&gt;不是&lt;/td&gt;
+      &lt;td&gt;不是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;有效范围&lt;/td&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;块级作用域&lt;/td&gt;
+      &lt;td&gt;块级作用域&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;是否可以更改&lt;/td&gt;
+      &lt;td&gt;可改&lt;/td&gt;
+      &lt;td&gt;可改&lt;/td&gt;
+      &lt;td&gt;指向的内存是不变，&lt;br /&gt;例如：数字、字符串、布尔值是不变，数组和对象是可以改，&lt;br /&gt;但不能重新用其他数组或对象赋值，好比占坑不挪位置。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;是否允许重复声明&lt;/td&gt;
+      &lt;td&gt;可以&lt;/td&gt;
+      &lt;td&gt;在同一作用域不可以&lt;/td&gt;
+      &lt;td&gt;在同一作用域不可以&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;p&gt; | var  | let | const
-------------- | ------------- | -------------| -------------
- 变量提前 | 是 | 不是 | 不是
- 有效范围 | 作用域 | 块级作用域 | 块级作用域
- 是否可以更改 | 可改 | 可改 | 指向的内存是不变，&lt;br&gt;例如：数字、字符串、布尔值是不变，数组和对象是可以改，&lt;br&gt;但不能重新用其他数组或对象赋值，好比占坑不挪位置。
- 是否允许重复声明 | 可以 | 在同一作用域不可以 | 在同一作用域不可以&lt;/p&gt;
+&lt;p&gt;##字符串&lt;/p&gt;
 
-&lt;h2&gt;字符串&lt;/h2&gt;
+&lt;h3 id=&quot;section&quot;&gt;模板&lt;/h3&gt;
 
-&lt;h3&gt;模板&lt;/h3&gt;
+&lt;p&gt;非常方便代替原来拼接不方便，比如原来换行需要用’&#39;；&lt;/p&gt;
 
-&lt;p&gt;非常方便代替原来拼接不方便，比如原来换行需要用&#39;\&#39;；&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;let age=23, name=&#39;李逍遥&#39;;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;let age=23, name=&#39;李逍遥&#39;;
 console.log(`age:${age},name:${name}`);  // age:23,name:李逍遥
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;常用&lt;/h3&gt;
-
+&lt;h3 id=&quot;section-1&quot;&gt;常用&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;includes：判断是否包含后直接返回布尔值。&lt;/li&gt;
-&lt;li&gt;startsWith: 判断参数是否在字符串头部，返回布尔值。&lt;/li&gt;
-&lt;li&gt;endsWith：判断参数是否在字符串尾部，返回布尔值。&lt;/li&gt;
+  &lt;li&gt;includes：判断是否包含后直接返回布尔值。&lt;/li&gt;
+  &lt;li&gt;startsWith: 判断参数是否在字符串头部，返回布尔值。&lt;/li&gt;
+  &lt;li&gt;endsWith：判断参数是否在字符串尾部，返回布尔值。&lt;/li&gt;
 &lt;/ul&gt;
 
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;let str  = &#39;happy&#39;;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;let str  = &#39;happy&#39;;
 console.log(str.includes(&#39;h&#39;));  // true
 console.log(str.startsWith(&#39;ha&#39;)); // true
 console.log(str.endsWith(&#39;ppy&#39;));  // true
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;对象&lt;/h2&gt;
-
-&lt;h3&gt;初始化简写&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;//es 5
+&lt;p&gt;##对象
+### 初始化简写
+~~~javascript
+//es 5
 function p(name,age)  {
-    return {
-        name:name,
-        age:age,
-        getName : function(){
-            return this.name;
-        }
-    }
+	return {
+		name:name,
+		age:age,
+		getName : function(){
+			return this.name;
+		}
+	}
 }
 //es6 ,
 function p(name,age) {
-    return {
-    //当键值对重名的时候，可以简化
-        name,
-        age,
-    //可以省略 冒号和function关键字
-        getName () {
-            return this.name;
-        }
-    }
+	return {
+	//当键值对重名的时候，可以简化
+		name,
+		age,
+	//可以省略 冒号和function关键字
+		getName () {
+			return this.name;
+		}
+	}
 }
-&lt;/code&gt;&lt;/pre&gt;
+~~~&lt;/p&gt;
 
-&lt;h3&gt;直接取对象值&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var obj = {age:21,name:&#39;李逍遥&#39;};
+&lt;p&gt;###直接取对象值
+~~~javascript
+var obj = {age:21,name:’李逍遥’};
 //ES 5
 var age = obj.age;
-var name = obj.name;
+var name = obj.name;&lt;/p&gt;
 
-//ES 6
+&lt;p&gt;//ES 6
 var {age,name }  = obj;
 console.log(age);  // 21
-&lt;/code&gt;&lt;/pre&gt;
+~~~&lt;/p&gt;
 
-&lt;h3&gt;浅拷贝&lt;/h3&gt;
+&lt;p&gt;###浅拷贝
+可以把多个源对象自身枚举的属性拷贝给目标对象，然后返回目标对象，第一个参数是目标对象，一般为了不改变源对象，目标对象一般未：{}，&lt;/p&gt;
 
-&lt;p&gt;可以把多个源对象自身枚举的属性拷贝给目标对象，然后返回目标对象，第一个参数是目标对象，一般为了不改变源对象，目标对象一般未：{}，&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var o1 = {a:1};
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var o1 = {a:1};
 var o2 = {b:2};
 var o3 = {c:3};
 var o4 = Object.assing({},o1,o2,o3);  //  {a:1,b:2,c:3}
@@ -282,30 +308,30 @@ pp.age = 21;
 var o = Object.assign({},pp);
 console.log(o); // {age:21}
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;ul&gt;
-&lt;li&gt;如果目标对象中的属性具有相同的键，则属性被源中的属性覆盖&lt;/li&gt;
-&lt;li&gt;后来的源的属性覆盖早先相同属性。&lt;/li&gt;
-&lt;li&gt;假如源对象的属性指向对象的引用，它指是拷贝引用值&lt;/li&gt;
+  &lt;li&gt;如果目标对象中的属性具有相同的键，则属性被源中的属性覆盖&lt;/li&gt;
+  &lt;li&gt;后来的源的属性覆盖早先相同属性。&lt;/li&gt;
+  &lt;li&gt;假如源对象的属性指向对象的引用，它指是拷贝引用值&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;blockquote&gt;
+  &lt;p&gt;IE全系列不支持&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;blockquote&gt;&lt;p&gt;IE全系列不支持&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;// 深拷贝，这不是es 6 的内容，对上面知识的拓展
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// 深拷贝，这不是es 6 的内容，对上面知识的拓展
 let o = {a:1,b:{c:2,d:3}};
 let g = Object.assign({},o)
 let h = JSON.parse(JSON.stringify(o));
 o.b.c=4;
 console.log(h.b.c);  // 2
 console.log(g.b.c);  // 4
+
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;展开运算符 (...)&lt;/h3&gt;
-
+&lt;h3 id=&quot;section-2&quot;&gt;展开运算符 (…)&lt;/h3&gt;
 &lt;p&gt;用来组装对象或者数组&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;// 数组
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// 数组
 let size = [&#39;small&#39;,&#39;big&#39;];
 let resetSize  = [...size,&#39;vbig&#39;,&#39;huge&#39;];
 console.log(resetSize); // [&quot;small&quot;, &quot;big&quot;, &quot;vbig&quot;, &quot;huge&quot;];
@@ -317,7 +343,7 @@ console.log(alphabets); //{ &quot;fist&quot;: &quot;a&quot;, &quot;second&quot;:
 
 &lt;p&gt;获取数组或者对象除前几项的其他项，这里必须是放到最后才能执行。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt; //数组
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; //数组
 const number = [1,2,3,4,5]    
 const [first, ...rest] = number
 console.log(rest) // 2,3,4,5
@@ -325,8 +351,8 @@ console.log(first) // 1
 //这里就和前面的解构知识点对接上。
  //对象
 const user = {
-    username: &#39;lux&#39;,
-    gender: &#39;female&#39;,
+	username: &#39;lux&#39;,
+	gender: &#39;female&#39;,
         age: 19,
         address: &#39;peking&#39;
  }    
@@ -334,49 +360,45 @@ const { username, ...rest } = user
 console.log(rest);  //{&quot;address&quot;: &quot;peking&quot;, &quot;age&quot;: 19, &quot;gender&quot;: &quot;female&quot;}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;函数&lt;/h2&gt;
+&lt;p&gt;##函数
+###箭头函数
+ES5 写法：&lt;/p&gt;
 
-&lt;h3&gt;箭头函数&lt;/h3&gt;
-
-&lt;p&gt;ES5 写法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var getNumber  = function(num){
-    num = num || 20;
-    return num +1;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var getNumber  = function(num){
+	num = num || 20;
+	return num +1;
 }
 var n = getNumber(10)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;ES6 写法：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;//如果没有逻辑，直接返回结果，可以不用return和大括号。
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;//如果没有逻辑，直接返回结果，可以不用return和大括号。
 let getNumber  = (num = 20) =&amp;gt; num +1;
 let n = getNumber(10)
 //正常使用
 let getNumber  = (num = 20) =&amp;gt; {
-    return num +1;
+	return num +1;
 }
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;###默认值
+ES5 写法：&lt;/p&gt;
 
-&lt;h3&gt;默认值&lt;/h3&gt;
-
-&lt;p&gt;ES5 写法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var getNumber  = function(num){
-    num = num || 20;
-    return num +1;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var getNumber  = function(num){
+	num = num || 20;
+	return num +1;
 }
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;该写法，当num为0时，其实执行的是20的数字。&lt;/p&gt;
 
 &lt;p&gt;ES6 写法：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;let getNumber  = function(num =20){
-    return num +1;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;let getNumber  = function(num =20){
+	return num +1;
 }
 getNumber();
 &lt;/code&gt;&lt;/pre&gt;
+
 </content>
    </entry>
    
@@ -385,20 +407,18 @@ getNumber();
      <!-- <link href="http://beiyuu.com/webpack%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"/> -->
      <updated>2016-02-25T00:00:00+08:00</updated>
      <id>http://beiyuu.com/webpack基础使用</id>
-     <content type="html">&lt;h2&gt;webpack基础使用&lt;/h2&gt;
+     <content type="html">&lt;h2 id=&quot;webpack&quot;&gt;webpack基础使用&lt;/h2&gt;
 
-&lt;h3&gt;基本概念&lt;/h3&gt;
-
+&lt;h3 id=&quot;section&quot;&gt;基本概念&lt;/h3&gt;
 &lt;p&gt;也是一个脚手架工具，和原来的grunt和gulp作用相似，但是又有新的改进，更是现在因为react流行后，配合度最好的一个构建工具。&lt;/p&gt;
 
 &lt;p&gt;前端资源模块化管理和打包工具，（这里强调的是两个作用一个管理一个是打包），不要认为就是一个打包工具。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;将原来一些松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。&lt;/li&gt;
-&lt;li&gt;可以按需加载模块进行代码分离，等到实际需要再异步加载&lt;/li&gt;
-&lt;li&gt;通过loader的转换，任何形式的资源都可以视做模块，比如CommonJs模块、AMD模块、ES6模块、css、图片、josn、Less、Sass等。&lt;/li&gt;
+  &lt;li&gt;将原来一些松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。&lt;/li&gt;
+  &lt;li&gt;可以按需加载模块进行代码分离，等到实际需要再异步加载&lt;/li&gt;
+  &lt;li&gt;通过loader的转换，任何形式的资源都可以视做模块，比如CommonJs模块、AMD模块、ES6模块、css、图片、josn、Less、Sass等。&lt;/li&gt;
 &lt;/ul&gt;
-
 
 &lt;p&gt;一图胜万言，把官网的图拿过来&lt;/p&gt;
 
@@ -413,17 +433,17 @@ getNumber();
 &lt;p&gt;基本试用方法：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;$ webpack --config XXX.js   //使用另一份配置文件（比如webpack.config2.js）来打包
-
+ 
 $ webpack --watch   //监听变动并自动打包
-
+ 
 $ webpack -p    //压缩混淆脚本，这个非常非常重要！
-
+ 
 $ webpack -d    //生成map映射文件，告知哪些模块被最终打包到哪里了
 
 $ webpack --display-error-details  //方便出错时能查阅更详尽的信息，定位错误信息
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;现状&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;现状&lt;/h3&gt;
 
 &lt;p&gt;前端资源管理，一直都是一个比较难的难题，和后台管理不同，他面临的资源种类复杂，包括html、css、图片、js，这四样基本的东西，并且各自都交叉融合。&lt;/p&gt;
 
@@ -433,28 +453,20 @@ $ webpack --display-error-details  //方便出错时能查阅更详尽的信息�
 
 &lt;p&gt;这也是这几年前端界一直都是在解决的问题，很早有百度的fis，现在有webpack。这也是这两年刚刚推出来的一个脚手架工具。&lt;/p&gt;
 
-&lt;h2&gt;安装&lt;/h2&gt;
-
+&lt;h2 id=&quot;section-2&quot;&gt;安装&lt;/h2&gt;
 &lt;p&gt;需要先安装node才能，node自带npm管包工具。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ npm install webpack -g
+&lt;pre&gt;&lt;code&gt;$ npm install webpack -g &amp;gt; 全局安装
+
+$ npm install webpack --save-dev &amp;gt; 安装到本文件夹，并且写入`package-json`文件中
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;blockquote&gt;&lt;p&gt;全局安装&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;$ npm install webpack --save-dev
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;&lt;p&gt;安装到本文件夹，并且写入&lt;code&gt;package-json&lt;/code&gt;文件中&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;h2&gt;快速使用&lt;/h2&gt;
-
+&lt;h2 id=&quot;section-3&quot;&gt;快速使用&lt;/h2&gt;
 &lt;p&gt;编译js文件&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;//entry.js
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;//entry.js
 document.write(&quot;first&quot;);
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;编译&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;webpack entry.js module.js
@@ -463,55 +475,47 @@ document.write(&quot;first&quot;);
 &lt;p&gt;会得到一个编译后的文件module.js，但是这是最简单的一种方式，一般真实的使用场景中是用配置文件来管理。下面就来看看配置文件怎么来做。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;/app
-
-&lt;ul&gt;
-&lt;li&gt;entry.js&lt;/li&gt;
-&lt;li&gt;module.js&lt;/li&gt;
+  &lt;li&gt;/app
+    &lt;ul&gt;
+      &lt;li&gt;entry.js&lt;/li&gt;
+      &lt;li&gt;module.js&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;package.json&lt;/li&gt;
+  &lt;li&gt;webpack.config.js&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;package.json&lt;/li&gt;
-&lt;li&gt;webpack.config.js&lt;/li&gt;
-&lt;/ul&gt;
-
 
 &lt;p&gt;上面是一个基本的实例文件分布，实际项目中要比这复杂的多，现在有入口文件 &lt;code&gt;entry.js&lt;/code&gt;，需要加载的模块&lt;code&gt;module.js&lt;/code&gt;，一个node的配置文件，一个webpack配置文件。&lt;/p&gt;
 
-&lt;h2&gt;配置项&lt;/h2&gt;
+&lt;p&gt;##配置项
+###配置通用模块
+有一些通用库，是不会改变，比如zepto这种，可以不用打包到bulid.js里面，并且构建的时候也能够节省时间，对于上线来说，可以减少文件的更新量。&lt;/p&gt;
 
-&lt;h3&gt;配置通用模块&lt;/h3&gt;
-
-&lt;p&gt;有一些通用库，是不会改变，比如zepto这种，可以不用打包到bulid.js里面，并且构建的时候也能够节省时间，对于上线来说，可以减少文件的更新量。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;externals: {
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;externals: {
    &#39;zepto&#39;: &#39;Zepto&#39;
  },
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt; 然后再入口文件中引用&lt;/p&gt;
+&lt;p&gt;然后再入口文件中引用&lt;/p&gt;
 
-&lt;p&gt;~~~html&lt;/p&gt;
-
-&lt;script type=&#39;text/javascript&#39; src=&#39;//g.alicdn.com/sj/lib/zepto/zepto.min.js&#39; charset=&#39;utf-8&#39;&gt;&lt;/script&gt;
-
-
-&lt;pre&gt;&lt;code&gt;
-模块中使用：
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;script type=&#39;text/javascript&#39; src=&#39;//g.alicdn.com/sj/lib/zepto/zepto.min.js&#39; charset=&#39;utf-8&#39;&amp;gt;&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;var zepto = require(&quot;zepto&quot;);
+&lt;p&gt;模块中使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var zepto = require(&quot;zepto&quot;);
 console.log(zepto(document).height())
-~~~&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;反过来说，如果有需要打包到bulid.js里面的js文件，这里就不用externals这个配置项，直接在页面中引用就好。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;require(&quot;../st/lib/zepto&quot;);  //注意路径
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;require(&quot;../st/lib/zepto&quot;);  //注意路径
 console.log($(document).height())
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;output.filename 和 output.chunkFilename的区别&lt;/h3&gt;
+&lt;p&gt;###output.filename 和 output.chunkFilename的区别&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;{
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;{
     entry: {
         &quot;index&quot;: &quot;pages/index.js&quot;
     },
@@ -521,24 +525,21 @@ console.log($(document).height())
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;chunkname是未被列在entry中，却又需要被打包出来的文件命名配置。什么场景需要呢？在按需加载（异步）模块的时候，这样的文件是没有被列在entry中的，如使用CommonJS的方式异步加载模块：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;require(&#39;moudel1&#39;);
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;require(&#39;moudel1&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;调试地图&lt;/h3&gt;
+&lt;p&gt;###调试地图
+可以在浏览器中看到模块，和js位置
+~~~javascript
+devtool: “source-map”,
+~~~&lt;/p&gt;
 
-&lt;p&gt;可以在浏览器中看到模块，和js位置
-&lt;del&gt;javascript
-devtool: &quot;source-map&quot;,
-&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;###插件
+####glify&lt;/p&gt;
 
-&lt;h3&gt;插件&lt;/h3&gt;
-
-&lt;h4&gt;glify&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;plugins: [
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;plugins: [
   new webpack.optimize.UglifyJsPlugin({ 
     //可以加入Uglify的compressor options
     compress: { 
@@ -556,9 +557,9 @@ devtool: &quot;source-map&quot;,
 ]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;webpack.ProvidePlugin&lt;/h4&gt;
+&lt;p&gt;####webpack.ProvidePlugin&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;new webpack.ProvidePlugin({ 
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;new webpack.ProvidePlugin({ 
     $: &quot;zepto&quot;,
      zepto: &quot;zepto&quot;
 }),
@@ -566,27 +567,27 @@ devtool: &quot;source-map&quot;,
 
 &lt;p&gt;设置全局的模块，配合前面的，设置通用模块&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;externals: {
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;externals: {
    &#39;zepto&#39;: &#39;Zepto&#39;
  },
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;后面在页面里面直接用，不用var $ = require(&quot;zepto&quot;)；&lt;/p&gt;
+&lt;p&gt;后面在页面里面直接用，不用var $ = require(“zepto”)；&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;$(window.height());
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$(window.height());
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;其他&lt;/h4&gt;
+&lt;p&gt;####其他&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;new webpack.NoErrorsPlugin(),
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;new webpack.NoErrorsPlugin(),
     // 报错但不退出webpack进程
  new webpack.optimize.OccurenceOrderPlugin(),
     // 为组件分配ID，通过这个插件webpack可以分析和优先考虑使用最多的模块，并为它们分配最小的ID
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;合并图片&lt;/h4&gt;
+&lt;h4 id=&quot;section-4&quot;&gt;合并图片&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var SpritesmithPlugin = require(&#39;webpack-spritesmith&#39;);
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var SpritesmithPlugin = require(&#39;webpack-spritesmith&#39;);
 
 plugins: [
     new SpritesmithPlugin({
@@ -616,45 +617,44 @@ plugins: [
 
 &lt;p&gt;使用方法:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    //引入css文件
-    @import &#39;_sprite.scss&#39;;
-
-     .icon-error {
-     //该处$error是合并前，文件名
-      @include sprite($error);
-     }
+&lt;pre&gt;&lt;code&gt;	//引入css文件
+	@import &#39;_sprite.scss&#39;;
+	
+	 .icon-error {
+	 //该处$error是合并前，文件名
+ 		  @include sprite($error);
+	 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;devtool&lt;/h4&gt;
-
+&lt;h4 id=&quot;devtool&quot;&gt;devtool&lt;/h4&gt;
 &lt;p&gt;为解决打包后，soure map问题，webpack给出四种不同的等级，对于调试难度，这里在开发过程中建议用eval-source-map，即保证打包时间，又能够方便调试。
-当然这里因项目不同而配置，有一些项目非常大，可以选择压缩速度最快的cheap-module-eval-source-map&lt;/p&gt;
+当然这里因项目不同而配置，有一些项目非常大，可以选择压缩速度最快的cheap-module-eval-source-map &lt;/p&gt;
 
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;devtool选项  &lt;/th&gt;
-&lt;th&gt; 配置结果&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;source-map &lt;/td&gt;
-&lt;td&gt; 在一个单独的文件中产生一个完整且功能完全的文件。这个文件具有最好的source map，但是它会减慢打包文件的构建速度；&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;cheap-module-source-map  &lt;/td&gt;
-&lt;td&gt; 在一个单独的文件中生成一个不带列映射的map，不带列映射提高项目构建速度，但是也使得浏览器开发者工具只能对应到具体的行，不能对应到具体的列（符号），会对调试造成不便；&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;eval-source-map &lt;/td&gt;
-&lt;td&gt; 使用eval打包源文件模块，在同一个文件中生成干净的完整的source map。这个选项可以在不影响构建速度的前提下生成完整的sourcemap，但是对打包后输出的JS文件的执行具有性能和安全的隐患。不过在开发阶段这是一个非常好的选项，但是在生产阶段一定不要用这个选项；&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;cheap-module-eval-source-map &lt;/td&gt;
-&lt;td&gt; 这是在打包文件时最快的生成source map的方法，生成的Source Map 会和打包后的JavaScript文件同行显示，没有列映射，和eval-source-map选项具有相似的缺点；&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;devtool选项&lt;/th&gt;
+      &lt;th&gt;配置结果&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;source-map&lt;/td&gt;
+      &lt;td&gt;在一个单独的文件中产生一个完整且功能完全的文件。这个文件具有最好的source map，但是它会减慢打包文件的构建速度；&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;cheap-module-source-map&lt;/td&gt;
+      &lt;td&gt;在一个单独的文件中生成一个不带列映射的map，不带列映射提高项目构建速度，但是也使得浏览器开发者工具只能对应到具体的行，不能对应到具体的列（符号），会对调试造成不便；&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eval-source-map&lt;/td&gt;
+      &lt;td&gt;使用eval打包源文件模块，在同一个文件中生成干净的完整的source map。这个选项可以在不影响构建速度的前提下生成完整的sourcemap，但是对打包后输出的JS文件的执行具有性能和安全的隐患。不过在开发阶段这是一个非常好的选项，但是在生产阶段一定不要用这个选项；&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;cheap-module-eval-source-map&lt;/td&gt;
+      &lt;td&gt;这是在打包文件时最快的生成source map的方法，生成的Source Map 会和打包后的JavaScript文件同行显示，没有列映射，和eval-source-map选项具有相似的缺点；&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
 &lt;/table&gt;
 
 </content>
@@ -665,28 +665,23 @@ plugins: [
      <!-- <link href="http://beiyuu.com/javascript%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"/> -->
      <updated>2016-01-01T00:00:00+08:00</updated>
      <id>http://beiyuu.com/javascript代码规范</id>
-     <content type="html">&lt;h2&gt;Javascript代码规范&lt;/h2&gt;
-
-&lt;h4&gt;遵守严格模式下的代码规范，因为ES6自动采用严格模式，不管模块头部是不是加了“use strict”,&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;变量必须声明后再使用&lt;/li&gt;
-&lt;li&gt;函数的参数不能有同名属性，否则报错&lt;/li&gt;
-&lt;li&gt;不能使用 &lt;code&gt;with&lt;/code&gt; 语句&lt;/li&gt;
-&lt;li&gt;不能对只读属性赋值，否则报错&lt;/li&gt;
-&lt;li&gt;不能使用前缀0表示八进制数，否则报错&lt;/li&gt;
-&lt;li&gt;不能删除不可删除的属性，否则报错&lt;/li&gt;
-&lt;li&gt;不能删除变量&lt;code&gt;delete prop&lt;/code&gt;，会报错，只能删除属性&lt;code&gt;delete global[prop]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;eval&lt;/code&gt;不会在它的外层作用域引入变量&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;eval&lt;/code&gt;和&lt;code&gt;arguments&lt;/code&gt;不能被重新赋值&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;arguments&lt;/code&gt;不会自动反映函数参数的变化&lt;/li&gt;
-&lt;li&gt;不能使用&lt;code&gt;arguments.callee&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;不能使用&lt;code&gt;arguments.caller&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;禁止&lt;code&gt;this&lt;/code&gt;指向全局对象&lt;/li&gt;
-&lt;li&gt;不能使用&lt;code&gt;fn.caller&lt;/code&gt;和&lt;code&gt;fn.arguments&lt;/code&gt;获取函数调用的堆栈&lt;/li&gt;
-&lt;li&gt;增加了保留字（比如&lt;code&gt;protected&lt;/code&gt;、&lt;code&gt;static&lt;/code&gt;和&lt;code&gt;interface&lt;/code&gt;）&lt;/li&gt;
-&lt;/ul&gt;
-
+     <content type="html">&lt;h2 id=&quot;javascript&quot;&gt;Javascript代码规范&lt;/h2&gt;
+&lt;p&gt;#### 遵守严格模式下的代码规范，因为ES6自动采用严格模式，不管模块头部是不是加了“use strict”,
+- 变量必须声明后再使用
+- 函数的参数不能有同名属性，否则报错
+- 不能使用 &lt;code&gt;with&lt;/code&gt; 语句
+- 不能对只读属性赋值，否则报错
+- 不能使用前缀0表示八进制数，否则报错
+- 不能删除不可删除的属性，否则报错
+- 不能删除变量&lt;code&gt;delete prop&lt;/code&gt;，会报错，只能删除属性&lt;code&gt;delete global[prop]&lt;/code&gt;
+- &lt;code&gt;eval&lt;/code&gt;不会在它的外层作用域引入变量
+- &lt;code&gt;eval&lt;/code&gt;和&lt;code&gt;arguments&lt;/code&gt;不能被重新赋值
+- &lt;code&gt;arguments&lt;/code&gt;不会自动反映函数参数的变化
+- 不能使用&lt;code&gt;arguments.callee&lt;/code&gt;
+- 不能使用&lt;code&gt;arguments.caller&lt;/code&gt;
+- 禁止&lt;code&gt;this&lt;/code&gt;指向全局对象
+- 不能使用&lt;code&gt;fn.caller&lt;/code&gt;和&lt;code&gt;fn.arguments&lt;/code&gt;获取函数调用的堆栈
+- 增加了保留字（比如&lt;code&gt;protected&lt;/code&gt;、&lt;code&gt;static&lt;/code&gt;和&lt;code&gt;interface&lt;/code&gt;）&lt;/p&gt;
 </content>
    </entry>
    
@@ -695,137 +690,138 @@ plugins: [
      <!-- <link href="http://beiyuu.com/promise"/> -->
      <updated>2015-10-13T00:00:00+08:00</updated>
      <id>http://beiyuu.com/promise</id>
-     <content type="html">&lt;h3&gt;一、概述&lt;/h3&gt;
+     <content type="html">&lt;h3 id=&quot;section&quot;&gt;一、概述&lt;/h3&gt;
 
 &lt;p&gt;在解释promise对象之前，先了解，js中异步的概念。
-js语言的执行环境是&quot;单线程&quot;,也就是一次只能执行一个任务,如果任务多了,就需要排队,前面任务完成才能执行后面的任务.例如：&lt;/p&gt;
+js语言的执行环境是”单线程”,也就是一次只能执行一个任务,如果任务多了,就需要排队,前面任务完成才能执行后面的任务.例如：&lt;/p&gt;
 
-&lt;h4&gt;同步和异步：&lt;/h4&gt;
+&lt;h4 id=&quot;section-1&quot;&gt;同步和异步：&lt;/h4&gt;
 
-&lt;blockquote&gt;&lt;p&gt;朴灵：操作分为：发出调用和得到结果两步。发出调用，立即得到结果是为同步。发出调用，但无法立即得到结果，需要额外的操作才能得到预期的结果是为异步。同步就是调用之后一直等待，直到返回结果。异步则是调用之后，不能直接拿到结果，通过一系列的手段才最终拿到结果（调用之后，拿到结果中间的时间可以介入其他任务）。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;朴灵：操作分为：发出调用和得到结果两步。发出调用，立即得到结果是为同步。发出调用，但无法立即得到结果，需要额外的操作才能得到预期的结果是为异步。同步就是调用之后一直等待，直到返回结果。异步则是调用之后，不能直接拿到结果，通过一系列的手段才最终拿到结果（调用之后，拿到结果中间的时间可以介入其他任务）。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Javascript内部有一个事件队列，所有的处理方法都在这个队列中，Javascript主线程就是轮询这个队列处理，这个好处是使得CPU永远是忙碌状态。这个机制和Windows中的消息泵是一样的，都是靠消息（事件）驱动。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Javascript内部有一个事件队列，所有的处理方法都在这个队列中，Javascript主线程就是轮询这个队列处理，这个好处是使得CPU永远是忙碌状态。这个机制和Windows中的消息泵是一样的，都是靠消息（事件）驱动。&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;同步是一个任务完成执行下一个任务,每一个任务按照顺序来执行。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A&gt;B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;同步是一个任务完成执行下一个任务,每一个任务按照顺序来执行。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;异步是简而言之，任务执行顺序和排列的任务顺序不一致。假设有A和B两个任务，顺序是A&amp;gt;B。A任务里面分为两段代码，一段是对外部的数据的请求，一段是一个回调函数。第一段执行完成不是立刻执行第二段代码，而是会到B任务等外部数据返回回来，再执行第二段代码。&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
-
-&lt;pre&gt;&lt;code class=&quot;javascript   &quot;&gt;var f1 = function(fn){
-    console.log(&quot;1&quot;);
-    setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
-    }
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var f1 = function(fn){
+	console.log(&quot;1&quot;);
+	setTimeout(fn, 1000);//向外部发送请求，fn就是回调函数。但是这里配置的是一秒后再执行。
+	}
 var f2 = function(){
-    console.log(&quot;2&quot;)
+	console.log(&quot;2&quot;)
 }
 //再执行f2函数一秒之前，f3会执行。
 var f3 = function(){
-    console.log(&quot;3&quot;);
+	console.log(&quot;3&quot;);
 }
 f1(f2)
 f3();
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;blockquote&gt;&lt;p&gt;打印出来的结果是1&gt;3&gt;2，这里任务排列是f1&gt;f2&gt;f3但是真正执行的时候顺序改变了,这就是&quot;异步模式&quot;.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;打印出来的结果是1&amp;gt;3&amp;gt;2，这里任务排列是f1&amp;gt;f2&amp;gt;f3但是真正执行的时候顺序改变了,这就是”异步模式”.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;上面回调模式是建立在f2执行时间比较长，有可能会影响f3执行，不过这种模式缺点比较明显，不容易阅读，回调函数的名称必须写多了，作用是什么可能不是很清楚，而且每一种任务，只能有一个回调函数。&lt;/p&gt;
 
-&lt;h4&gt;异步的流程控制&lt;/h4&gt;
+&lt;h4 id=&quot;section-2&quot;&gt;异步的流程控制&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript   &quot;&gt;    var async = function (arg,callback){
-        console.log(&quot;参数为&quot;+arg+&quot;一秒后返回&quot;);
-        setTimeout(function(){callback(arg+1);}, 1000);
-    }
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;	var async = function (arg,callback){
+		console.log(&quot;参数为&quot;+arg+&quot;一秒后返回&quot;);
+		setTimeout(function(){callback(arg+1);}, 1000);
+	}
 
-    var final = function (value) {
-        console.log(&#39;完成: &#39;, value);
-    }
-    async(1,function(value){
-        async(value,final)
-    })
+	var final = function (value) {
+		console.log(&#39;完成: &#39;, value);
+	}
+	async(1,function(value){
+		async(value,final)
+	})
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
-&lt;li&gt;首先第一次执行async代码，执行里面的内容。&lt;/li&gt;
-&lt;li&gt;一秒钟后再执行callback函数，这里callback函数就是执行async，第二遍执行，里面内容，并且取函数的第一个参数值+1.&lt;/li&gt;
-&lt;li&gt;第二遍执行async里面的函数的callback函数，这里函数就是final&lt;/li&gt;
-&lt;li&gt;final函数的会取value为参数。
+  &lt;li&gt;首先第一次执行async代码，执行里面的内容。&lt;/li&gt;
+  &lt;li&gt;一秒钟后再执行callback函数，这里callback函数就是执行async，第二遍执行，里面内容，并且取函数的第一个参数值+1.&lt;/li&gt;
+  &lt;li&gt;第二遍执行async里面的函数的callback函数，这里函数就是final&lt;/li&gt;
+  &lt;li&gt;final函数的会取value为参数。
 这里会在执行完两遍async函数后再执行final，也就是两秒之后，这只是一层的嵌套，如果多几层嵌套，比如：&lt;/li&gt;
 &lt;/ol&gt;
 
-
-&lt;pre&gt;&lt;code class=&quot;javascript   &quot;&gt;        async(1, function(value){
-            async(value, function(value){
-                async(value, function(value){
-                    async(value, function(value){
-                        async(value, function(value){
-                        async(value, final);
-                        });
-                    });
-                });
-            });
-        });
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;		async(1, function(value){
+			async(value, function(value){
+	    		async(value, function(value){
+	      			async(value, function(value){
+	        			async(value, function(value){
+	          			async(value, final);
+	        			});
+	      			});
+	    		});
+	    	});
+	    });
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;### 串行执行
+串行执行可以是一个任务完成再来执行另外一个任务，可以用来控制异步任务。&lt;/p&gt;
 
-&lt;h3&gt;串行执行&lt;/h3&gt;
-
-&lt;p&gt;串行执行可以是一个任务完成再来执行另外一个任务，可以用来控制异步任务。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript   &quot;&gt;    var items = [ 1, 2, 3, 4, 5, 6 ];
-    var results = [];
-    function series(item) {
-      if(item) {
-        async( item, function(result) {//这里的result也是item+1的值
-          results.push(result);
-          return arguments.callee(items.shift());
-          //返回并且再次执行自身一遍。
-        });
-      } else {
-        return final(results);
-        //如果数组中没有项目，则执行final
-      }
-    }
-
-    series(items.shift());
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;	var items = [ 1, 2, 3, 4, 5, 6 ];
+	var results = [];
+	function series(item) {
+	  if(item) {
+	    async( item, function(result) {//这里的result也是item+1的值
+	      results.push(result);
+	      return arguments.callee(items.shift());
+	      //返回并且再次执行自身一遍。
+	    });
+	  } else {
+	    return final(results);
+	    //如果数组中没有项目，则执行final
+	  }
+	}
+	
+	series(items.shift());
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;### 并行执行
+也就是一同把所有的函数执行完成，再执行final，这个在效率上面有提升，&lt;/p&gt;
 
-&lt;h3&gt;并行执行&lt;/h3&gt;
-
-&lt;p&gt;也就是一同把所有的函数执行完成，再执行final，这个在效率上面有提升，&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;javascript       &quot;&gt;    items.forEach(function(item){
-        async(item,function(reulse){
-            results.push(reulse);
-            if(results.length == items.length){
-                final(reulses)
-            }
-        })
-    })
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;	items.forEach(function(item){
+		async(item,function(reulse){
+			results.push(reulse);
+			if(results.length == items.length){
+				final(reulses)
+			}
+		})
+	})
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;这种方式和前面串行方式不同的是，不需要等待前面一个执行完成执行后面那个任务，可以同时进行，但是这个也有一个弊端就是当同时进行的任务过多，给机器带来的性能压力就会体现出来。需要有一种结合这两种方式的更好的方法出来&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript   &quot;&gt;    function launcher(){
-        while(running &amp;lt; limit &amp;amp;&amp;amp; items.length &amp;gt; 0){
-            var item = items.shift();
-            async(item,function(result){
-                results.push(result);
-                running--;
-            })
-        }
-    }
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;	function launcher(){
+		while(running &amp;lt; limit &amp;amp;&amp;amp; items.length &amp;gt; 0){
+			var item = items.shift();
+			async(item,function(result){
+				results.push(result);
+				running--;
+			})
+		}
+	}
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;二、 Promise&lt;/p&gt;
 
-&lt;h3&gt;概述&lt;/h3&gt;
-
+&lt;h3 id=&quot;section-3&quot;&gt;概述&lt;/h3&gt;
 &lt;p&gt;Promise 对象用于一个异步操作的最终完成（或失败）及其结果值的表示，处理异步请求&lt;/p&gt;
 
 &lt;p&gt;异步加载两种不同类型文件实例：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;
 let loadImgAsync = function (url) {
         return new Promise(function(resolve,reject){
             let image = new Image;
@@ -850,10 +846,10 @@ let loadImgAsync = function (url) {
      .then((val) =&amp;gt;  {
         console.log(val)
     }).catch((error)=&amp;gt; {
-        console.log(error)
+    	console.log(error)
     });
 
-
+ 
  let getJson = function (url) {
         let promise = new Promise(function (resolve,reject) {
             let client = new XMLHttpRequest();
@@ -876,59 +872,64 @@ let loadImgAsync = function (url) {
         })
         return promise;
     }
-
+    
    // 调用方法
     getJson(&#39;p.json&#39;)
      .then((val) =&amp;gt;  {
         console.log(val)
     }).catch((error)=&amp;gt; {
-        console.log(error)
+    	console.log(error)
     });
+   
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎样实现链式调用&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;~javascript&quot;&gt;getJson(&#39;p.js5`~~~~on&#39;)
-    .then(function (val){
+&lt;p&gt;~~~javascript
+getJson(‘p.js5`~~~~on’)
+	.then(function (val){
         console.log(val)
-        return loadImgAsync(&#39;/img/gamebg.png&#39;);
+        return loadImgAsync(‘/img/gamebg.png’);
     }).then((re) =&amp;gt; {
-        console.log(re);
+    	console.log(re);
     }).catch((error)=&amp;gt;{
-        console.log(error)
+    	console.log(error)
     })
     );
-&lt;/code&gt;&lt;/pre&gt;
+ ~~~&lt;/p&gt;
 
-&lt;h3&gt;穿透&lt;/h3&gt;
-
+&lt;h3 id=&quot;section-4&quot;&gt;穿透&lt;/h3&gt;
 &lt;p&gt;这是因为当then()接受非函数的参数时，会解释为then(null)，导致前一个promise的结果传递到后面的promise；&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;~javascript&quot;&gt;
-Promise.resolve(‘foo’)
-    .then(Promise.resolve(‘bar’))
-    .then(function(result){
+&lt;p&gt;~~~javascript&lt;/p&gt;
+
+&lt;p&gt;Promise.resolve(‘foo’)
+	.then(Promise.resolve(‘bar’))
+	.then(function(result){
         console.log(result); // foo
-        });
+        });&lt;/p&gt;
 
- //改进的写法
+&lt;p&gt;//改进的写法
  Promise.resolve(‘foo’)
-    .then(function(){
-        return Promise.resolve(‘bar’);
-    }).then(function(result){
-            console.log(result); // bar
-     });
-&lt;/code&gt;&lt;/pre&gt;
+ 	.then(function(){
+ 		return Promise.resolve(‘bar’);
+ 	}).then(function(result){
+        	console.log(result); // bar
+     });&lt;/p&gt;
 
-&lt;p&gt; 实际上asnyc和await可以实现上面的效果&lt;/p&gt;
+&lt;p&gt;~~~&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;~~javascript&quot;&gt; async function loadsrc (){
-        await loadImage2(&#39;result_bg.png&#39;).then((re)=&amp;gt; {console.log(2)});
-        await loadJson2(&#39;p.json&#39;);
+&lt;p&gt;实际上asnyc和await可以实现上面的效果&lt;/p&gt;
+
+&lt;p&gt;~~~javascript
+ async function loadsrc (){
+        await loadImage2(‘result_bg.png’).then((re)=&amp;gt; {console.log(2)});
+        await loadJson2(‘p.json’);
         console.log(1)
     }
     loadsrc();  //打印顺序： result_bg.png &amp;gt; 2 &amp;gt; p.json &amp;gt; 1
-&lt;/code&gt;&lt;/pre&gt;
+  ~~~&lt;/p&gt;
+
 </content>
    </entry>
    
@@ -937,36 +938,30 @@ Promise.resolve(‘foo’)
      <!-- <link href="http://beiyuu.com/%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F"/> -->
      <updated>2015-09-10T00:00:00+08:00</updated>
      <id>http://beiyuu.com/装饰性模式</id>
-     <content type="html">&lt;h2&gt;一、理解&lt;/h2&gt;
-
+     <content type="html">&lt;h2 id=&quot;section&quot;&gt;一、理解&lt;/h2&gt;
 &lt;p&gt;在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
 有时候不想去改变原有的功能，就需要用到这种装饰者模式。
 一个简单实例：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;var a = function(){
-    consol.log(&quot;a&quot;);
+	consol.log(&quot;a&quot;);
 }
 //为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
 
 var _a = a;
 var a = function(){
-    _a();
-    console.log(&quot;aa&quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
+	_a();
+	console.log(&quot;aa&quot;);
+} 这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。 还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。 三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：
 
-&lt;p&gt;这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
-还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
-三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;//保存方法
+//保存方法
 var _getId = document.getElementById;
 
 document.getElementById = function(id){
 //添加新功能
-    console.log(&quot;新功能&quot;);
+	console.log(&quot;新功能&quot;);
 //执行原来保存的方法
-    return _getId(id); //报错：Illegal invocation    
+	return _getId(id); //报错：Illegal invocation	
 }
 var btn = document.getElementById(&quot;btn&quot;);
 &lt;/code&gt;&lt;/pre&gt;
@@ -974,8 +969,8 @@ var btn = document.getElementById(&quot;btn&quot;);
 &lt;p&gt;因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;document.getElementById = function(id){
-    console.log(&quot;新功能&quot;);
-    return _getId.apply(document,arguments);    }
+	console.log(&quot;新功能&quot;);
+	return _getId.apply(document,arguments); 	}
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;二、用AOP装饰&lt;/p&gt;
@@ -983,31 +978,31 @@ var btn = document.getElementById(&quot;btn&quot;);
 &lt;p&gt;通过高阶函数，可以实现一些更加松散的方法，也更友好。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Function.prototype.after = function(fn){
-    var _self = this;//保存原来的函数
-    return function(){
-        var ret = _self.apply(this,arguments);
-        fn.apply(this,arguments);
-        return ret;
-    }
+	var _self = this;//保存原来的函数
+	return function(){
+		var ret = _self.apply(this,arguments);
+		fn.apply(this,arguments);
+		return ret;
+	}
 }
 
 Function.prototype.before = function(fn){
-    var _self = this;
-    return function(){
-        fn.apply(this,arguments);
-        return _self.apply(this,arguments);
-    }       
+	var _self = this;
+	return function(){
+		fn.apply(this,arguments);
+		return _self.apply(this,arguments);
+	}		
 }
 
 var a = function(){
-    console.log(&quot;a&quot;);
+	console.log(&quot;a&quot;);
 }
 
 var b = function(){
-    console.log(&quot;b&quot;);
+	console.log(&quot;b&quot;);
 }
 
-var _a = a.after(b);    
+var _a = a.after(b);	
 _a(); // ab
 
 var _b = a.before(b);
@@ -1027,8 +1022,7 @@ _b(); //ba
 
 &lt;p&gt;本周工作学习心得：&lt;/p&gt;
 
-&lt;h3&gt;一、垂直居中对齐&lt;/h3&gt;
-
+&lt;h3 id=&quot;section&quot;&gt;一、垂直居中对齐&lt;/h3&gt;
 &lt;p&gt;需求：在弹出框中对内容进行垂直居中定位&lt;/p&gt;
 
 &lt;p&gt;状况：内容高度不定，&lt;/p&gt;
@@ -1040,34 +1034,33 @@ _b(); //ba
 &lt;p&gt;2、现有移动端的实现方式更加简单&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;.box{display:flex; display:-webkit-flex;}
-.item{align-self:center;-webkit-align-self:center;}
-&lt;/code&gt;&lt;/pre&gt;
+.item{align-self:center;-webkit-align-self:center;} 但是要兼容更加低端的手机还需要用box这个老属性
 
-&lt;p&gt;但是要兼容更加低端的手机还需要用box这个老属性&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;.box{
-    display:box; display:-webkit-box;
-    box-align:center; -webkit-box-align:center;
-    display:flex; display:-webkit-flex;
-
+.box{
+	display:box; display:-webkit-box;
+	box-align:center; -webkit-box-align:center;
+	display:flex; display:-webkit-flex;
+	
 }
 .item{align-self:center;-webkit-align-self:center;}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;blockquote&gt;&lt;p&gt;经常会遇到flex一些老浏览器和手机不支持情况，这个时候可以用box这个老的属性，兼容实现。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;经常会遇到flex一些老浏览器和手机不支持情况，这个时候可以用box这个老的属性，兼容实现。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3&gt;二、数字自动转译&lt;/h3&gt;
-
+&lt;h3 id=&quot;section-1&quot;&gt;二、数字自动转译&lt;/h3&gt;
 &lt;p&gt;需求：在手机端点击输入框出来数字键盘&lt;/p&gt;
 
 &lt;p&gt;问题：当输入到一定数字时候，数字自动转译&lt;/p&gt;
 
 &lt;p&gt;解决方案：把number类型改成tel类型。&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;该方案对于一些原生的placeholer支持也有作用，一些number对于placeholer支持不太好&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3&gt;三、angularJS 过滤&lt;/h3&gt;
-
+&lt;h3 id=&quot;angularjs-&quot;&gt;三、angularJS 过滤&lt;/h3&gt;
 &lt;p&gt;定义过滤器：对字符进行重新转换的过程。
 自定义和使用过滤&lt;/p&gt;
 
@@ -1080,23 +1073,23 @@ _b(); //ba
 
 &lt;pre&gt;&lt;code&gt;var myAppMoudel = angular.module(&quot;myApp&quot;,[]);
 myAppMoudel.filter(&quot;addNum&quot;,function(){
-    return function(item){
-    //这里item指需要转换的字符
-        return item+1;
-    }
+	return function(item){
+	//这里item指需要转换的字符
+		return item+1;
+	}
 })
 
 2 // 3
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;四、angularJS 服务&lt;/h3&gt;
+&lt;h3 id=&quot;angularjs--1&quot;&gt;四、angularJS 服务&lt;/h3&gt;
 
 &lt;p&gt;模版：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;lt;body ng-app=&quot;myApp&quot;&amp;gt;
-    &amp;lt;div ng-controller=&quot;test&quot;&amp;gt;
-        &amp;lt;input type=&quot;button&quot; ng-click=&quot;show()&quot; value=&quot;点击&quot; /&amp;gt;
-    &amp;lt;/div&amp;gt;
+	&amp;lt;div ng-controller=&quot;test&quot;&amp;gt;
+		&amp;lt;input type=&quot;button&quot; ng-click=&quot;show()&quot; value=&quot;点击&quot; /&amp;gt;
+	&amp;lt;/div&amp;gt;
 &amp;lt;/body&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1104,26 +1097,26 @@ myAppMoudel.filter(&quot;addNum&quot;,function(){
 
 &lt;pre&gt;&lt;code&gt;var myAppModule = angular.module(&quot;myApp&quot;,[]);
 myAppModule.factory(&quot;myService&quot;,function(){
-    return {
-        fn:function(){
-            console.log(&quot;self&quot;);
-        }
-    }
+	return {
+		fn:function(){
+			console.log(&quot;self&quot;);
+		}
+	}
 })
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;引用服务：&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;自定义的服务一定是放在左右服务最后面。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;引用服务：
+&amp;gt; 自定义的服务一定是放在左右服务最后面。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;myAppModule.controller(&quot;test&quot;,[&quot;$scope&quot;,&quot;myService&quot;,function($scope,myService){
 
 $scope.show =function(){
-    myService.fn();
+	myService.fn();
 }
-
+	
 }])
 &lt;/code&gt;&lt;/pre&gt;
+
 </content>
    </entry>
    
@@ -1132,9 +1125,9 @@ $scope.show =function(){
      <!-- <link href="http://beiyuu.com/%E7%A6%BB%E7%BA%BF%E7%BC%93%E5%AD%98"/> -->
      <updated>2015-08-11T00:00:00+08:00</updated>
      <id>http://beiyuu.com/离线缓存</id>
-     <content type="html">&lt;h1&gt;离线缓存(manifest)&lt;/h1&gt;
+     <content type="html">&lt;h1 id=&quot;manifest&quot;&gt;离线缓存(manifest)&lt;/h1&gt;
 
-&lt;h2&gt;基本配置&lt;/h2&gt;
+&lt;p&gt;##基本配置&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;CACHE MANIFEST
 # version xx.xx.xx
@@ -1150,11 +1143,9 @@ FALLBACK:  //备用资源，当资源无法访问，通过这个访问
 / 404.html
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;坑&lt;/h2&gt;
-
-&lt;h3&gt;manifest除了缓存manifest.appcache文件所指定的资源外，还必定会缓存当前的html页面。&lt;/h3&gt;
-
-&lt;p&gt;具体来说：&lt;/p&gt;
+&lt;h2 id=&quot;section&quot;&gt;坑&lt;/h2&gt;
+&lt;p&gt;### manifest除了缓存manifest.appcache文件所指定的资源外，还必定会缓存当前的html页面。
+具体来说：&lt;/p&gt;
 
 &lt;p&gt;当用户第一次访问页面，会从服务器上拉取html页面，以及其它静态资源。
 浏览器会把html页面，连同manifest.appcache文件，连同manifest.appcache文件里所指定的静态资源一并存入Application Cache。
@@ -1168,14 +1159,14 @@ FALLBACK:  //备用资源，当资源无法访问，通过这个访问
      <!-- <link href="http://beiyuu.com/jekyll%E4%BD%BF%E7%94%A8"/> -->
      <updated>2015-06-25T00:00:00+08:00</updated>
      <id>http://beiyuu.com/jekyll使用</id>
-     <content type="html">&lt;h2&gt;基本使用方式&lt;/h2&gt;
+     <content type="html">&lt;p&gt;##基本使用方式&lt;/p&gt;
 
-&lt;p&gt;安装&lt;/p&gt;
+&lt;p&gt;安装  &lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;gem install jekyll
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;进入文件夹&lt;/p&gt;
+&lt;p&gt;进入文件夹 &lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;jekyll new my-site
 cd my-site
@@ -1205,6 +1196,7 @@ category: blog
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;hr /&gt;
+
 </content>
    </entry>
    

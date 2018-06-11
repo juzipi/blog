@@ -1,27 +1,24 @@
-<h1>vue中的keep-alive</h1>
+<p>#vue中的keep-alive</p>
 
-<h3>一、介绍</h3>
+<p>###一、介绍
+能够缓存组件，避免重复加载。</p>
 
-<p>能够缓存组件，避免重复加载。</p>
+<p>页面生命周期钩子如上面的代码所示，这四个是最常用到的部分。这部分需要注意下，当引入keep-alive的时候，页面第一次进入，钩子的触发顺序created-&gt; mounted-&gt; activated，退出时触发deactivated。当再次进入（前进或者后退）时，只触发activated。</p>
 
-<p>页面生命周期钩子如上面的代码所示，这四个是最常用到的部分。这部分需要注意下，当引入keep-alive的时候，页面第一次进入，钩子的触发顺序created-> mounted-> activated，退出时触发deactivated。当再次进入（前进或者后退）时，只触发activated。</p>
-
-<h3>二、使用</h3>
-
-<h4>实例1：返回充填</h4>
-
-<p>可以使用该方式，返回回去，前面一步填写内容还保存在内存中。当不需要保存的时候可以用：</p>
+<p>###二、使用
+####实例1：返回充填
+可以使用该方式，返回回去，前面一步填写内容还保存在内存中。当不需要保存的时候可以用：</p>
 
 <pre><code>to="{name:XXX,from:'xxx'}；
 </code></pre>
 
 <p>通过activated钩子能够知道上一步from是什么，以此确定是否要清空还是保持数据。</p>
 
-<h4>实例2：部分组件保持keep-alive</h4>
+<p>####实例2：部分组件保持keep-alive</p>
 
 <pre><code>&lt;!-- 这里是需要keepalive的 --&gt;
 &lt;keep-alive&gt;
- &lt;router-view v-if="$route.meta.keepAlive"&gt;&lt;/router-view&gt;
+   	 &lt;router-view v-if="$route.meta.keepAlive"&gt;&lt;/router-view&gt;
 &lt;/keep-alive&gt;
 
 &lt;!-- 这里不会被keepalive --&gt;
@@ -44,16 +41,15 @@
 }
 </code></pre>
 
-<h3>实例3：列表和详情</h3>
-
-<p>list.vue</p>
+<p>###实例3：列表和详情
+list.vue</p>
 
 <pre><code>&lt;ul&gt;
-        &lt;li v-for="(value, index) in getFilterData().data"&gt;
-        &lt;router-link(:to="'/article/' + index")&gt;
+		&lt;li v-for="(value, index) in getFilterData().data"&gt;
+    	&lt;router-link(:to="'/article/' + index")&gt;
       &lt;span v-text="value.title"&gt;&lt;/span&gt;
     &lt;/router-link&gt;
- &lt;/li&gt;
+   	 &lt;/li&gt;
 &lt;ul&gt;  
 </code></pre>
 
@@ -64,3 +60,4 @@
 
 <p>问题是每次请求，因为用了keep-alive详情中内容不会变化。
 解决方法是在beforeRouteEnter这个钩子中重新获取一边数据</p>
+

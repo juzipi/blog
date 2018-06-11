@@ -39,18 +39,18 @@
 
 <p>一、传统加载方式</p>
 
-<pre><code class="javascript">var imgSrc = {
-    img1 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/logo_white_ee663702.png",
-    img2 : "http://www.youjiaus.net/activities/images/1504paypal/760x142.jpg",
-    img3 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/lg_main_a11_1.png",
-    img4 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/isay_icons.3.png"
+<pre><code class="language-javascript">var imgSrc = {
+	img1 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/logo_white_ee663702.png",
+	img2 : "http://www.youjiaus.net/activities/images/1504paypal/760x142.jpg",
+	img3 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/lg_main_a11_1.png",
+	img4 : "http://sandbox.runjs.cn/uploads/rs/142/n33w3cpw/isay_icons.3.png"
 }
 
 //建立img标签加载
 var loadImg = function(url){
-    var Imgs = document.createElement("img");
-    Imgs.setAttribute("src",url);
-    return Imgs;
+	var Imgs = document.createElement("img");
+	Imgs.setAttribute("src",url);
+	return Imgs;
 } 
 
 loadImg(imgSrc.img1)//加载进来但是不显示。
@@ -58,73 +58,77 @@ loadImg(imgSrc.img1)//加载进来但是不显示。
 
 //建立 Image对象加载
 var report = function(src){
-        var i = new Image();
-        i.src =src; 
+		var i = new Image();
+		i.src =src; 
 }  
 report(imgSrc.img2)  
 
-
-//回调再加载   
+	
+//回调再加载	
 var reportCallback = function(src,callback){
-        var i = new Image();
-        i.src =src; 
-    if(typeof callback == "function"){
-        callback(imgSrc.img4);  
-    } 
+		var i = new Image();
+		i.src =src; 
+	if(typeof callback == "function"){
+		callback(imgSrc.img4);	
+	} 
 } 
 //reportCallback(imgSrc.img3,report) 
 
 
 // ajax加载
-
+	
 $.ajax({
-    url: "http://runjs.cn/img/runjs_icon.gif",  
-    type: 'GET',
-    global: false,
-    beforeSend : function(){
-        //发送之前
-    },
-     success: function(){
-         //成功之后
-        console.log("suc");
-    },
-    complete: function(){
-        //完成之后
-            //var w=img.naturalWidth,h=img.naturalHeight,wh=w/h;
-     }
+	url: "http://runjs.cn/img/runjs_icon.gif",  
+	type: 'GET',
+	global: false,
+	beforeSend : function(){
+		//发送之前
+	},
+	 success: function(){
+		 //成功之后
+		console.log("suc");
+	},
+	complete: function(){
+		//完成之后
+		  	//var w=img.naturalWidth,h=img.naturalHeight,wh=w/h;
+	 }
  });
+ 
+
 </code></pre>
 
 <p>promise加载方式</p>
 
-<pre><code class="javascript">
+<pre><code class="language-javascript">
 var loadImg = function(urls){
-    return new Promise(function(resolve,reject){
-        var length = urls.length;
-        var n=0;
-        for(var i =0; i&lt;length; i++){
-            var image = new Image();
-            image.src = urls[i];
-            image.onload = function(){
-                n++;
-                if(n==length){
-                    resolve("suc")
-                }
-            }
-            image.onerror=function(){
-                reject(urls[i]+"错误")
-                // console.log(urls[i]+"错误")
-            }
-        }
-    })
+	return new Promise(function(resolve,reject){
+		var length = urls.length;
+		var n=0;
+		for(var i =0; i&lt;length; i++){
+			var image = new Image();
+			image.src = urls[i];
+			image.onload = function(){
+				n++;
+				if(n==length){
+					resolve("suc")
+				}
+			}
+			image.onerror=function(){
+				reject(urls[i]+"错误")
+				// console.log(urls[i]+"错误")
+			}
+		}
+	})
 }
  loadImg(["st/img/404.png","st/img/go_up.png"]).then(function(i){
-    console.log(i)
-    console.log("you")
+	console.log(i)
+	console.log("you")
  },function(i){
-    console.log(i)
+ 	console.log(i)
  })
+
 </code></pre>
+
 
 
        

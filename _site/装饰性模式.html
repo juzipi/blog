@@ -35,36 +35,30 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//%E8%A3%85%E9%A5%B0%E6%80%A7%E6%A8%A1%E5%BC%8F" title="装饰性模式">装饰性模式</a></h1>
         <p class="entry-date">2015-09-10</p>
-        <h2>一、理解</h2>
-
+        <h2 id="section">一、理解</h2>
 <p>在不改变原有的函数的基础上，添加新功能。也可以有继承的方式添加新的功能，但是那样会有一个子类和超类，子类依赖与超类。
 有时候不想去改变原有的功能，就需要用到这种装饰者模式。
 一个简单实例：</p>
 
 <pre><code>var a = function(){
-    consol.log("a");
+	consol.log("a");
 }
 //为了不影响a函数，而又要在a函数基础上添加新的功能，可以如此：
 
 var _a = a;
 var a = function(){
-    _a();
-    console.log("aa");
-}
-</code></pre>
+	_a();
+	console.log("aa");
+} 这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。 还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。 三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：
 
-<p>这里重写了一下a函数，让它加上新的功能，又对原来的函数没有改动。但是这种方式感觉还是不够好，一个函数名称没有改变，对于代码维护来说不知道那个是后来a那个是前面a。
-还有一个_a需要去维护，万一添加的功能多了，或者a里面其实还有功能添加，这个时候维护起来就是一个噩梦了。
-三是有一个this劫持的问题。如果a函数中用到this，那么在新的函数中this指向可能就会有问题，例如：</p>
-
-<pre><code>//保存方法
+//保存方法
 var _getId = document.getElementById;
 
 document.getElementById = function(id){
 //添加新功能
-    console.log("新功能");
+	console.log("新功能");
 //执行原来保存的方法
-    return _getId(id); //报错：Illegal invocation    
+	return _getId(id); //报错：Illegal invocation	
 }
 var btn = document.getElementById("btn");
 </code></pre>
@@ -72,8 +66,8 @@ var btn = document.getElementById("btn");
 <p>因为该方法的执行环境必须是在document下面，这里重新覆盖的，this已经不是document而是window所以报错。可以改成：</p>
 
 <pre><code>document.getElementById = function(id){
-    console.log("新功能");
-    return _getId.apply(document,arguments);    }
+	console.log("新功能");
+	return _getId.apply(document,arguments); 	}
 </code></pre>
 
 <p>二、用AOP装饰</p>
@@ -81,31 +75,31 @@ var btn = document.getElementById("btn");
 <p>通过高阶函数，可以实现一些更加松散的方法，也更友好。</p>
 
 <pre><code>Function.prototype.after = function(fn){
-    var _self = this;//保存原来的函数
-    return function(){
-        var ret = _self.apply(this,arguments);
-        fn.apply(this,arguments);
-        return ret;
-    }
+	var _self = this;//保存原来的函数
+	return function(){
+		var ret = _self.apply(this,arguments);
+		fn.apply(this,arguments);
+		return ret;
+	}
 }
 
 Function.prototype.before = function(fn){
-    var _self = this;
-    return function(){
-        fn.apply(this,arguments);
-        return _self.apply(this,arguments);
-    }       
+	var _self = this;
+	return function(){
+		fn.apply(this,arguments);
+		return _self.apply(this,arguments);
+	}		
 }
 
 var a = function(){
-    console.log("a");
+	console.log("a");
 }
 
 var b = function(){
-    console.log("b");
+	console.log("b");
 }
 
-var _a = a.after(b);    
+var _a = a.after(b);	
 _a(); // ab
 
 var _b = a.before(b);

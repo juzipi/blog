@@ -35,28 +35,23 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//javascript%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83" title="前端规范的思考">前端规范的思考</a></h1>
         <p class="entry-date">2016-01-01</p>
-        <h2>Javascript代码规范</h2>
-
-<h4>遵守严格模式下的代码规范，因为ES6自动采用严格模式，不管模块头部是不是加了“use strict”,</h4>
-
-<ul>
-<li>变量必须声明后再使用</li>
-<li>函数的参数不能有同名属性，否则报错</li>
-<li>不能使用 <code>with</code> 语句</li>
-<li>不能对只读属性赋值，否则报错</li>
-<li>不能使用前缀0表示八进制数，否则报错</li>
-<li>不能删除不可删除的属性，否则报错</li>
-<li>不能删除变量<code>delete prop</code>，会报错，只能删除属性<code>delete global[prop]</code></li>
-<li><code>eval</code>不会在它的外层作用域引入变量</li>
-<li><code>eval</code>和<code>arguments</code>不能被重新赋值</li>
-<li><code>arguments</code>不会自动反映函数参数的变化</li>
-<li>不能使用<code>arguments.callee</code></li>
-<li>不能使用<code>arguments.caller</code></li>
-<li>禁止<code>this</code>指向全局对象</li>
-<li>不能使用<code>fn.caller</code>和<code>fn.arguments</code>获取函数调用的堆栈</li>
-<li>增加了保留字（比如<code>protected</code>、<code>static</code>和<code>interface</code>）</li>
-</ul>
-
+        <h2 id="javascript">Javascript代码规范</h2>
+<p>#### 遵守严格模式下的代码规范，因为ES6自动采用严格模式，不管模块头部是不是加了“use strict”,
+- 变量必须声明后再使用
+- 函数的参数不能有同名属性，否则报错
+- 不能使用 <code>with</code> 语句
+- 不能对只读属性赋值，否则报错
+- 不能使用前缀0表示八进制数，否则报错
+- 不能删除不可删除的属性，否则报错
+- 不能删除变量<code>delete prop</code>，会报错，只能删除属性<code>delete global[prop]</code>
+- <code>eval</code>不会在它的外层作用域引入变量
+- <code>eval</code>和<code>arguments</code>不能被重新赋值
+- <code>arguments</code>不会自动反映函数参数的变化
+- 不能使用<code>arguments.callee</code>
+- 不能使用<code>arguments.caller</code>
+- 禁止<code>this</code>指向全局对象
+- 不能使用<code>fn.caller</code>和<code>fn.arguments</code>获取函数调用的堆栈
+- 增加了保留字（比如<code>protected</code>、<code>static</code>和<code>interface</code>）</p>
 
 
        

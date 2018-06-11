@@ -35,87 +35,112 @@
     <div class="entry">
         <h1 class="entry-title"><a href=".//ES6-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95" title="ES6 常用语法">ES6 常用语法</a></h1>
         <p class="entry-date">2016-04-11</p>
-        <h2>let、const、var</h2>
+        <p>##let、const、var
+用一个表格可以表示，他们的区别和相同:</p>
 
-<p>用一个表格可以表示，他们的区别和相同:</p>
+<table>
+  <thead>
+    <tr>
+      <th>var</th>
+      <th>let</th>
+      <th>const</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>变量提前</td>
+      <td>是</td>
+      <td>不是</td>
+      <td>不是</td>
+    </tr>
+    <tr>
+      <td>有效范围</td>
+      <td>作用域</td>
+      <td>块级作用域</td>
+      <td>块级作用域</td>
+    </tr>
+    <tr>
+      <td>是否可以更改</td>
+      <td>可改</td>
+      <td>可改</td>
+      <td>指向的内存是不变，<br />例如：数字、字符串、布尔值是不变，数组和对象是可以改，<br />但不能重新用其他数组或对象赋值，好比占坑不挪位置。</td>
+    </tr>
+    <tr>
+      <td>是否允许重复声明</td>
+      <td>可以</td>
+      <td>在同一作用域不可以</td>
+      <td>在同一作用域不可以</td>
+    </tr>
+  </tbody>
+</table>
 
-<p> | var  | let | const
-------------- | ------------- | -------------| -------------
- 变量提前 | 是 | 不是 | 不是
- 有效范围 | 作用域 | 块级作用域 | 块级作用域
- 是否可以更改 | 可改 | 可改 | 指向的内存是不变，<br>例如：数字、字符串、布尔值是不变，数组和对象是可以改，<br>但不能重新用其他数组或对象赋值，好比占坑不挪位置。
- 是否允许重复声明 | 可以 | 在同一作用域不可以 | 在同一作用域不可以</p>
+<p>##字符串</p>
 
-<h2>字符串</h2>
+<h3 id="section">模板</h3>
 
-<h3>模板</h3>
+<p>非常方便代替原来拼接不方便，比如原来换行需要用’'；</p>
 
-<p>非常方便代替原来拼接不方便，比如原来换行需要用'\'；</p>
-
-<pre><code class="javascript">let age=23, name='李逍遥';
+<pre><code class="language-javascript">let age=23, name='李逍遥';
 console.log(`age:${age},name:${name}`);  // age:23,name:李逍遥
 </code></pre>
 
-<h3>常用</h3>
-
+<h3 id="section-1">常用</h3>
 <ul>
-<li>includes：判断是否包含后直接返回布尔值。</li>
-<li>startsWith: 判断参数是否在字符串头部，返回布尔值。</li>
-<li>endsWith：判断参数是否在字符串尾部，返回布尔值。</li>
+  <li>includes：判断是否包含后直接返回布尔值。</li>
+  <li>startsWith: 判断参数是否在字符串头部，返回布尔值。</li>
+  <li>endsWith：判断参数是否在字符串尾部，返回布尔值。</li>
 </ul>
 
-
-<pre><code class="javascript">let str  = 'happy';
+<pre><code class="language-javascript">let str  = 'happy';
 console.log(str.includes('h'));  // true
 console.log(str.startsWith('ha')); // true
 console.log(str.endsWith('ppy'));  // true
 </code></pre>
 
-<h2>对象</h2>
-
-<h3>初始化简写</h3>
-
-<pre><code class="javascript">//es 5
+<p>##对象
+### 初始化简写
+~~~javascript
+//es 5
 function p(name,age)  {
-    return {
-        name:name,
-        age:age,
-        getName : function(){
-            return this.name;
-        }
-    }
+	return {
+		name:name,
+		age:age,
+		getName : function(){
+			return this.name;
+		}
+	}
 }
 //es6 ,
 function p(name,age) {
-    return {
-    //当键值对重名的时候，可以简化
-        name,
-        age,
-    //可以省略 冒号和function关键字
-        getName () {
-            return this.name;
-        }
-    }
+	return {
+	//当键值对重名的时候，可以简化
+		name,
+		age,
+	//可以省略 冒号和function关键字
+		getName () {
+			return this.name;
+		}
+	}
 }
-</code></pre>
+~~~</p>
 
-<h3>直接取对象值</h3>
-
-<pre><code class="javascript">var obj = {age:21,name:'李逍遥'};
+<p>###直接取对象值
+~~~javascript
+var obj = {age:21,name:’李逍遥’};
 //ES 5
 var age = obj.age;
-var name = obj.name;
+var name = obj.name;</p>
 
-//ES 6
+<p>//ES 6
 var {age,name }  = obj;
 console.log(age);  // 21
-</code></pre>
+~~~</p>
 
-<h3>浅拷贝</h3>
+<p>###浅拷贝
+可以把多个源对象自身枚举的属性拷贝给目标对象，然后返回目标对象，第一个参数是目标对象，一般为了不改变源对象，目标对象一般未：{}，</p>
 
-<p>可以把多个源对象自身枚举的属性拷贝给目标对象，然后返回目标对象，第一个参数是目标对象，一般为了不改变源对象，目标对象一般未：{}，</p>
-
-<pre><code class="javascript">var o1 = {a:1};
+<pre><code class="language-javascript">var o1 = {a:1};
 var o2 = {b:2};
 var o3 = {c:3};
 var o4 = Object.assing({},o1,o2,o3);  //  {a:1,b:2,c:3}
@@ -128,30 +153,30 @@ pp.age = 21;
 var o = Object.assign({},pp);
 console.log(o); // {age:21}
 </code></pre>
-
 <ul>
-<li>如果目标对象中的属性具有相同的键，则属性被源中的属性覆盖</li>
-<li>后来的源的属性覆盖早先相同属性。</li>
-<li>假如源对象的属性指向对象的引用，它指是拷贝引用值</li>
+  <li>如果目标对象中的属性具有相同的键，则属性被源中的属性覆盖</li>
+  <li>后来的源的属性覆盖早先相同属性。</li>
+  <li>假如源对象的属性指向对象的引用，它指是拷贝引用值</li>
 </ul>
 
+<blockquote>
+  <p>IE全系列不支持</p>
+</blockquote>
 
-<blockquote><p>IE全系列不支持</p></blockquote>
-
-<pre><code class="javascript">// 深拷贝，这不是es 6 的内容，对上面知识的拓展
+<pre><code class="language-javascript">// 深拷贝，这不是es 6 的内容，对上面知识的拓展
 let o = {a:1,b:{c:2,d:3}};
 let g = Object.assign({},o)
 let h = JSON.parse(JSON.stringify(o));
 o.b.c=4;
 console.log(h.b.c);  // 2
 console.log(g.b.c);  // 4
+
 </code></pre>
 
-<h3>展开运算符 (...)</h3>
-
+<h3 id="section-2">展开运算符 (…)</h3>
 <p>用来组装对象或者数组</p>
 
-<pre><code class="javascript">// 数组
+<pre><code class="language-javascript">// 数组
 let size = ['small','big'];
 let resetSize  = [...size,'vbig','huge'];
 console.log(resetSize); // ["small", "big", "vbig", "huge"];
@@ -163,7 +188,7 @@ console.log(alphabets); //{ "fist": "a", "second": "b", "third": "c"}
 
 <p>获取数组或者对象除前几项的其他项，这里必须是放到最后才能执行。</p>
 
-<pre><code class="javascript"> //数组
+<pre><code class="language-javascript"> //数组
 const number = [1,2,3,4,5]    
 const [first, ...rest] = number
 console.log(rest) // 2,3,4,5
@@ -171,8 +196,8 @@ console.log(first) // 1
 //这里就和前面的解构知识点对接上。
  //对象
 const user = {
-    username: 'lux',
-    gender: 'female',
+	username: 'lux',
+	gender: 'female',
         age: 19,
         address: 'peking'
  }    
@@ -180,49 +205,45 @@ const { username, ...rest } = user
 console.log(rest);  //{"address": "peking", "age": 19, "gender": "female"}
 </code></pre>
 
-<h2>函数</h2>
+<p>##函数
+###箭头函数
+ES5 写法：</p>
 
-<h3>箭头函数</h3>
-
-<p>ES5 写法：</p>
-
-<pre><code class="javascript">var getNumber  = function(num){
-    num = num || 20;
-    return num +1;
+<pre><code class="language-javascript">var getNumber  = function(num){
+	num = num || 20;
+	return num +1;
 }
 var n = getNumber(10)
 </code></pre>
 
 <p>ES6 写法：</p>
 
-<pre><code class="javascript">//如果没有逻辑，直接返回结果，可以不用return和大括号。
+<pre><code class="language-javascript">//如果没有逻辑，直接返回结果，可以不用return和大括号。
 let getNumber  = (num = 20) =&gt; num +1;
 let n = getNumber(10)
 //正常使用
 let getNumber  = (num = 20) =&gt; {
-    return num +1;
+	return num +1;
 }
 </code></pre>
+<p>###默认值
+ES5 写法：</p>
 
-<h3>默认值</h3>
-
-<p>ES5 写法：</p>
-
-<pre><code class="javascript">var getNumber  = function(num){
-    num = num || 20;
-    return num +1;
+<pre><code class="language-javascript">var getNumber  = function(num){
+	num = num || 20;
+	return num +1;
 }
 </code></pre>
-
 <p>该写法，当num为0时，其实执行的是20的数字。</p>
 
 <p>ES6 写法：</p>
 
-<pre><code class="javascript">let getNumber  = function(num =20){
-    return num +1;
+<pre><code class="language-javascript">let getNumber  = function(num =20){
+	return num +1;
 }
 getNumber();
 </code></pre>
+
 
 
        
