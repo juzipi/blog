@@ -4,7 +4,7 @@
    <title>juzipi</title>
    <link href="./atom.xml" rel="self" type="application/atom+xml"/>
    <link href="." rel="alternate" type="text/html" />
-   <updated>2018-06-11T17:23:06+08:00</updated>
+   <updated>2018-06-11T17:24:15+08:00</updated>
    <id>.</id>
    <author>
      <name></name>
@@ -176,7 +176,7 @@
 &lt;h2&gt;上传思路修改方案&lt;/h2&gt;
 
 &lt;p&gt;经过考虑，我们决定做兼容性处理：
-&lt;img src=&quot;http://juzipi.github.io/blog/images/upimgFlow.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;http://juzipi.github.io/blog/images/upImgFlow.png&quot; alt=&quot;&quot; /&gt;
 这里边两条路，最后都是File对象append进FormData中实现上传。&lt;/p&gt;
 
 &lt;h3&gt;代码实现&lt;/h3&gt;
